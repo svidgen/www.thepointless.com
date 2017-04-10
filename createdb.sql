@@ -2,8 +2,8 @@
 create database if not exists pointless default character set = utf8;
 use pointless;
 
-# create user 'user'@'%.thepointless.com' identified by '(und90s()In76iNN987--_+)(';
-# grant insert,select,update,delete on pointless.* to 'user'@'%.thepointless.com';
+# create user 'SOMEUSER'@'localhost' identified by 'SOME RANDOM PASSWORD';
+# grant insert,select,update,delete on pointless.* to 'SOMEUSER'@'localhost';
 
 CREATE TABLE if not exists `users` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
