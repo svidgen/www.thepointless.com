@@ -9,7 +9,7 @@ if (!isset($do_not_cache) || !$do_not_cache) {
 
 ?>
 //
-// Copyright (c) 2012 http://www.thepointless.com/
+// Copyright (c) 2017 http://www.thepointless.com/
 //
 // Provided as is, without warranty of any kind. This IS
 // a work in progress. So, it's probaby buggy.

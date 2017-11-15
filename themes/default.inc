@@ -117,7 +117,6 @@ EXP;
 			<?php include('includes/wiseinsert.inc'); ?>
 		</div>
 
-		<!-- |\/|4d3 \/\/1+|-| \/1 -->
 		<div id='sub-footer'>
 			This page was hand-knit in <?php print time_elapsed(); ?> seconds by enslaved children.
 			<br /><br />
