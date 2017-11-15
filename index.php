@@ -9,13 +9,9 @@ $cookie_domain = '.thepointless.com';
 $base_url = "http://{$base_domain}/";
 $secure_base_url = "http://{$base_domain}/";
 
-
 $default_page = 'index';
 $default_theme = 'default';
-// $prefer_theme = false;
-// $require_theme = false;
 $meta_title = '';
-// $html_title = '';
 $meta_description = '';
 $meta_keywords = '';
 
@@ -37,11 +33,13 @@ $db_default_db = 'pointless';
 
 $simulate_apc_cache = false;
 
+
 // facebook API info
 $facebook_appId = '';
 $facebook_appSecret = '';
 $facebook_cookie_domain = '.thepointless.com';
 $facebook_admins = '';
+
 
 // turn debugging on/off.
 // the implications of this vary for each page and library.
@@ -49,7 +47,7 @@ $facebook_admins = '';
 // turn these sorts of things on and off all at once.
 $debug_mode = false;
 
-// define a debug variable to dump lines into
+// to be appended to with debug info.
 $debug_string = '';
 
 // bookmarks host
@@ -57,17 +55,6 @@ $bookmarks_host = 'www.svidgen.com';
 
 // trulygui host
 $trulygui_host = 'www.trulygui.com';
-
-
-// use zlib on-the-fly compression
-// ini_set('zlib.output_compression', '1');
-
-// level between 1 and 9 or -1 to let server decide
-// ini_set('zlib.output_compression_level', '-1');
-
-// turn off output handlers
-// ini_set('zlib.output_handler', '');
-
 
 
 // now, if site_config.inc exists, load it up ...
@@ -83,7 +70,7 @@ require_once('includes/dbconnect.inc');
 require_once('includes/auth.inc');
 
 
-// needs to be set after util.inc is included:
+// `handle_error` defined in `util.inc`
 set_error_handler('handle_error');
 
 
@@ -133,24 +120,23 @@ session_name($session_name);
 session_start();
 
 
-// if the .project_stop file exists, the project has been stopped or paused
-// for some reason. it is the responsibility of .project_stop to check the page
-// and change $template_content as necessary to an info page explaining why
-// the requested page is not available (project over, paused, w/e).
+// `.project_stop` shall be used to put the site into stop/maintenance mode.
 if (is_file('.project_stop')) {
 	include('.project_stop');
+	exit();
 }
-
 
 // buffer the output of the page file, so it can interact with the template
 // and send browser headers
 ob_start();
+
 
 // if a page is designate on in the query string, use it.  otherwise, use the
 // default page name
 if (!isset($_GET['driver_c'])) {
 	$_GET['driver_c'] = $default_page;
 }
+
 
 // process redirects
 if (file_exists('includes/redirects.inc')) {
@@ -169,12 +155,12 @@ $template_content = 'pages/' . str_replace('.', '', $_GET['driver_c']) . '.inc';
 unset($_GET['driver_c']);
 
 // if the page name is not a file or cannot be included for some reason,
-// use the broken fingers message for page data
+// assume the user's fingers are broken.
 if ((!is_file($template_content)) || (!$__content_rv = include($template_content))) {
 	header('HTTP/1.1 404 Not Found');
 	$meta_title = "404 - Not Found";
 	print "
-		Whatever the hell you're looking for ain't here!
+		Whatever you're looking for ain't here!
 	";
 }
 
@@ -215,9 +201,8 @@ if (!isset($__theme)) {
 	$__theme = $default_theme;
 }
 
-// templates will use a .template extension
+// templates will use a .inc extension (just like pages)
 $template_file = 'themes/' . str_replace('.', '', $__theme) . '.inc';
-// $template_file = $_GET['theme'] . '.inc';
 
 
 // if the template doesn't exist or cannot be included for some reason,
