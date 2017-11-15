@@ -1,6 +1,6 @@
 <?php
 
-if (preg_match("/(192.168.*)|(127.0.0.1)/", $_SERVER['REMOTE_ADDR'])) {
+if (preg_match("/(192.168.*)|(127.0.0.1)|(10.*)/", $_SERVER['REMOTE_ADDR'])) {
 	// print "<div style='width: 468px; height: 60px; border: 1px solid silver; background-color: white;'>Google Ads go here.</div>\n";
 	print "<!-- Google analytics go here. -->";
 } else if ($google_analytics_id) {
