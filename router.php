@@ -56,6 +56,4 @@ $routes = [
 
 route($routes, $filename);
 
-// include('index.php')
-
 ?>

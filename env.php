@@ -1,10 +1,5 @@
 <?php
 
-// common libraries
-require_once('includes/util.inc');
-require_once('includes/dbconnect.inc');
-require_once('includes/auth.inc');
-
 $base_domain = 'www.thepointless.com';
 $cookie_domain = '.thepointless.com';
 $base_url = "http://{$base_domain}/";
@@ -87,5 +82,10 @@ if (is_file('.project_stop')) {
 if (isset($_COOKIE[$session_name])) {
 	@setcookie($session_name, $_COOKIE[$session_name], time() + $session_duration, "/", $cookie_domain);
 }
+// common libraries
+require_once('includes/util.inc');
+require_once('includes/dbconnect.inc');
+require_once('includes/auth.inc');
+
 
 ?>
