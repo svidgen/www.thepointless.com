@@ -3,84 +3,12 @@
 // start benchmarking
 $__pageload_start = microtime(true);
 
-
-$base_domain = 'www.thepointless.com';
-$cookie_domain = '.thepointless.com';
-$base_url = "http://{$base_domain}/";
-$secure_base_url = "http://{$base_domain}/";
-
-$default_page = 'index';
-$default_theme = 'default';
-$meta_title = '';
-$meta_description = '';
-$meta_keywords = '';
-
-$general_version = 492;
-
-// $cse_version = 142;
-$cse_adposition = '9'; // 9 = right; 10 = top and right; 11 = top and bottom;
-$google_analytics_id = 'UA-920576-1';
-
-$session_name = 'pointless_session';
-$atoken_name = 'p_atoken';
-$signin_page = 'signin';
-
-// database connection values
-$db_default_host = 'localhost';
-$db_default_user = 'root';
-$db_default_pass = '';
-$db_default_db = 'pointless';
-
-$simulate_apc_cache = false;
-
-
-// facebook API info
-$facebook_appId = '';
-$facebook_appSecret = '';
-$facebook_cookie_domain = '.thepointless.com';
-$facebook_admins = '';
-
-
-// turn debugging on/off.
-// the implications of this vary for each page and library.
-// but, we figured it'd be nice to have a global variable to
-// turn these sorts of things on and off all at once.
-$debug_mode = false;
-
-// to be appended to with debug info.
-$debug_string = '';
-
-// bookmarks host
-$bookmarks_host = 'www.svidgen.com';
-
-// trulygui host
-$trulygui_host = 'www.trulygui.com';
-
-
-// now, if site_config.inc exists, load it up ...
-if (file_exists('site_config.inc')) {
-	if (!@include('site_config.inc')) {
-		// that's OK ... 
-	}
-}
-
-// common libraries
-require_once('includes/util.inc');
-require_once('includes/dbconnect.inc');
-require_once('includes/auth.inc');
-
-
-// `handle_error` defined in `util.inc`
-set_error_handler('handle_error');
-
-
 // conditional libraries
 if (function_exists('apc_fetch')) {
 	require_once('includes/apc_cache.inc');
 } else {
 	require_once('includes/mysql_cache.inc');
 }
-
 
 // check for highly non-compliant browsers (IE < 7)
 if (preg_match("/MSIE 6|5/", $_SERVER['HTTP_USER_AGENT'])) {
@@ -109,26 +37,7 @@ if (get_magic_quotes_gpc()) {
 }
 
 
-// use the PHP INI max session lifetime, rather than *setting* it here.
-// this will avoid conflicts with other apps and force us to set a global
-// max session lifetime.
-$session_duration = (int)ini_get("session.gc_maxlifetime");
 
-// start (or attach to) the session 
-session_set_cookie_params($session_duration, '/', $cookie_domain);
-session_name($session_name);
-session_start();
-
-
-// `.project_stop` shall be used to put the site into stop/maintenance mode.
-if (is_file('.project_stop')) {
-	include('.project_stop');
-	exit();
-}
-
-// buffer the output of the page file, so it can interact with the template
-// and send browser headers
-ob_start();
 
 
 // if a page is designate on in the query string, use it.  otherwise, use the
@@ -150,13 +59,19 @@ if (file_exists('includes/redirects.inc')) {
 // also, remove .'s from the pagename so parent directories
 // cannot be accessed. might have to put a fix in for unicode
 // .'s as well?
-$template_content = 'pages/' . str_replace('.', '', $_GET['driver_c']) . '.inc';
 
-unset($_GET['driver_c']);
-
-// if the page name is not a file or cannot be included for some reason,
-// assume the user's fingers are broken.
-if ((!is_file($template_content)) || (!$__content_rv = include($template_content))) {
+try {
+	if (isset($_GET['driver_c_raw'])) {
+		$content_file = preg_replace('/\.+/', '.', $_GET['driver_c_raw']);
+		$template_page_data = file_get_contents($filename);
+	} else {
+		$content_file = 'pages/' . str_replace('.', '', $_GET['driver_c']) . '.inc';
+		ob_start();
+		include($filename);
+		$template_page_data = ob_get_contents();
+		ob_end_clean();
+	}
+} catch (Exception $e) {
 	header('HTTP/1.1 404 Not Found');
 	$meta_title = "404 - Not Found";
 	print "
@@ -164,10 +79,7 @@ if ((!is_file($template_content)) || (!$__content_rv = include($template_content
 	";
 }
 
-// grab output buffered contents and stop buffering
-$template_page_data = ob_get_contents();
-ob_end_clean();
-
+unset($_GET['driver_c']);
 
 // if an html_title has not been set, us the meta_title
 if (!isset($html_title)) {
@@ -222,11 +134,6 @@ if ((!is_file($template_file)) || (!include($template_file))) {
 
 }
 
-
-// reset/extend the SESSION cookie if already set
-if (isset($_COOKIE[$session_name])) {
-	@setcookie($session_name, $_COOKIE[$session_name], time() + $session_duration, "/", $cookie_domain);
-}
 
 
 // end buffering and flush all output to the client
