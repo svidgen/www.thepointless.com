@@ -1,47 +1,24 @@
 <?php
-	require_once('includes/game-inserts.inc');
-	require_once('includes/sitemap.inc');
+
+require_once('includes/game-inserts.inc');
+require_once('includes/sitemap.inc');
+require_once('includes/dbconnect.inc');
+
 ?>
 <!doctype html>
 <html xmlns:tpdc="http://www.thepointless.com/ns/tpdc" xmlns:fb="http://www.facebook.com/">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<?php
-
-	// Google Analytics AB Experiments
-
-	if (@$analytics_experiment_id && @$run_experiments) {
-		$analytics_experiment = <<<EXP
-<!-- Google Analytics Content Experiment code -->
-	<script>function utmx_section(){}function utmx(){}(function(){var
-	k='{$analytics_experiment_id}',d=document,l=d.location,c=d.cookie;
-	if(l.search.indexOf('utm_expid='+k)>0)return;
-	function f(n){if(c){var i=c.indexOf(n+'=');if(i>-1){var j=c.
-		indexOf(';',i);return escape(c.substring(i+n.length+1,j<0?c.
-length:j))}}}var x=f('__utmx'),xx=f('__utmxx'),h=l.hash;d.write(
-'<sc'+'ript src="'+'http'+(l.protocol=='https:'?'s://ssl':
-'://www')+'.google-analytics.com/ga_exp.js?'+'utmxkey='+k+
-'&utmx='+(x?x:'')+'&utmxx='+(xx?xx:'')+'&utmxtime='+new Date().
-valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
-'" type="text/javascript" charset="utf-8"><\/sc'+'ript>')})();
-</script><script>utmx('url','A/B');</script>
-<!-- End of Google Analytics Content Experiment code -->
-
-EXP;
-		print $analytics_experiment;
-	}
-
-?>
-	<title><?php print $meta_title; ?> - thepointless.com</title>
+	<title><?php print $args['meta_title']; ?> - thepointless.com</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="keywords" content="<?php print $meta_keywords;?>" />
-	<meta name="description" content="<?php print $meta_description;?>" />
-	<?php if (isset($extra_meta_tags)) { print $extra_meta_tags; } ?>
+	<meta name="keywords" content="<?php print $args['meta_keywords'];?>" />
+	<meta name="description" content="<?php print $args['meta_description'];?>" />
+	<?php if (isset($args['extra_meta_tags'])) { print $args['extra_meta_tags']; } ?>
 	<meta name="google-site-verification" content="zYKsu_Prv58mFQyRGJA3j1sDsQzAytFhE2SjFMaQk14" />
 	<link rel='stylesheet' type='text/css' href='/sheets/default.css?v=<?php print $general_version; ?>' />
-	<link rel='shortcut icon' href='/images/favicon.ico?v=<?php print $general_version; ?>' />
+	<link rel='shortcut icon' href='/images/favicon.ico?v=<?php print $args['general_version']; ?>' />
 	<?php include('includes/google_analytics.inc'); ?> 
-	<script type='text/javascript' src='//<?php print $trulygui_host; ?>/js/tg-all.js?v=<?php print $general_version; ?>'></script>
+	<script type='text/javascript' src='//<?php print $args['trulygui_host']; ?>/js/tg-all.js?v=<?php print $args['general_version']; ?>'></script>
 	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body id="thebody">
@@ -88,12 +65,20 @@ EXP;
 		<div id="content" class='content'>
 
 			<div id="header" class='header'>
-				<h2><?php print $html_title; ?></h2>
+				<h2><?php
+					if (isset($args['html_title'])) {
+						print $args['html_title'];
+					} elseif (isset($args['meta_title'])) {
+						print $args['meta_title'];
+					} else {
+						print "Untitled Pointlessness";
+					}
+				?></h2>
 			</div>
 
 			<div id="template_page_data">
 				<?php
-					print $template_page_data;
+					print $args['template_page_data'];
 				?>
 			</div>
 
@@ -151,17 +136,6 @@ EXP;
 
 ?>
 </script>
-
-<!--
-	<?php
-		if (isset($request_query_count)) {
-			print "{$request_query_count}\n{$request_query_time}";
-			print "\n" . $request_query_count / $request_query_time;
-			print "\n" . $request_query_time / $request_query_count;
-		}
-	?>
-
--->
-
+<?php print_query_stats(); ?>
 </body>
 </html>

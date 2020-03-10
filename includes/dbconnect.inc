@@ -577,6 +577,18 @@
 	} // my_delete()
 
 
+	function print_query_stats() {
+		global $request_query_count, $request_query_time;
+		print "<!--\n";
+		if (isset($request_query_count)) {
+			print "{$request_query_count}\n{$request_query_time}";
+			print "\n" . $request_query_count / $request_query_time;
+			print "\n" . $request_query_time / $request_query_count;
+		}
+		print "-->";
+	} // print_query_stats()
+
+
 	function insert_user($o) {
 		global $db;
 		if (is_array($o)) {

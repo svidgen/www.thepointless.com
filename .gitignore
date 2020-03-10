@@ -1,1 +1,6 @@
+.db
+.sql
+.err
+*.swp
+
 site_config.inc
