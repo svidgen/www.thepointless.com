@@ -1,9 +1,7 @@
 <?php
 
 ini_set('display_errors', '1');
-
 define('CONTENT', 'template_page_data');
-
 require_once('env.php');
 
 $filename = $_SERVER['REQUEST_URI'];
