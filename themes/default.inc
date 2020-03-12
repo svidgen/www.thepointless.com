@@ -9,16 +9,16 @@ require_once('includes/dbconnect.inc');
 <html xmlns:tpdc="http://www.thepointless.com/ns/tpdc" xmlns:fb="http://www.facebook.com/">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<title><?php print $args['meta_title']; ?> - thepointless.com</title>
+	<title><?php print $meta_title; ?> - thepointless.com</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="keywords" content="<?php print $args['meta_keywords'];?>" />
-	<meta name="description" content="<?php print $args['meta_description'];?>" />
-	<?php if (isset($args['extra_meta_tags'])) { print $args['extra_meta_tags']; } ?>
+	<meta name="keywords" content="<?php print $meta_keywords;?>" />
+	<meta name="description" content="<?php print $meta_description;?>" />
+	<?php if (isset($extra_meta_tags)) { print $extra_meta_tags; } ?>
 	<meta name="google-site-verification" content="zYKsu_Prv58mFQyRGJA3j1sDsQzAytFhE2SjFMaQk14" />
 	<link rel='stylesheet' type='text/css' href='/sheets/default.css?v=<?php print $general_version; ?>' />
-	<link rel='shortcut icon' href='/images/favicon.ico?v=<?php print $args['general_version']; ?>' />
+	<link rel='shortcut icon' href='/images/favicon.ico?v=<?php print $general_version; ?>' />
 	<?php include('includes/google_analytics.inc'); ?> 
-	<script type='text/javascript' src='//<?php print $args['trulygui_host']; ?>/js/tg-all.js?v=<?php print $args['general_version']; ?>'></script>
+	<script type='text/javascript' src='//<?php print $trulygui_host; ?>/js/tg-all.js?v=<?php print $general_version; ?>'></script>
 	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body id="thebody">
@@ -66,10 +66,10 @@ require_once('includes/dbconnect.inc');
 
 			<div id="header" class='header'>
 				<h2><?php
-					if (isset($args['html_title'])) {
-						print $args['html_title'];
-					} elseif (isset($args['meta_title'])) {
-						print $args['meta_title'];
+					if (isset($html_title)) {
+						print $html_title;
+					} elseif (isset($meta_title)) {
+						print $meta_title;
 					} else {
 						print "Untitled Pointlessness";
 					}
@@ -78,7 +78,7 @@ require_once('includes/dbconnect.inc');
 
 			<div id="template_page_data">
 				<?php
-					print $args['template_page_data'];
+					print $template_page_data;
 				?>
 			</div>
 

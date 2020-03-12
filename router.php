@@ -15,6 +15,8 @@ function safe_path($path) {
 }
 
 function execute($page, $args=array()) {
+	extract(get_config());
+
 	ob_start();
 	include("{$page}.inc");
 	$content = ob_get_contents();
