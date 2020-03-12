@@ -11,8 +11,13 @@
 
 	$transaction_depth = 0;
 
-
-	$db = my_connect($db_default_host, $db_default_user, $db_default_pass, $db_default_db);
+	$config = get_config();
+	$db = my_connect(
+		$config['db_default_host'],
+		$config['db_default_user'],
+		$config['db_default_pass'],
+		$config['db_default_db']
+	);
 
 
 	function sanitize($v) {
@@ -122,7 +127,9 @@
 
 
 	function my_query($query, $database = false) {
-		global $debug_mode, $query_debug_log, $db, $request_query_count, $request_query_time;
+		global $query_debug_log, $db, $request_query_count, $request_query_time;
+
+		$config = get_config();
 
 		if (!$database) {
 			$database = $db;
@@ -131,7 +138,7 @@
 		$query = str_replace("\t", " ", $query);
 
 		$missing_index = false;
-		if ($debug_mode) {
+		if ($config['debug_mode']) {
 			if ($result = mysqli_query($database, "explain {$query}")) {
 				while ($row = mysqli_fetch_assoc($result)) {
 					if ($row['Extra'] != 'Select tables optimized away') {

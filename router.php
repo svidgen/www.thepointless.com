@@ -14,17 +14,18 @@ function safe_path($path) {
 	return preg_replace('/\.+/', '.', $path);
 }
 
-function execute($page, $args=array()) {
+function execute($script, $args=array()) {
 	extract(get_config());
+	extract($args);
 
 	ob_start();
-	include("{$page}.inc");
+	include("{$script}.inc");
 	$content = ob_get_contents();
 	ob_end_clean();
 
 	$exports = get_defined_vars();
 	$exports[CONTENT] = $content;
-	unset($exports['page']);
+	unset($exports['script']);
 	return $exports;
 }
 

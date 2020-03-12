@@ -74,7 +74,8 @@ function send_cache_control_headers($t = '+1 year') {
 
 // send redirect headers and HTML (for browsers that don't support Location header?)
 function redirect($url) {
-	global $base_url;
+	$config = get_config();
+	$base_url = $config['base_url'];
 
 	// prepend the base_url if necessary, to make the URL absolute.
 	if (!preg_match("/^http/", $url)) {
