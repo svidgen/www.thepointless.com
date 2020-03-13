@@ -77,9 +77,7 @@ require_once('includes/dbconnect.inc');
 			</div>
 
 			<div id="template_page_data">
-				<?php
-					print $template_page_data;
-				?>
+				<?php print $args['content']; ?>
 			</div>
 
 	<!--End page specific data-->

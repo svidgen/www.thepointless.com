@@ -2,6 +2,6 @@
 
 	header("Content-type: text/xml");
 	print '<?xml version="1.0" encoding="UTF-8" ?>';
-	print "\n{$template_page_data}";
+	print "\n{$args['content']}";
 
 ?>

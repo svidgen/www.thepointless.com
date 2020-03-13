@@ -4,9 +4,11 @@ header('Content-type: text/javascript');
 
 $cb = isset($_GET['cb']) ? $_GET['cb'] : 'jsonp_cb';
 
-if (!isset($json_response)) {
-	if (isset($__content_rv)) {
-		$json_response = json_encode($__content_rv);
+if (isset($args['json_response'])) {
+	$json_response = $args['json_response'];
+} else {
+	if (isset($args['__content_rv'])) {
+		$json_response = json_encode($args['__content_rv']);
 	} else {
 		$json_response = 'null';
 	}

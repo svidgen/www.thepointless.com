@@ -1,7 +1,7 @@
 <?php
 
 ini_set('display_errors', '1');
-define('CONTENT', 'template_page_data');
+define('CONTENT', 'content');
 require_once('env.php');
 
 $filename = $_SERVER['REQUEST_URI'];
@@ -16,7 +16,7 @@ function safe_path($path) {
 
 function execute($script, $args=array()) {
 	extract(get_config());
-	extract($args);
+	// extract($args);
 
 	ob_start();
 	include("{$script}.inc");
@@ -39,10 +39,11 @@ function route($routes, $path) {
 }
 
 function load_page($page, $theme) {
-	print execute(
-		safe_path("themes/{$theme}"),
-		execute(safe_path("pages/{$page}"))
-	)[CONTENT];
+	$page_data = execute(safe_path("pages/{$page}"));
+	if (isset($page_data['require_theme'])) {
+		$theme = $page_data['require_theme'];
+	}
+	print execute(safe_path("themes/{$theme}"), $page_data)[CONTENT];
 }
 
 function load_file($file, $theme) {
