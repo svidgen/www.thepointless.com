@@ -71,34 +71,10 @@ Because why not?
 
 		<br /><input type='checkbox' name='stay_signed_in' value='1' <?php print isset($_POST['stay_signed_in']) ? 'checked="checked"' : ''; ?> />Stay signed in.
 		<input type='submit' value='Sign In' />
-
-		<div id='fb_signin_div' style='display: none; text-align: center; margin: 25px;'>
-			<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: 24pt; margin: 25px; color: #55aa55; font-style: italic;'>OR</div>
-			<a href='#fb_signin' id='fb_signin_link' onclick='fb_signin("<?php print @$_GET['return']; ?>");' class='facebook'><span>Use Facebook</span></a>
 		</div>
 
 	</div>
 
 </form>
 
-<script src='https://connect.facebook.net/en_US/all.js'></script>
 <script src='/js/auth.js'></script>
-<script>
-	document.getElementById('fb_signin_div').style.display = 'block';
-
-	FB.init({
-		appId: '<?php print $facebook_appId; ?>',
-		channelUrl: '<?php print $base_url; ?>fbchannel.html',
-		status: true,
-		cookie: true,
-		xfbml: true,
-		oauth: true
-	});
-
-	FB.Event.subscribe('auth.statusChange', function() {
-		var auth_user = document.createElement('script');
-		auth_user.src = '/ajax/authenticated_user.js?cb=TPDC.setUserMenu&return=' + document.location;
-		auth_user.type = 'text/javascript';
-		document.body.appendChild(auth_user);
-	});
-</script>

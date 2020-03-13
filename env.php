@@ -38,12 +38,6 @@ function make_config() {
 
 	$simulate_apc_cache = false;
 
-	// facebook API info
-	$facebook_appId = '';
-	$facebook_appSecret = '';
-	$facebook_cookie_domain = '.thepointless.com';
-	$facebook_admins = '';
-
 	// turn debugging on/off.
 	// the implications of this vary for each page and library.
 	// but, we figured it'd be nice to have a global variable to

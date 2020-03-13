@@ -1,9 +1,8 @@
 <?php
 
-	// settings
+	// reasonable limits/defaults
 	$default_salt_length = 16;
 	$min_session_duration = 60 * 60;
-
 
 	// make sure we're connected!
 	require_once('includes/dbconnect.inc');
@@ -22,14 +21,15 @@
 	// returns true if a user is authenticated; redirects to
 	// signin page if user is not authenticated.
 	function authenticate() {
-		global $signin_page;
+		$config = get_config();
 
 		$user = get_authenticated_user();
 		if ($user) {
 			return $user;
 		} else {
 			$redirect_page = merge_querystring(
-				$signin_page, "return=" . urlencode($_SERVER['REQUEST_URI'])
+				$config['signin_page'],
+				"return=" . urlencode($_SERVER['REQUEST_URI'])
 			);
 			redirect($redirect_page);
 		}
@@ -37,7 +37,9 @@
 
 
 	function signin($formdata) {
-		global $base_url;
+		$config = get_config();
+		$base_url = $config['base_url'];
+
 		$user = check_credentials($formdata);
 		if ($user) {
 			$stay_signed_in = @$formdata['stay_signed_in'];
@@ -58,7 +60,8 @@
 
 
 	function signup($formdata) {
-		global $base_url;
+		$config = get_config();
+		$base_url = $config['base_url'];
 
 		if (preg_match('/^https?:\/\//', $formdata['username'], $m)) {
 			return "Your username cannot be a URL.";
@@ -87,9 +90,8 @@
 
 
 	function signout() {
-		global $auth_user_name, $atoken_name;
-		unset($_SESSION[$atoken_name]);
-		facebook_signout();
+		$config = get_config();
+		unset($_SESSION[$config['atoken_name']]);
 	} // signout()
 
 
@@ -104,11 +106,11 @@
 
 
 	function set_authenticated_user($user, $stay_signed_in = false) {
-		global $auth_user_name, $atoken_name, $min_session_duration;
+		$config = get_config();
 
 		// generate and set a sub-session auth-token
 		$atoken = sha1(mykeygen(128) . $user['username']);
-		$_SESSION[$atoken_name] = array(
+		$_SESSION[$config['atoken_name']] = array(
 			'token' => $atoken,
 			'expires' => time() + $min_session_duration,
 			'stay_signed_in' => $stay_signed_in,
@@ -122,17 +124,18 @@
 
 
 	function refresh_local_user() {
-		global $atoken_name;
+		$config = get_config();
 		$user_id = get_user_id();
 		if ($user_id) {
 			$user = select_user(array('user_id' => $user_id));
-			$_SESSION[$atoken_name]['user'] = $user;
+			$_SESSION[$config['atoken_name']]['user'] = $user;
 		}
 	} // set_local_user()
 
 
 	function local_user() {
-		global $atoken_name;
+		$config = get_config();
+		$atoken_name = $config['atoken_name'];
 		if (isset($_COOKIE[$atoken_name]) && $_COOKIE[$atoken_name]) {
 			if (isset($_SESSION[$atoken_name]) && $_SESSION[$atoken_name]['token'] == $_COOKIE[$atoken_name]) {
 				// refresh authentication token cookie
@@ -150,17 +153,7 @@
 
 
 	function get_authenticated_user() {
-		$fb_user = facebook_user();
-		$local_user = local_user();
-
-		if ($fb_user) {
-			if (!$local_user) {
-			}
-
-			$local_user['userdata_object'] = $fb_user;
-		}
-
-		return $local_user;
+		return local_user();
 	} // get_authenticated_user()
 
 
@@ -198,141 +191,17 @@
 	} // require_admin()
 
 
-	function facebook_signout() {
-		global $facebook_appId, $facebook_cookie_domain;
-		unset($_SESSION['facebook_user']);
-	} // facebook_signout()
-
-
 	function base64UrlDecode($input) {
 		return base64_decode(strtr($input, '-_', '+/'));
 	}
 
 
-	function facebook_user() {
-		global $facebook_appId, $facebook_appSecret, $base_url;
-
-		// check for the existence of the facebook cookie
-		if (isset($_COOKIE['fbsr_' . $facebook_appId])) {
-
-			list($encoded_sig, $payload) = explode('.', $_COOKIE['fbsr_' . $facebook_appId], 2);
-
-			// decode the data
-			$sig = base64UrlDecode($encoded_sig);
-			$fb_cookie = json_decode(base64UrlDecode($payload), true);
-
-			if (strtoupper($fb_cookie['algorithm']) !== 'HMAC-SHA256') {
-				return false;
-			}
-
-			// check sig
-			$expected_sig = hash_hmac('sha256', $payload, $facebook_appSecret, $raw = true);
-			if ($sig !== $expected_sig) {
-				return false;
-			}
-
-			if (!is_array(@$_SESSION['facebook_user'])
-				|| @$_SESSION['facebook_user']['id'] != $fb_cookie['user_id'])
-			{
-
-				$_SESSION['facebook_user'] = array();
-
-                // grab the facebook access token
-                // if (!$_SESSION['facebook_user']['access_token']) {
-                    $token_url = "https://graph.facebook.com/oauth/access_token?client_id={$facebook_appId}&redirect_uri=&client_secret={$facebook_appSecret}&code={$fb_cookie['code']}";
-                    $curl_handle = curl_init();
-                    curl_setopt($curl_handle, CURLOPT_URL, $token_url);
-                    curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-                    $access_token = curl_exec($curl_handle);
-					$_SESSION['fb_access_token'] = $access_token;
-				// }
-
-
-				$fb_me_url = "https://graph.facebook.com/me?{$access_token}";
-
-				// cURL is noticeably faster than file_get_contents()
-				$curl_handle = curl_init();
-				curl_setopt($curl_handle, CURLOPT_URL, $fb_me_url);
-				curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-				$fb_user_json = curl_exec($curl_handle);
-
-
-				// parse the response and make sure the fields we care about
-				// are there.
-				$fb_user = json_decode($fb_user_json, true);
-				if (@!$fb_user['id']) {
-					return false;
-				}
-
-				// toss the FB user in the session
-				$_SESSION['facebook_user'] = $fb_user;
-				$_SESSION['facebook_user']['access_token'] = $access_token;
-
-			} else {
-				$fb_user = $_SESSION['facebook_user'];
-			}
-
-
-			$local_user = local_user();
-			if (!$local_user) {
-				// look for a local record for the FB account
-				$local_user = select_user(
-					array(
-						'username' => "http://graph.facebook.com/{$fb_user['id']}"
-					)
-				);
-
-
-				if ($local_user) {
-					$local_user['name'] = $fb_user['name'];
-					if (isset($fb_user_json)) {
-						$local_user['userdata'] = $fb_user_json;
-					}
-					update_user($local_user);
-				} else {
-					$local_user = array(
-						'username' => "http://graph.facebook.com/{$fb_user['id']}",
-						'password' => '',
-						'name' => $fb_user['name'],
-					);
-
-					if (isset($fb_user_json)) {
-						$local_user['userdata'] = $fb_user_json;
-					}
-
-					$user_id = insert_user($local_user);
-					$local_user['user_id'] = $user_id;
-				}
-
-				if (isset($fb_user_json)) {
-					$local_user['userdata'] = $fb_user_json;
-				}
-
-				// add the local user record to the session
-				set_authenticated_user($local_user);
-			}
-
-			return $fb_user;
-
-		} else {
-			return false;
-		}
-
-	} // facebook_user()
-
-
-	function get_facebook_user() {
-		return facebook_user();
-	} // get_facebook_user()
-
-
-	function authenticated_facebook_user() {
-		return facebook_user();
-	} // authenticated_facebook_user()
-
-
 	function send_auth_cookies() {
-		global $atoken_name, $session_duration, $min_session_duration, $cookie_domain, $auth_cookies_sent;
+		global $min_session_duration, $auth_cookies_sent;
+		$config = get_config();
+		$atoken_name = $config['atoken_name'];
+		$session_duration = $config['session_duration'];
+		$cookie_domain = $config['cookie_domain'];
 
 		// look for an atoken
 		if (
@@ -414,6 +283,10 @@
 
 
 	// mycrypt()
+	// NOTE: NEEDS TO BE REPLACED. ... Not that anything do we here needs to be
+	// high security inherently. But, we should be using more secure hashing for
+	// the sake of our users at this point.
+	//
 	// given a password, and optionally a salt, produces a password hash.
 	// the characters of the passed in salt are used UP TO the first pipe,
 	// if one exists.
@@ -436,7 +309,6 @@
 
 
 	function user_menu($return_url = false) {
-
 		if ($auth_user = authenticated_user()) {
 			$signed_in_display = 'inline';
 			$signed_out_display = 'none';
@@ -492,11 +364,6 @@
 	function signout_url($return_url = false) {
 		return signX_url('out', $return_url);
 	} // signin_url()
-
-
-	function facebook_auth_html() {
-
-	} // facebook_auth_html()
 
 
 ?>
