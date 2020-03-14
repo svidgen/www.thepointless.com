@@ -12,12 +12,13 @@ for ($i = 0; $i < $poolsize; $i++) {
 }
 
 
-function read_to_end($socket) {
-	return socket_read($socket, 1000000);
+function read_to_end(&$socket) {
+	// return socket_read($socket, 1000000);
+	return fread($socket, 1000000);
 }
 
 
-function assign_to_worker($pool, $connection) {
+function assign_to_worker(&$pool, &$connection) {
 	while (!$port = get_free_worker_port($pool)) {
 		usleep(50000);
 	}
@@ -31,7 +32,7 @@ function assign_to_worker($pool, $connection) {
 }
 
 
-function get_free_worker_port($pool) {
+function get_free_worker_port(&$pool) {
 	foreach ($pool as $port => $connection) {
 		if (!$connection) {
 			return $port;
@@ -41,59 +42,56 @@ function get_free_worker_port($pool) {
 }
 
 
-function forward_request($pool, $port, $connection) {
+function forward_request(&$pool, $port, &$connection) {
 	print "Attempting to connect to worker on port {$port}.\n";
-	$fp = fsockopen('127.0.0.1', $port);
+	// $fp = fsockopen('127.0.0.1', $port);
+	$w = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tpc'));
+	socket_connect($w, '127.0.0.1', $port);
+	$pool[$port]['worker'] = $w;
 	print "Opened connection to worker on port {$port}.\n";
 
-	stream_set_timeout($fp, 0, 50000);
-	stream_set_blocking($fp, false);
-	$pool[$port]['worker'] = $fp;
-
-	print "Configured worker socket.\n";
-
 	$data = read_to_end($connection);
-	print "Read data from client.\n\n";
+	print "Read data from client.\n";
 
-	fwrite($fp, $data);
+	// fwrite($fp, $data);
+	socket_write($w, $data);
 	print "Wrote data to worker.\n";
 }
 
 
-function check_for_responses($pool) {
-	print "Checking for data from worker ... \n";
+function check_for_responses(&$pool) {
 	foreach ($pool as $port => $request) {
 		$worker = $request['worker'];
-		if ($worker) {
-			$data = fgets($worker);
-			if ($data) {
-				print "Found response data from worker on port {$port}.\n";
-				$request['buffer'][] = $data;
+		$client = $request['client'];
+		if ($client && $worker) {
+			socket_set_nonblock($worker);
+			print "worker found.\n";
+			if ($chars = socket_read($worker, 1000000)) {
+				print "streaming response ...\n";
+				fwrite($client, $chars);
+				fclose($client);
+				socket_close($worker);
+				$pool[$port] = null;
 			}
-			if (feof($worker)) {
-				print "Found a completed response. Sending...\n";
-				fclose($worker);
-				send_response($pool, $port);
-			}
+			print "no response yet.\n";
 		}
 	}
 }
 
 
-function send_response($pool, $port) {
+function send_response(&$pool, $data) {
 	$request = $pool[$port];
-	$data = join('', $request['buffer']);
-	socket_write($request['client'], $data);
-	socket_close($request['client']);
+	fwrite($request['client'], $data);
+	fclose($request['client']);
 	$pool[$port] = null;
 }
 
 
 function signal_handler($signal) {
 	global $socket;
-	print "Quitting gracefully.";
+	print "Quitting gracefully.\n";
 	if ($socket) {
-		socket_close($socket);
+		fclose($socket);
 	}
 	exit(0);
 }
@@ -102,17 +100,20 @@ pcntl_signal(SIGTERM, "signal_handler");
 pcntl_signal(SIGHUP, "signal_handler");
 pcntl_signal(SIGINT, "signal_handler");
 
-$socket = socket_create_listen($port);
+
+// $socket = socket_create_listen($port);
+$socket = stream_socket_server("tcp://0.0.0.0:{$port}");
 if (!$socket) {
 	print "Could not bind to port {$port}. Quitting.\n";
 	exit(0);
 }
 
-socket_set_nonblock($socket);
+// socket_set_nonblock($socket);
+stream_set_blocking($socket, 0);
 print "Listening on port {$port}.\nPress ctrl+c to exit ...\n";
 
 while (true) {
-	$connection = socket_accept($socket);
+	$connection = @stream_socket_accept($socket, 0.01);
 	if ($connection) {
 		print "Connection accepted.\n";
 		$data = assign_to_worker($pool, $connection);
