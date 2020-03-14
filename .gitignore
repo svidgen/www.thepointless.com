@@ -2,5 +2,6 @@
 .sql
 .err
 *.swp
+*.swo
 
 site_config.inc
