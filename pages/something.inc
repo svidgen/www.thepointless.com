@@ -112,8 +112,8 @@
 
 <script type='text/javascript'>
 
-	var low_id = <?php print $low_id; ?>;
-	var high_id = <?php print $high_id; ?>;
+	var low_id = <?php print (int)$low_id; ?>;
+	var high_id = <?php print (int)$high_id; ?>;
 	var pagesize = <?php print isset($_GET['pagesize']) ? (int)$_GET['pagesize'] : $default_page_size; ?>;
 	var token_field = document.getElementById('token_field');
 	var message_field = document.getElementById('message_field');

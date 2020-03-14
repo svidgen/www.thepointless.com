@@ -1,6 +1,5 @@
 <?php
 
-// header('Content-type: application/x-javascript');
 header('Content-type: text/javascript');
 
 if (!isset($do_not_cache) || !$do_not_cache) {
@@ -23,6 +22,6 @@ if (!isset($do_not_cache) || !$do_not_cache) {
 
 <?php
 
-print $template_page_data;
+print $args['content'];
 
 ?>

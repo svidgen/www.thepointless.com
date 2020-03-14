@@ -1,3 +1,3 @@
 <?php
-	print $template_page_data;
+	print $args['content'];
 ?>

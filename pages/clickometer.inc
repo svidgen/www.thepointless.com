@@ -87,7 +87,7 @@ if ($lval == 1) {
 		<div id='timer'><span style='font-size: 1.25rem; color: #883333;'>Click <u><i>here</i></u>!</span></div>
 		<div id='meter_bar'>
 		</div>
-		<div id='click-target' class='click-overlay' onclick="pump(1);" ondblclick="pubmp(2);"></div>
+		<div id='click-target' class='click-overlay' onclick="pump(1);" ondblclick="pump(2);"></div>
 	</div>
 
 	<form style='text-align: center;' id='clickometer_form' name='clickometer' action='/clickometer_r' method='POST'>

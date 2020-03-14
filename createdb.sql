@@ -1,9 +1,15 @@
-# drop database if exists pointless;
+drop database if exists pointless;
 create database if not exists pointless default character set = utf8;
 use pointless;
 
-# create user 'SOMEUSER'@'localhost' identified by 'SOME RANDOM PASSWORD';
-# grant insert,select,update,delete on pointless.* to 'SOMEUSER'@'localhost';
+create user 'stickman'@'localhost' identified by 'temp-password-for-bootstrapping';
+grant insert,select,update,delete on pointless.* to 'stickman'@'localhost';
+
+CREATE TABLE if not exists `schema` (
+  `version` int unsigned
+) ENGINE=InnoDB;
+
+insert into `schema` set version=1;
 
 CREATE TABLE if not exists `users` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -103,8 +109,8 @@ alter table user_thing add modified timestamp default CURRENT_TIMESTAMP on updat
 
 create table if not exists cache_entries (
 	cache_entry_key varchar(200) not null,
-	value varchar(60000),
-	modified timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+	value varchar(5000),
+	modified timestamp,
 	ttl int unsigned not null default 30,
 	primary key (cache_entry_key),
 	index modified (modified)
