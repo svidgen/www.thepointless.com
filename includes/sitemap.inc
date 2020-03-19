@@ -7,7 +7,6 @@
 			'top' => array(
 				'/index' => 'Home',
 				'/contact' => 'Contact Me',
-				'/links' => 'Some Links',
 				'/sitemap' => 'Site Map',
 			),
 
@@ -15,10 +14,16 @@
 			),
 
 			'external' => array(
-				'http://www.facebook.com/thepointless' => '@Facebook',
+				/*
+				 * do we even still want these links here???
+				 *
+				'https://www.facebook.com/thepointless' => '@Facebook',
 				'http://www.twitter.com/pointlessdotcom' => '@Twitter',
 				'http://cafepress.com/thepointless' => '@Cafepress',
 				'http://angrystickman.blogspot.com/' => '@Blogger',
+				 */
+				'https://www.facebook.com/thepointless' => '@Facebook',
+				'https://www.angrystickman.net/' => '@AngryStickman.net',
 			),
 
 			'features' => array(
