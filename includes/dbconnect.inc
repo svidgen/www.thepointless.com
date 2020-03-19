@@ -18,6 +18,9 @@
 		$config['db_default_pass'],
 		$config['db_default_db']
 	);
+	if (!$db) {
+		throw new Exception("Cannot connect to database!\n");
+	}
 
 
 	function sanitize($v) {
@@ -121,7 +124,7 @@
 			mysqli_set_charset($db, 'utf8');
 			return $db;
 		} else {
-			return false;
+			return null;
 		}
 	} // my_connect()
 
