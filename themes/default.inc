@@ -18,7 +18,7 @@ require_once('includes/dbconnect.inc');
 	<link rel='stylesheet' type='text/css' href='/sheets/default.css?v=<?php print $general_version; ?>' />
 	<link rel='shortcut icon' href='/images/favicon.ico?v=<?php print $general_version; ?>' />
 	<?php include('includes/google_analytics.inc'); ?> 
-	<script type='text/javascript' src='//<?php print $trulygui_host; ?>/js/tg-all.js?v=<?php print $general_version; ?>'></script>
+	<script type='text/javascript' src='/js/tg-all.js?v=<?php print $general_version; ?>'></script>
 	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body id="thebody">
