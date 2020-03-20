@@ -136,10 +136,19 @@ hr {
 	}
 
 	.navbar a {
+		font-size: 1.25rem;
 		display: inline-block;
 	}
 
-	.navbar img {
+	.navbar a:before {
+		content: "● ";
+	}
+
+	.navbar a:after {
+		content: "";
+	}
+
+	.navbar #logo {
 		display: none;
 	}
 }
