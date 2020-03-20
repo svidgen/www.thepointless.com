@@ -68,12 +68,12 @@
 	// FETCHING IP DEETS
 	//
 	$cache_key = "myip_requests.{$ip}";
-	if (cache_exists($cache_key)) {
+	if (function_exists('cache_exists') && cache_exists($cache_key)) {
 		$cached_requests = cache_fetch($cache_key);
 		$arin_whois = $cached_requests['arin_whois'];
 		$org = $cached_requests['org'];
 	} else {
-		$arin_whois = json_decode(file_get_contents("http://whois.arin.net/rest/ip/{$ip}.json"), true);
+		$arin_whois = json_decode(file_get_contents("https://whois.arin.net/rest/ip/{$ip}.json"), true);
 		if (isset($arin_whois['net']) && isset($arin_whois['net']['orgRef'])) {
 			$org = json_decode(file_get_contents($arin_whois['net']['orgRef']['$'] . '.json'), true);
 		} else {
@@ -84,7 +84,9 @@
 			'arin_whois' => $arin_whois,
 			'org' => $org
 		);
-		cache_store($cache_key, $cached_requests, 120);
+		if (function_exists('cache_store')) {
+			cache_store($cache_key, $cached_requests, 120);
+		}
 	}
 
 
