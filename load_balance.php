@@ -1,13 +1,25 @@
 <?php
 
-$port = 8888;
-$pool_start_port = $argv[1];
+$port = $argv[1];
 $poolsize = $argv[2];
-
 $pool = [];
-for ($i = 0; $i < $poolsize; $i++) {
-	$pool_port = $pool_start_port + $i;
-	$pool[$pool_port] = false;
+$pool_fds = [];
+
+
+function create_worker($port) {
+	$command = "php -S 0.0.0.0:{$port} -t . http.php";
+	print "Attempting to create worker:\n> {$command}\n";
+	$worker = popen($command, 'r');
+	print "worker created: {$worker}\n";
+	return $worker;
+}
+
+
+function kill_worker($port) {
+	global $pool_fds, $pool;
+	pclose($pool_fds[$port]);
+	unset($pool_fds[$port]);
+	unset($pool[$port]);
 }
 
 
@@ -78,13 +90,24 @@ function send_response(&$pool, $data) {
 
 
 function signal_handler($signal) {
-	global $socket;
+	global $socket, $pool;
 	print "Quitting gracefully.\n";
+	foreach (array_keys($pool) as $port) {
+		kill_worker($port);
+	}
 	if ($socket) {
 		fclose($socket);
 	}
 	exit(0);
 }
+
+
+for ($i = 0; $i < $poolsize; $i++) {
+	$child_port = $port + $i + 1;
+	$pool[$child_port] = null;
+	$pool_fds[$child_port] = create_worker($child_port);
+}
+
 
 pcntl_signal(SIGTERM, "signal_handler");
 pcntl_signal(SIGHUP, "signal_handler");
