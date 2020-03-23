@@ -1,0 +1,1 @@
+<?php require('vendor/svidgen/tg-php/bin/run.php'); ?>
