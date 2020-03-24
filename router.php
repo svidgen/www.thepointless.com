@@ -7,19 +7,43 @@ require_once('env.php');
 $filename = $_SERVER['REQUEST_URI'];
 $filename = preg_replace("/\?.*$/", "", $filename);
 if (!$filename || $filename == '/') {
-	$filename = 'index.php';
+	$filename = 'index';
 }
 
 function safe_path($path) {
-	return preg_replace('/\.+/', '.', $path);
+	$path = preg_replace('/\.+/', '.', $path);
+	return preg_replace('/\\/+/', '/', $path);
+}
+
+function include_path($path) {
+	$suffixes = [
+		'.inc',
+		'index.inc',
+		'/index.inc'
+	];
+	foreach ($suffixes as $suffix) {
+		$potential_path = "{$path}{$suffix}";
+		if (file_exists($potential_path)) {
+			return $potential_path;
+		}
+	}
+	return null;
 }
 
 function execute($script, $args=array()) {
 	extract(get_config());
 	// extract($args);
 
+	$include_path = include_path($script);
+	if (!$include_path) {
+		throw new Exception("path not found.");
+	}
+
+	// print "path: {$include_path}";
+	// exit();
+
 	ob_start();
-	include("{$script}.inc");
+	include($include_path);
 	$content = ob_get_contents();
 	ob_end_clean();
 
