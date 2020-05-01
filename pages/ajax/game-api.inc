@@ -7,7 +7,7 @@
 	require_once('includes/auth.inc');
 	require_once('includes/game-inserts.inc');
 	require_once('includes/messaging.inc');
-	require_once('includes/tg-api.inc');
+	require_once('vendor/svidgen/tg-php/lib/tg-api.php');
 
 
 	// refresh any existing user session / keep it alive.

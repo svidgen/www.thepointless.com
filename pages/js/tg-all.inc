@@ -1,17 +1,72 @@
-//
-// Copyright (c) 2015 http://www.trulygui.com/
-//
-// Provided as is, without warranty of any kind. This IS
-// a work in progress. So, it's probaby buggy.
-//
-// Use it and abuse it however you like. But, if you'd be
-// so kind, leave this notice in tact and don't hotlink!
-//
-// Jon Wire
-// http://www.linkedin.com/in/jonwire
-//
+(function() {
 
-var upon = function(test, fn) {
+	if (this.tgmodule && this.require) {
+		return;
+	}
+
+	var stack = [];
+	var pathstack = ['.'];
+
+	tgmodule = {
+		'start': function(name) {
+			stack.push(name);
+		},
+		'end': function(name) {
+			if (stack[stack.length - 1] === name) {
+				stack.pop();
+			}
+		},
+		'setpath': function(path) {
+			pathstack.push(path === './' ? '.' : path);
+		},
+		'unsetpath': function() {
+			pathstack.pop();
+		},
+		'list': function() {
+			var rv = [];
+			for (var k in require.cache) {
+				rv.push(k);
+			}
+			return rv;
+		},
+		'd': function(p,n,f) {
+			var module = {};
+			this.setpath(p);
+			this.start(n);
+			var src = stack[stack.length - 1];
+			typeof(f) === 'function' ? f(module) : module.exports = f;
+			require.cache[src] = module;
+			this.end(n);
+			this.unsetpath();
+		}
+	};
+
+	require = function(src) {
+		var m = require.cache[require.resolve(src)];
+		if (!m) { throw "`" + src + "` does not exist."; }
+		return m.exports;
+	};
+
+	require.cache = {};
+
+	require.resolve = function(src) {
+		var path = src.split(/\//);
+		var wcpath = pathstack[pathstack.length - 1].split(/\//);
+		while (path[0] == '..') {
+			path.shift();
+			wcpath.pop();
+		}
+		while (path[0] == '.') {
+			path.shift();
+		}
+		return wcpath.join('/') + '/' + path.join('/');
+	}; // resolve()
+
+})();
+
+
+tgmodule.d('./','./tg-upon.js',function(module){
+upon = function(test, fn) {
 	if (typeof(test) == 'function' && test()) {
 		fn();
 	} else if (typeof(test) == 'string' && window[test]) {
@@ -21,82 +76,19 @@ var upon = function(test, fn) {
 	}
 }; // upon()
 
+});
 
-var TG = TG || {};
+tgmodule.d('./','./tg-namespace.js',function(module){
+TG = this.TG || {};
+TG.API = TG.API || {};
+TG.Data = TG.Data || {};
+TG.UI = TG.UI || {};
+});
 
-window.console = window.console || {
-	log_items: [],
-	log: function () {
-		for (var i = 0; i < arguments.length; i++) {
-			this.log_items.push(arguments[i]);
-		}
-	}
-} // console
+tgmodule.d('./','./tg-upon.js',function(module){
+});
 
-
-Element = window.Element || function () { return true; };
-Node = window.Node || window.Element;
-
-
-var setType = function (o, constructor) {
-	o.__types = o.__types || {};
-
-	var t = constructor;
-	if (typeof(t) == 'function') {
-		t = t.name || t.toString();
-	}
-
-	if (t) {
-		var v = 0;
-		for (var i in o.__types) {
-			v = Math.max(v, o.__types[i]);
-		}
-		v += 1;
-		o.__types[t] = v;
-	}
-}; // setType()
-var registerType = setType;
-
-
-var isa = function (o, constructor) {
-	try {
-		if (typeof(constructor) === 'string' || typeof(constructor) === 'function') {
-			o.__types = o.__types || {};
-			if (constructor && o.__types[constructor.toString()]) {
-				return true;
-			}
-		}
-	} catch (e) {
-		// TODO: desupport IE8 and determine whether this (or something like it)
-		// is necessary for IE>8
-	
-		// IE8 apparently throws a fit of this happens to be a text node.
-		// ... not entirely sure what to do about that.
-		if (window.Text && o instanceof Text) {
-			if (constructor == Element || constructor == Node) {
-				return true;
-			}
-		}
-	}
-
-	if (typeof(o) == 'string' && constructor === String) {
-		return true;
-	}
-	if (typeof(o) == 'number' && constructor === Number) {
-		return true;
-	}
-	if (
-		constructor === Element
-		|| constructor === Node
-		|| constructor === NodeList
-		|| typeof(constructor) === 'function'
-	) {
-		return o instanceof constructor;
-	}
-	return o === constructor;
-}; // isa()
-
-
+tgmodule.d('./','./tg-events.js',function(module){
 TG.Event = function (singleFire, o, a) {
 
 	this.target = o;
@@ -113,12 +105,23 @@ TG.Event = function (singleFire, o, a) {
 		} else {
 			this.subscribers.push(fn);
 		}
+		return this;
 	}; // register()
 
+	this.then = this.register;
+	this.and = this.then;
+
 	this.fire = function (arg1, arg2, etc) {
-	    this.args = arguments;
-	    this.fireWithInterception();
+		this.args = arguments;
+		this.fireWithInterception();
+		this.fired += 1;
+		return this;
 	}; // fire()
+
+	this.fireOnce = function(arg1, arg2, etc) {
+		this.singleFire = true;
+		return this.fire.apply(this, arguments);
+	}; // fireOnce()
 
 	this.fireWithInterception = function (i) {
 		var i = i || 0;
@@ -140,6 +143,7 @@ TG.Event = function (singleFire, o, a) {
 
 		while (this.subscribers.length > 0) {
 			var fn = this.subscribers.pop();
+			if (typeof(fn) !== 'function') continue;
 			fn.apply(null, this.args);
 			firedFns.push(fn);
 		}
@@ -165,10 +169,12 @@ TG.Event.events.getWaiting = function () {
 
 TG.Event.registries = [];
 TG.Event.registries.getWaiting = function () {
-	return TG.Event.registries.filter(function (r) { return r.fired < r.count; });
+	return (TG.Event.registries
+		.filter(function (r) { return r.fired < r.count; })
+	);
 };
 
-var on = function (o, a, f, sf) {
+this.on = function (o, a, f, sf) {
 	var eventName = "__TGEvent_on" + a;
 
 	var singleFire = sf || false;
@@ -189,16 +195,13 @@ var on = function (o, a, f, sf) {
 			fire: function () {
 				this.fired++;
 				if (this.fired >= this.count) {
-					f();
-					// what was this for? :
-					// TG.Event.registries.splice(TG.Event.registries.indexOf(this), 1);
+					on(this, 'complete').fire();
 				}
 			},
 
 			// for debugging and/or monitoring
 			objects: _o,
 			eventName: eventName
-
 		};
 
 		if (_o.length > 0) {
@@ -210,7 +213,7 @@ var on = function (o, a, f, sf) {
 		}
 
 		TG.Event.registries.push(registry);
-		return registry;
+		return on(registry, 'complete');
 	}
 
 	if (typeof (o[eventName]) === 'undefined') {
@@ -225,18 +228,20 @@ var on = function (o, a, f, sf) {
 
 	return o[eventName];
 };
-// onready()
+// on()
 
-
-var onready = function (o, f) {
+this.onready = function (o, f) {
 	return on(o, 'ready', f, true);
 };
 // onready()
 
 
-var StringSet = function(v) {
+});
+
+tgmodule.d('./','./tg-set.js',function(module){
+TG.Set = function(v) {
 	var _d = {};
-	
+
 	this.add = function(v) {
 		if (v instanceof Array) {
 			for (var i = 0; i < v.length; i++) {
@@ -262,135 +267,391 @@ var StringSet = function(v) {
 	if (v) {
 		this.add(v);
 	}
-}; // StringSet
+}; // Set
+
+module.exports = TG.Set;
+});
+
+tgmodule.d('./','./tg-types.js',function(module){
+Element = window.Element || function () { return true; };
+Node = window.Node || window.Element;
+
+getTypeId = function(t) {
+	var id = t;
+	if (typeof(t) == 'function') {
+		var bound = Bind.getBindings(t);
+		if (bound.length > 0) {
+			id = bound[0];
+		} else {
+			id = t.name || t.toString();
+		}
+	}
+	return id;
+}; // getTypeId()
+
+setType = function (o, constructor) {
+	o.__types = o.__types || {};
+	var t = this.getTypeId(constructor);
+	if (t && o.__types[t] == null) {
+		var v = 0;
+		for (var i in o.__types) {
+			v = Math.max(v, o.__types[i]);
+		}
+		v += 1;
+		o.__types[t] = v;
+	}
+}; // setType()
+registerType = setType;
 
 
-var getClassnames = function(node) {
-	return (new StringSet(node.className.split(/\s+/))).toArray();
+isa = function (o, constructor) {
+	var oT = typeof(o);
+	var cT = typeof(constructor);
+
+	if (oT === 'string') {
+		return constructor === String;
+	}
+	if (oT === 'number') {
+		return constructor === Number;
+	}
+	if (o === undefined || o === null) {
+		return cT === oT;
+	}
+	if (oT === 'boolean') {
+		return oT == cT;
+	}
+
+	if (cT === 'string' || cT === 'function') {
+		o.__types = o.__types || {};
+		if (constructor && o.__types[this.getTypeId(constructor)]) {
+			return true;
+ 		}
+	}
+
+	if (
+		constructor === Element
+		|| constructor === Node
+		|| constructor === NodeList
+		|| cT  === 'function'
+	) {
+		return o instanceof constructor;
+	}
+	return o === constructor;
+}; // isa()
+
+
+module.exports = {
+	isa: isa,
+	getTypeId: getTypeId,
+	setType: setType,
+	registerType: registerType
+};
+});
+
+tgmodule.d('./','./tg-css.js',function(module){
+TG.getClassnames = function(node) {
+	return (new TG.Set(node.className.split(/\s+/))).toArray();
 }; // getClassnames()
 
-
-var addClassname = function(node, classname) {
-	var classes = new StringSet(node.className.split(/\s+/));
+TG.addClassname = function(node, classname) {
+	var classes = new TG.Set(node.className.split(/\s+/));
 	classes.add(classname);
 	node.className = classes.toArray().join(' ');
 }; // addClassname()
 
-
-var removeClassname = function(node, classname) {
-	var classes = new StringSet(node.className.split(/\s+/));
+TG.removeClassname = function(node, classname) {
+	var classes = new TG.Set(node.className.split(/\s+/));
 	classes.remove(classname);
 	node.className = classes.toArray().join(' ');
 }; // removeClassname()
 
-
-var currentStyle = function(node, key) {
+TG.currentStyle = function(node, key) {
 	return node.currentStyle ? node.currentStyle[key]
 		: document.defaultView.getComputedStyle(node, '')[key];
 }; // currentStyle()
 
-
-var copyStyle = function(f, t, asComputed) {
+TG.copyStyle = function(f, t, asComputed) {
 	if (asComputed instanceof Array) {
 		for (var i = 0; i < asComputed.length; i++) {
-			t.style[asComputed[i]] = currentStyle(f, asComputed[i]);
+			t.style[asComputed[i]] = TG.currentStyle(f, asComputed[i]);
 		}
 	} else {
 		for (var i in f.style) {
-			t.style[i] = asComputed ? currentStyle(f, i) : f.style[i];
+			t.style[i] = asComputed ? TG.currentStyle(f, i) : f.style[i];
 		}
 	}
-	var c = getClassnames(f);
+	var c = TG.getClassnames(f);
 	for (var i = 0; i < c.length; i++) {
-		addClassname(t, c[i]);
+		TG.addClassname(t, c[i]);
 	}
-}; // getStyles()
+}; // copyStyle()
 
 
-if (!Bind) {
+module.exports = {
+	getClassname: TG.getClassname,
+	addClassname: TG.addClassname,
+	remoeClassname: TG.removeClassname,
+	copyStyle: TG.copyStyle,
+	currentStyle: TG.currentStyle
+};
+});
 
-	var Bind = function (constructor, binding, scope) {
+tgmodule.d('./','./tg-profiler.js',function(module){
+TGProfiler = new function() {
+
+	var profiles = {}
+
+	this.start = function(name) {
+		return new Profile(name);
+	};
+
+	this.watch = function(name, f) {
+		return function() {
+			var profile = new Profile(name);
+			var rv = f.apply(this, Array.prototype.slice.call(arguments, 0));
+			profile.stop();
+			return rv;	
+		}
+	};
+
+	this.append = function(profile) {
+		profiles[profile.name] = profiles[profile.name] || [];
+		profiles[profile.name].push(profile);
+	};
+
+	this.getSummary = function() {
+		var rv = {};
+		for (var name in profiles) {
+			_profiles = profiles[name];
+			rv[_profiles[0].name] = {
+				count: _profiles.length,
+				time: _profiles.reduce(function(sum, profile) {
+					return sum + profile.getTime() ;
+				}, 0)
+			};
+		}
+		return rv;
+	};
+
+};
+
+var Profile = function(name) {
+
+	var start, end;
+
+	this.init = function() {
+		this.name = name;
+		TGProfiler.append(this);
+		start = new Date();
+	};
+
+	this.stop = function() {
+		end = new Date();
+	};
+
+	this.getTime = function() {
+		if (end) {
+			return end.getTime() - start.getTime();
+		} else {
+			return (new Date()).getTime() - start.getTime();
+		}
+	};
+
+	this.init();
+}
+
+module.exports = TGProfiler;
+
+
+});
+
+tgmodule.d('./','./tg-dom.js',function(module){
+require('tg-namespace.js');
+require('tg-upon.js');
+require('tg-events.js');
+require('tg-set.js');
+require('tg-types.js');
+require('tg-css.js');
+
+var Profiler = require('tg-profiler.js');
+
+
+this.console = this.console || {
+	log_items: [],
+	log: function () {
+		for (var i = 0; i < arguments.length; i++) {
+			this.log_items.push(arguments[i]);
+		}
+	}
+} // console
+
+
+if (!this.Bind) {
+
+	this.DomClass = function(template, constructor) {
+		constructor  = constructor || function NullConstructor() {}
+		var name = constructor.name || "<unknown>";
+		constructor = Profiler.watch(name, constructor);
+		constructor.template = template;
+		Bind(constructor);
+		var f = Profiler.watch("DomClass " + name, function (arg) {
+			return New(constructor, arg);
+		});
+		f.apply = function(_t, _a) { return constructor.apply(_t, _a); };
+		f.call = function() {
+			var _t = Array.prototype.shift.apply(arguments);
+			return constructor.call(_t, arguments);
+		};
+		f.__constructor = constructor;
+		f.name = constructor.name;
+		return f;
+	}; // DomClass()
+
+	this.Bind = function (constructor, binding, scope) {
 		if (typeof (constructor) == 'function') {
-			Bind.addBinding(constructor, binding);
+			var binding = Bind.addBinding(constructor, binding);
+			constructor.binding = binding;
 			var nodes = getNodes(isa(scope, Node) ? scope : document, binding);
-			if (nodes) {
-				for (var i = 0; i < nodes.length; i++) {
-					var nodes_bound = 0;
-					if (!nodes[i].__AlreadyBound) {
-						if (constructor.templateMarkup) {
-							Bind.importParameters(nodes[i]);
-							nodes[i].innerHTML = constructor.templateMarkup;
-							Bind(nodes[i]);
-						}
-						Bind.importIdentifiedChildren(
-							nodes[i], nodes[i].childNodes, 1
-						);
-						Bind.exportParameters(nodes[i]);
-						constructor.apply(nodes[i]);
-						nodes[i].__AlreadyBound = true;
-						nodes_bound++;
-					}
-				}
-				if (nodes_bound > 0) {
-					console.log("Bound " + nodes.length + " " + binding + " nodes.");
-				}
-			}
+			Bind.Apply(constructor, nodes);
+			return nodes.length;
 		} else if (isa(constructor, Node)) {
-			var n = constructor;
-			for (var binding in Bind.Classes) {
-				Bind(Bind.Classes[binding], binding, n);
-			}
+			Bind.BindExistingConstructors(constructor);
 		}
 	}; // Bind()
 
+	Bind.BindExistingConstructors = function(node, f) {
+		var deps = [];
+		var bindings = (f && f.dependencies) || Bind.Classes;
+		for (var binding in bindings) {
+			if (Bind(Bind.Classes[binding], binding, node) > 0) {
+				deps[binding] = 1;
+			}
+		}
+		(f && !f.dependencies) ? (f.dependencies = deps) : null;
+	}; // this.Bind.BindExistingConstructors()
+
+	Bind.Apply = function(constructor, nodes) {
+		for (var i = 0; i < nodes.length; i++) {
+			var n = nodes[i];
+			if (!n.__AlreadyBound) {
+				Bind.importParameters(constructor, n);
+				Bind.ApplyClone(constructor, n);
+				Bind.ApplyConstructor(constructor, n);
+				Bind.importAttributes(n);
+				n.__AlreadyBound = true;
+			}
+		}
+	}; // Apply()
+
+	Bind.ApplyTemplate = function (constructor, node) {
+		var template = Bind.templateFor(constructor)
+		if (template) {
+			node.innerHTML = template;
+		}
+	}; // ApplyTemplate()
+
+	Bind.ApplyClone = function(constructor, node) {
+		// makes sense, but what problem did this conditional solve?
+		// ... optimization?
+		if (!Bind.templateFor(constructor)) { return; }
+
+		while (node.firstChild) {
+			node.removeChild(node.firstChild);
+		}
+		var clone = Bind.getClone(constructor);
+		if (clone.childNodes.length == 0) clone = node.__holdingDiv;
+		while (clone.firstChild) {
+			node.appendChild(clone.removeChild(clone.firstChild));
+		}
+	}; // ApplyClone
+
+	Bind.ApplyConstructor = function(constructor, node) {
+		Bind.BindExistingConstructors(node, constructor);
+		setType(node, constructor);
+		Bind.attachIdentifiedChildren(node);
+		Bind.applyParameters(node);
+		constructor.apply(node);
+	}; // ApplyConstructor()
+
+	Bind.applyProperties = function(node, obj) {
+		var o = typeof(obj) == 'object' ? obj : {};
+		for (var i in o) {
+			if (o.hasOwnProperty(i)) node[i] = o[i];
+		}
+	}; // applyProperties()
+
+
+	Bind.originalCreateElement = document.createElement;
+	Bind.createNode = function(constructor, tag) {
+		tag = tag || constructor.binding;
+		var container = Bind.originalCreateElement.call(document, 'div');
+		if (tag.indexOf(':') == 0) { tag = tag.substr(1); }
+		if (tag.indexOf('.') == 0) {
+			var className = tag.substr(1);
+			tag = 'tg:element';
+		}
+		container.innerHTML = '<' + tag + '></' + tag + '>';
+		var rv = container.firstChild;
+		rv.className = className || '';
+		return rv;
+	}; // createNode()
 
 	Bind.Classes = {};
 
 
-	Bind.originalCreateElement = document.createElement;
-	document.createElement = function (tag, o) {
-		var _o = o || {};
+	document.createElement = function(tag, o) {
 		var constructor = Bind.getConstructor(tag);
 		if (constructor) {
-
-			var container = Bind.originalCreateElement.call(this, 'div');
-			var node;
-
-			if (tag.indexOf(':') >= 0) {
-				container.innerHTML = '<' + tag + '></' + tag + '>';
-				node = container.firstChild;
-			} else {
-				container.className = tag;
-				node = container;
-			}
-
-			for (var i in _o) {
-				node[i] = _o[i];
-			}
-
-			if (constructor.templateMarkup) {
-				node.innerHTML = constructor.templateMarkup;
-				Bind.importIdentifiedChildren(node, node.childNodes, 1);
-			}
-
-			Bind.exportParameters(node);
-
-			constructor.apply(node);
-			Bind(node);		// (re)bind all registered classes
-
+			var node = Bind.getClone(constructor);
+			Bind.applyProperties(node, o);
+			Bind.ApplyConstructor(constructor, node);
+			node.__AlreadyBound = true;
 		} else {
 			var node = Bind.originalCreateElement.call(this, tag);
-			for (var i in _o) {
-				node[i] = _o[i];
-			}
+			Bind.applyProperties(node, o);
 		}
 		return node;
 	}; // document.createElement()
 
+	Bind.getClone = function(constructor) {
+		if (!constructor.templateNode) {
+			constructor.templateNode = Bind.createNode(constructor);
+			Bind.ApplyTemplate(constructor, constructor.templateNode);
+		}
+		return constructor.templateNode.cloneNode(true);
+	}; 
 
 	Bind.addBinding = function(constructor, binding) {
+		if (!binding) {
+			binding = Bind.bindingQueryFromConstructor(constructor);
+		}
 		Bind.Classes[binding] = constructor;
+		return binding;
 	}; // addBinding()
+
+
+	Bind.bindingQueryFromConstructor = function(constructor) {
+		var sample = document.createElement('div');
+		sample.innerHTML = Bind.templateFor(constructor);
+		for (var i = 0; i < sample.childNodes.length; i++) {
+			var binding = Bind.bindingQueryFromNode(sample.childNodes[i]);
+			constructor.template = sample.childNodes[i].innerHTML;
+			if (binding) { return binding; }
+		}
+		throw "Could not bind " + constructor;
+	}; // bindingQueryFromConstructor()
+
+
+	Bind.bindingQueryFromNode = function(node) {
+		if (node.tagName) {
+			if (!node.className || node.tagName.match(/\:/)) {
+				return node.tagName.toLowerCase();
+			} else {
+				return node.className;
+			}
+		}
+		return null;
+	}; // bindingQueryFromNode
 
 
 	Bind.getConstructor = function(binding) {
@@ -398,63 +659,265 @@ if (!Bind) {
 	}; // getConstructor()
 
 
-	Bind.getBindings = function (constructor) {
+	Bind.getBindings = function(constructor) {
 		var rv = [];
 		for (var i in Bind.Classes) {
-			if (Bind.Classes[i] == constructor) {
+			if (Bind.Classes[i] === constructor
+				|| Bind.Classes[i] === constructor.__constructor
+			) {
 				rv.push(i);
 			}
 		}
+
 		return rv;
 	}; // getBindings()
 
+	Bind.makeNodeFrom = function(o, collectionType) {
+		if (isa(o, Node) || isa(o, Element)) {
+			return o;
+		}
 
-	Bind.importIdentifiedChildren = function (obj, nodes, databinding) {
-		for (var i = 0; i < nodes.length; i++) { (function() {
-			// skip Text nodes
-			if (!nodes[i].getAttribute) return; // instead of 'continue' b/c of the closure
+		if (isa(o, Array)) {
+			var rv = document.createElement('div');
+			Bind.addArrayAsChildren(rv, o);
+			return rv;
+		}
 
-			// attach nodes with a data-id to the object ... obj.{data-id}
-			var node = nodes[i];
-			var id = node.getAttribute('data-id');
-			var existing_value = obj[id];
-			var target_property = node.getAttribute('data-property');
+		if (typeof(o) != 'object') {
+			var rv = document.createElement('div');
+			rv.innerHTML = o;
+			return rv;
+		}
 
-			if (id) {
-				Object.defineProperty(obj, id, {
-					get: function() {
-						return target_property ? node[target_property] : node;
-					},
-					set: function(v) {
-						if (target_property) {
-							node[target_property] = v;
-						} else if (isa(v, Node)) {
-							if (node.parentNode) {
-								node.parentNode.replaceChild(v, node);
-							}
-							node = v;
-						} else {
-							node.innerHTML = v;
-							node.value = v;
-						}
-					},
-					enumerable: true
-				});
+		var constructor = null;
+		if (collectionType) {
+			constructor = Bind.getConstructor(collectionType);
+		}
 
-				if (databinding && existing_value) {
-					obj[id] = existing_value;
+		if (typeof(o.__types) == 'object') {
+			var types = TG.getTypeArray(o);
+			for (var i = 0; i < types.length; i++) {
+				constructor = Bind.getConstructor(types[i]);
+			}
+		}
+
+		if (constructor) {
+			return New(constructor, o);
+		}
+
+		var node = document.createElement('div');
+		node.innerHTML = o;
+		return node;
+	}; 
+
+	Bind.addArrayAsChildren = function(node, values, collectionType) {
+		while (node.firstChild) node.removeChild(node.firstChild);
+		for (var i = 0; i < values.length; i++ ) {
+			values[i] = Bind.makeNodeFrom(values[i], collectionType);
+			if (values[i].parentNode) values[i].parentNode.removeChild(values[i]);
+			node.appendChild(values[i]);
+		};
+	}; // addArrayAsChildren()
+
+	Bind.childNodeArray = function(node) {
+		var rv = [];
+		rv.events = {};
+
+		var collectionType = node['data-collection'] || node.getAttribute('data-collection');
+
+		rv.render = function() {
+			// todo: optimize / apply delta
+			Bind.addArrayAsChildren(node, rv);
+		};
+
+		rv.loadFromDOM = function(newNode) {
+			if (newNode) node = newNode;
+			var childNodes = [];
+
+			var childType = node['data-collection']
+				|| node.getAttribute('data-collection');
+
+			if (childType) {
+				childNodes = getNodes(node, childType);
+			} else {
+				childNodes = Array.prototype.slice.call(node.childNodes);
+			}
+
+			rv.length = 0;
+
+			childNodes.forEach(function(child) {
+				rv.push(child);
+			});
+		}; 
+
+		rv.push = function(v) {
+			var n = Bind.makeNodeFrom(v, collectionType);
+			node.appendChild(n);
+			return Array.prototype.push.call(rv, n);
+		};
+
+		rv.pop = function() {
+			node.removeChild(n);
+			return Array.prototype.pop.apply(rv);
+		};
+
+		rv.shift = function() {
+			node.removeChild(n);
+			return Array.prototype.shift.apply(rv);
+		};
+
+		rv.unshift = function(v) {
+			var n = Bind.makeNodeFrom(v, collectionType);
+			node.insertBefore(n, node.firstChild);
+			return Array.prototype.unshift.call(rv, n);
+		};
+
+		rv.splice = function() {
+			var params = Array.prototype.slice.call(arguments, 0);
+			var index = params.shift();
+			var count = params.shift() || rv.length;
+			var newItems = params || [];
+
+			for (var i = index; i < index + count; i++) {
+				var n = rv[i];
+				node.removeChild(n);
+			}
+
+			var insertBeforeNode = rv[i];
+			newItems.forEach(function(item) {
+				node.insertBefore(item, insertBeforeNode);
+			});
+
+			return Array.prototype.splice.apply(rv, arguments);
+		};
+
+		var modifiers = [
+			// 'push', 'pop', 'shift', 'unshift',
+			// 'slice'
+			// 'splice',
+			'reverse', 'sort'
+		];
+
+		for (var i = 0; i < modifiers.length; i++) { (function() {
+			var m = modifiers[i];
+			rv[m] = function() {
+				var r = Array.prototype[m].apply(rv, arguments);
+				rv.render();
+				return r;
+			}
+		})(); }
+
+		rv.loadFromDOM();
+
+		return rv;
+	}; // childNodeArray()
+
+	Bind.defineAccessors = function(node, obj, id) {
+		var descriptor = Object.getOwnPropertyDescriptor(obj, id);
+		if (descriptor && descriptor.configurable == false) {
+			return;
+		}
+
+		if (node.__accessorDefined) {
+			return;
+		}
+		Object.defineProperty(node, '__accessorDefined', {
+			get: function() { return true; },
+			enumerable: false
+		});
+
+		var existing_value = obj[id];
+
+		var default_property = 'innerHTML';
+		if (typeof(node.value) == 'string') {
+			default_property = 'value';
+		}
+		var target_property = node.getAttribute('data-property');
+		var render_async = node.getAttribute('data-render-async') != null;
+		var last_set = target_property;
+		var childCollection = Bind.childNodeArray(node);
+
+		obj.__dom = obj.__dom || {};
+		Object.defineProperty(obj.__dom, id, {
+			get: function() { return node; }
+		});
+
+		Object.defineProperty(obj, '__dom', {
+			enumerable: false
+		});
+
+		var enumerable = true;
+		if (node['data-ignore'] || node.getAttribute('data-ignore')) {
+			enumerable = false;
+		}
+
+		Object.defineProperty(obj, id, {
+			get: function() {
+				if (target_property == 'children'
+					|| last_set == 'children'
+					|| node['data-collection']
+					|| node.getAttribute('data-collection')
+				) {
+					return childCollection;
+				} else if (target_property) {
+					return node[target_property];
+				} else if (last_set) {
+					return node[last_set];
 				} else {
-					// nothing. obj[id] already === node
+					return node;
 				}
-			}
+			},
+			set: function(v) {
+				var setThisValue = function(vv) {
+					if (isa(vv, Array)) {
+						Bind.addArrayAsChildren(node, vv);
+						last_set = 'children';
+					} else if (isa(vv, Node)) {
+						if (node.parentNode) node.parentNode.replaceChild(vv, node);
+						node = vv;
+						last_set = null;
+					} else if (isa(vv, Object)) {
+						for (var vv_k in vv) {
+							node[vv_k] = vv[vv_k];
+						}
+						last_set = null;
+					} else if (target_property) {
+						node[target_property] = vv;
+						last_set = target_property;
+					} else {
+						node[default_property] = vv;
+						last_set = default_property;
+					}
+				}; // setThisValue()
 
-			if (!node.__AlreadyBound) {
-				Bind.importIdentifiedChildren(
-					obj, node.childNodes, databinding
-				);
+				if (isa(v, 'TG.Value')) {
+					on(v, 'change', function() {
+						setThisValue(v.valueOf());
+					});
+				}
+
+				setThisValue(v.valueOf());
+				childCollection.loadFromDOM(node);
+			},
+			enumerable: enumerable,
+			configurable: false
+		});
+
+	}; // defineAccessors()
+
+	// attach nodes with a data-id to the object ... o.{data-id}
+	Bind.attachIdentifiedChildren = function (o, node) {
+		var nodes = (node || o).querySelectorAll('[data-id]');
+		nodes = Array.prototype.slice.call(nodes, 0);
+		for (var i = 0; i < nodes.length; i++) {
+			var id = nodes[i].getAttribute('data-id');
+			var initial_value = o[id];
+			Bind.defineAccessors(nodes[i], o, id);
+			if (initial_value) {
+				o[id] = initial_value;
 			}
-		})() }
-	}; // Bind.importIdentifiedChildren()
+		};
+	}; // Bind.attachIdentifiedChildren()
 
 
 	Bind.importAttributes = function (o, node) {
@@ -464,6 +927,10 @@ if (!Bind) {
 		) {
 			for (var i = 0; i < node.attributes.length; i++) {
 				var a = node.attributes[i];
+
+				// this needs to be thought through and tested more. it may make
+				// sense to *always* add the property if it was given on a tag
+				// attribute like this.
 				if (!o[a.name]) {
 					o[a.name] = a.value;
 				}
@@ -473,63 +940,77 @@ if (!Bind) {
 	}; // importAttributes()
 
 
-	Bind.importParameters = function (o, node) {
+	Bind.templateFor = function(constructor) {
+		return [
+			'template',
+			'markup',
+			'templateMarkup'
+		].reduce(function(first_found, property) {
+			return first_found || constructor[property];
+		}, null);
+	}; // templateFor
+
+
+	Bind.importParameters = function (constructor, o, node) {
 		var node = node || o;
 		if (!o.__parameters_imported && node.childNodes) {
 			o.parameters = [];
 
 			for (var i = 0; i < node.childNodes.length; i++) {
 				var n = node.childNodes[i];
-
 				if (n.nodeType && n.nodeType == 3 && n.data && n.data.replace(/\s/g, '')) {
 					// special treatment for IE 8 text nodes
 					var _n = document.createElement('span');
 					_n.innerHTML = n.data;
 					n = _n;
-				} else {
-					Bind.importAttributes(n);
 				}
 				o.parameters.push(n);
 			}
 
-			//
-			// fix for IE
-			o.__holdingDiv = document.createElement('div');
-			o.__holdingDiv.style.display = 'none';
-			document.body.appendChild(o.__holdingDiv);
-			for (var i = 0; i < o.parameters.length; i++) {
-				o.__holdingDiv.appendChild(o.parameters[i]);
-			}
-			//
+			if (Bind.templateFor(constructor) != null) {
+				o.__holdingDiv = document.createElement('div');
+				o.__holdingDiv.style.display = 'none';
+				document.body.appendChild(o.__holdingDiv);
 
-			// not 100% sure why parameters aren't being bound
-			// during the regular Bind() calls, but in some cases they're not:
-			Bind(o.__holdingDiv);
+				for (var i = 0; i < o.parameters.length; i++) {
+					o.__holdingDiv.appendChild(o.parameters[i]);
+				}
+				// not 100% sure why parameters aren't being bound
+				// during the regular Bind() calls, but in some cases they're not:
+				Bind(o.__holdingDiv);
+			}
 		}
 		o.__parameters_imported = true;
 	}; // importParameters()
 
 
-	Bind.exportParameters = function (o, node) {
-		if (!o.parameters || !isa(o.parameters, Array)) { return; }
-		var node = node || o;
-
-		for (var i = 0; i < o.parameters.length; i++) {
-			var p = o.parameters[i];
-			var id = p['data-id'];
+	Bind.applyParameters = function (o) {
+		if (!o.parameters || !isa(o.parameters, Array) || !o.__holdingDiv) {
+			return;
+		}
+		var nodes = o.parameters;
+		for (var i = nodes.length - 1; i >= 0; i--) {
+			var id = nodes[i]['data-id'] || nodes[i].getAttribute('data-id');
 			if (id) {
-				if (node[id] && isa(node[id], Node) && isa(p, Node)) {
-					node[id] = p;
-				}
+				// Bind.copyDefaultAttributes(o[id], nodes[i]);
+				o[id] = nodes[i];
 			}
 		}
+		o.__holdingDiv.parentNode.removeChild(o.__holdingDiv);
+		delete o.__holdingDiv;
+	}; // applyParameters()
 
-		var hd = o.__holdingDiv;
-		if (hd && hd.childNodes && hd.childNodes.length == 0) {
-			hd.parentNode.removeChild(hd);
-			delete o.__holdingDiv;
+
+	Bind.copyDefaultAttributes = function(from, to) {
+		if (!isa(from, Node) || !isa(to, Node)) return;
+		for (var i = 0; i < from.attributes.length; i++) {
+			var name = from.attributes[i].name;
+			if (!to.hasAttribute(name)) {
+				to.setAttribute(name, from.attributes[i].value);
+				to[name] = from.attributes[i].value;
+			}
 		}
-	}; // exportParameters()
+	};
 
 
 	Bind.getChildren = function (o, query) {
@@ -539,7 +1020,7 @@ if (!Bind) {
 
 		var rv = [];
 
-		// not necessarily the most efficient solution. but an easy one!
+		// not the most efficient solution. but an easy one!
 		var _rv = getNodes(o, query);
 		for (var i = 0; i < _rv.length; i++) {
 			if (_rv[i].parentNode === o) {
@@ -551,109 +1032,10 @@ if (!Bind) {
 	}; // getChildren()
 
 
-	Bind.Box = function(x, y, w, h, mt, mr, mb, ml) {
-		this.x = x || 0;
-		this.y = y || 0;
-		this.width = w || 0;
-		this.height = h || 0;
-		this.marginTop = mt || 0;
-		this.marginRight = mr || 0;
-		this.marginBottom = mb || 0;
-		this.marginLeft = ml || 0;
-
-		this.contains = function(x, y) {
-			var ex = this.x - Math.ceil(this.marginLeft/2);
-			var ey = this.y - Math.ceil(this.marginTop/2);
-			var eright = this.x + this.width - Math.ceil(this.marginRight/2);
-			var ebottom = this.y + this.height - Math.ceil(this.marginBottom/2);
-			if (x >= ex && x <= eright && y >= ey && y <= ebottom) {
-				return true;
-			} else {
-				return false;
-			}
-		}; // contains()
-
-		this.getBottom = function() {
-			return this.y + this.height;
-		}; // getCorners()
-
-		this.getRight = function() {
-			return this.x + this.width;
-		}; // getCorners()
-
-		this.rangeOverlaps = function(aMin, aMax, bMin, bMax) {
-			return aMin <= bMax && bMin <= aMax;
-		}; // lineOverlaps()
-
-		this.xOverlaps = function(box) {
-			return this.rangeOverlaps(
-				this.x, this.getRight(), box.x, box.getRight()
-			);
-		}; // xOverlaps()
-
-		this.yOverlaps = function(box) {
-			return this.rangeOverlaps(
-				this.y, this.getBottom(), box.y, box.getBottom()
-			);
-		}; // yOverlaps()
-
-		this.overlaps = function(box) {
-			return this.xOverlaps(box) && this.yOverlaps(box);
-		}; // overlaps()
-
-	}; // Bind.Box()
-
-
-	Bind.NodeBox = function(n) {
-		this.x = n.offsetLeft;
-		this.y = n.offsetTop;
-
-		var temp = n;
-		while (temp = temp.offsetParent) {
-			this.x += temp.offsetLeft;
-			this.y += temp.offsetTop;
-		}
-
-		this.left = this.x;
-		this.top = this.y;
-		this.width = n.offsetWidth;
-		this.height = n.offsetHeight;
-		this.right = this.x + this.width;
-		this.bottom = this.x + this.height;
-
-		var style = {
-			marginLeft: '', marginRight: '', marginTop: '', marginBottom: ''
-		};
-
-		this.marginLeft = parseInt(style.marginLeft.replace(/[^0-9]/g, '') || '0');
-		this.marginRight = parseInt(style.marginRight.replace(/[^0-9]/g, '') || '0');
-		this.marginTop = parseInt(style.marginTop.replace(/[^0-9]/g, '') || '0');
-		this.marginBottom = parseInt(style.marginBottom.replace(/[^0-9]/g, '') || '0');
-	}; // getCoordinates()
-	Bind.NodeBox.prototype = new Bind.Box();
-
-
-	// TG.MouseCoords
-	// Determines and stores the Coordinates for a mouse event
-	TG.MouseCoords = function (event) {
-		var e = event || window.event;
-		if (e.changedTouches) {
-			this.x = e.changedTouches[0].pageX;
-			this.y = e.changedTouches[0].pageY;
-		} else if (e.pageX || e.pageY) {
-			this.x = e.pageX;
-			this.y = e.pageY;
-		} else if (e.clientX || e.clientY) {
-			this.x = e.clientX + document.body.scrollLeft;
-			this.y = e.clientY + document.body.scrollTop;
-		}
-	}; // TG.MouseCoords
-
-
 	window.getNodes = window.getNodes || function (n, q) {
 		var rv;
 
-		if (typeof (q) == 'function' && window.Bind) {
+		if (typeof (q) == 'function') {
 			rv = [];
 			var bindings = Bind.getBindings(q);
 			for (var i = 0; i < bindings.length; i++) {
@@ -665,34 +1047,20 @@ if (!Bind) {
 			return rv;
 		}
 
-		if (q.indexOf(':') >= 0) {
-			rv = n.getElementsByTagName(q);
-			if (rv.length < 1) {
-				var p = q.split(":");
-				if (p.length == 2) {
-					rv = n.getElementsByTagName(p[1]);
-				}
-			}
-		} else {
-			rv = n.querySelectorAll('.' + q);
-		}
+		q = q.replace(/:/g, '\\:');
+		rv = n.querySelectorAll(q);
 
 		for (var i = 0; i < rv.length; i++) {
 			Bind.importAttributes(rv[i]);
 		}
 
-		var _rv = [];
-		for (var i = 0; i < rv.length; i++) {
-			_rv.push(rv[i]);
-		};
-
-		return _rv;
+		return Array.prototype.slice.call(rv, 0);
 	}; // getNodes()
 
 } // Bind
 
 
-var Build = function (constructor, o) {
+this.Build = function (constructor, o) {
 	var _o = o || {};
 	var n = null;
 
@@ -710,29 +1078,25 @@ var Build = function (constructor, o) {
 
 	return n;
 } // Build()
-var New = Build;
+this.New = Build;
+
 
 console.log('Loaded Bind.');
-
-upon(function() { return document.body; }, function() {
-	window._bindq = window._bindq || {};
-	_bindq.push = function(c,b) { Bind(c,b); };
-	if (_bindq instanceof Array) {
-		for (var i = 0; i < _bindq.length; i += 2) {
-			Bind(_bindq[i], _bindq[i+1]);
-		}
-	}
 });
 
-//
-// TG namespace
-//
+tgmodule.d('./','./tg-namespace.js',function(module){
+});
 
-var TG = TG || {};
-TG.API = TG.API || {};
+tgmodule.d('./','./tg-upon.js',function(module){
+});
+
+tgmodule.d('./','./tg-api.js',function(module){
+require('tg-namespace.js');
+require('tg-upon.js');
 
 TG.API.longPolls = TG.API.longPolls || [];
 TG.API.requests = TG.API.requests || {};
+TG.API.APIs = TG.API.APIs || [];
 
 TG.addSlashes = function(s) {
 	s = String(s);
@@ -766,31 +1130,6 @@ TG.jsonAddSlashes = function(s) {
 }; // TG.jsonAddSlashes()
 
 
-TG.getNodeKeys = function(tag) {
-	var o = {};
-		o.childNodes = 1;
-		o.contentWindow = 1;
-		o.contentDocument = 1;
-		o.ownerDocument = 1;
-
-	var tag = (tag || 'div').toLowerCase();
-	if (!tag || tag[0] == '#') return TG.getNodeKeys('div');
-
-	if (!TG.getNodeKeys[tag]) {
-		var n = document.createElement(tag);
-		n.innerHTML = " <span> a</span>";
-		n.style.display = 'none';
-		document.body.appendChild(n);
-		for (var i in n) {
-			o[i] = 1;
-		}
-		document.body.removeChild(n);
-		TG.getNodeKeys[tag] = o;
-	}
-	return TG.getNodeKeys[tag];
-}; // TG.getNodeKeys()
-
-
 TG.stringify = function (o, depth, stringify_instance, make_refs) {
 	var d = typeof(depth) == 'number' ? depth : 128;
 	if (d < 1) {
@@ -821,31 +1160,64 @@ TG.stringify = function (o, depth, stringify_instance, make_refs) {
 	} else if (typeof(o) === 'boolean') {
 		rv = o ? 'true' : 'false';
 	} else if (make_refs && stringify_instance && isa(o, 'TG.DataObject')) {
+		var _make_refs = false;
 		rv = TG.stringify(
 			new TG.DataObjectReference(o),
 			d - 1,
 			instance,
-			false
+			_make_refs	
 		);
 	} else if (typeof(o) === 'object') {
 		var _rv = [];
+		var props_written = 0;
+
 		for (var i in o) {
 			var omissions = {};
-			if (o instanceof Node || o instanceof Element) {
-				omissions = TG.getNodeKeys(o.nodeName || o.tagName);
-			}
 			omissions.__stringify_instance = 1;
 			omissions.__parameters_imported = 1;
 			omissions.__attributes_imported = 1;
 			omissions.__AlreadyBound = 1;
-			if (!omissions[i]) {
+			if (!omissions[i] && o.hasOwnProperty(i) && !i.match(/__TG/)) {
 				var v = TG.stringify(o[i], d - 1, instance, make_refs);
 				var k = TG.stringify(i, d - 1, instance, make_refs);
 				if (k && typeof(v) == 'string') {
+					props_written += 1;
 					_rv.push(k + ':' + v);
 				}
 			}
+
+			/*
+			if (i == 'childNodes' && o[i].length > 0) {
+				var v = TG.stringify(
+					Array.prototype.slice.apply(o[i]),
+					d - 1,
+					instance,
+					make_refs
+				);
+				_rv.push(i + ':' + v);
+			}
+			*/
+
+			/*
+			if (i == 'innerHTML' && o.innerHTML.length > 0) {
+				_rv.push(i + ':' + TG.stringify(o.innerHTML));
+			}
+			*/
 		}
+
+		/*
+		if (props_written == 0 && o.childNodes) {
+			// _rv.push('"innerHTML":' + TG.stringify(o.innerHTML));
+			var v = TG.stringify(
+				Array.prototype.slice.apply(o.childNodes),
+				d - 1,
+				instance,
+				make_refs
+			);
+			_rv.push('"childNodes":' + v);
+		}
+		*/
+
 		rv = '{' + _rv.join(',') + '}';
 	} else if (typeof(o) === 'number') {
 		rv = String(o);
@@ -876,16 +1248,17 @@ TG.argumentsArray = function(args) {
 
 TG.API.multijsonp = function(api, actions, longpoll) {
 
-	if (!TG.API[api] || !TG.API[api].t) {
-		TG.API[api] = {};
-		TG.API.requestToken(api);
+	if (!TG.API.APIs[api]) {
+		TG.API.APIs[api] = {};
 	}
 
 	upon(
-		function() { return (TG.API.poll && TG.API[api].t && TG.API[api].t.length > 0); },
+		function() { return TG.API.poll; },
 		function() {
 			// prepare callback function
-			var token = TG.API[api].t.shift();
+			var token_rand = Math.floor(100000 + Math.random() * 100000);
+			var token_date = (new Date()).getTime();
+			var token = token_date.toString(36) + token_rand.toString(36);
 
 			TG.API.requests[token] = actions;
 			TG.API.requests[token].longpoll = longpoll;
@@ -917,7 +1290,7 @@ TG.API.multijsonp = function(api, actions, longpoll) {
 					}
 					delete TG.API.requests[token];
 					if (longpoll) {
-						delete TG.API[api].longPoll;
+						delete TG.API.APIs[api].longPoll;
 						if (r.status == 0 || r.responseText == '') {
 							TG.API.disconnect(api, token);
 						} else {
@@ -929,7 +1302,7 @@ TG.API.multijsonp = function(api, actions, longpoll) {
 			r.send(formdata);
 
 			if (longpoll) {
-				TG.API[api].longPoll = r;
+				TG.API.APIs[api].longPoll = r;
 			}
 		}
 	);
@@ -985,8 +1358,8 @@ TG.API.poll = function(api) {
 	poll.pending = poll.pending || {};
 	if (typeof(poll.pending[api]) == 'undefined') {
 		poll.pending[api] = setTimeout(function() {
-			if (TG.API[api] && TG.API[api].longPoll) {
-				TG.API[api].longPoll.abort();
+			if (TG.API.APIs[api] && TG.API.APIs[api].longPoll) {
+				TG.API.APIs[api].longPoll.abort();
 			}
 
 			var actions = TG.API.getPolls(api);
@@ -1058,8 +1431,8 @@ TG.API.stop = function(t, i, m) {
 	}
 
 	var restart = false;
-	if (TG.API[api] && TG.API[api].longPoll) {
-		TG.API[api].longPoll.abort();
+	if (TG.API.APIs[api] && TG.API.APIs[api].longPoll) {
+		TG.API.APIs[api].longPoll.abort();
 
 		// note to my future confused self -- this restarts the *general* poll
 		// for the whole API, after removing the stop()ed fn().
@@ -1096,6 +1469,7 @@ TG.API.Callback = function() {
 
 	proxy.returns = [];
 	proxy.value = [];
+	proxy.exception = null;
 	proxy.chainlink = null;
 
 	proxy.callback = function(fn) {
@@ -1103,7 +1477,7 @@ TG.API.Callback = function() {
 
 		if (typeof(fn) === 'string') {
 			var methodName = fn;
-			fn = function(p) {
+			var fn = function(p) {
 				return p[methodName]();
 			}
 		}
@@ -1116,11 +1490,15 @@ TG.API.Callback = function() {
 	var doCallback = function() {
 		if (proxy.value.length > 0) {
 			var rv = proxy.value.shift();
-			var fn = proxy.returns[0];
-			if (typeof(fn) == 'function') {
-				var _rv = fn(rv);
-				if (typeof(_rv) == 'function' && proxy.chainlink) {
-					_rv.returnTo(proxy.chainlink);
+			var returnToFn = proxy.returns[0];
+			if (typeof(returnToFn) == 'function') {
+				var rvToChain = returnToFn(rv);
+				if (typeof(rvToChain) == 'function' && proxy.chainlink) {
+					rvToChain.returnTo(proxy.chainlink);
+				} else {
+					// if a step in the chain simply returns a non-promise-like value,
+					// forward the value down to the next chainlink immediately.
+					proxy.chainlink(rvToChain);
 				}
 			}
 		}
@@ -1128,9 +1506,28 @@ TG.API.Callback = function() {
 
 	proxy.stop = function() {
 		if (proxy.action) {
-			TG.API.stop(proxy.action);
+			return TG.API.stop(proxy.action);
+		}
+		return null;
+	};
+
+	proxy.fail = function(e) {
+		proxy.failure = e;
+		if (typeof(proxy.failToFn) == 'function') {
+			proxy.failToFn(e);
+		}
+		if (proxy.chainlink) {
+			proxy.chainlink.fail(e);
 		}
 	};
+
+	proxy.failTo = function(fn) {
+		proxy.failToFn = fn;
+		if (proxy.failure) {
+			fn(proxy.failure);
+		}
+	};
+	proxy.or = proxy.failTo;
 
 	// callback() aliases.
 	var r = ['returnTo','and'];
@@ -1173,7 +1570,15 @@ TG.API.cb = function(t, i, rv) {
 	}
 	TG.copy(rv, o);
 
-	TG.API.requests[t][i].c(o);
+	if (o && o['tg-api-error']) {
+		var m = console.error || console.log;
+		o.message = o['tg-api-error'];
+		m(o['tg-api-error'] + "\n", o['tg-api-trace']);
+		TG.API.requests[t][i].c.fail(o);
+	} else {
+		TG.API.requests[t][i].c(o);
+	}
+
 }; // TG.API.cb()
 
 
@@ -1338,14 +1743,12 @@ TG.DataObjectReference = function() {
 
 TG.FunctionReference = function() {
 	var rv = function() {
-		var ref_id = this['tg-id'];
 		var method;
 		var runner = rv.isEvent ? TG.API.start : TG.API.jsonp;
 		var args = TG.argumentsArray(arguments);
 		for (var i in this) {
 			if (this[i] === rv) {
-				// method = rv.ns + '.' + ref_id + '.' + i;
-				method = ref_id + '.' + i;
+				method = rv.target;
 				break;
 			}
 		}
@@ -1359,12 +1762,122 @@ TG.FunctionReference = function() {
 	return rv;
 }; // TG.FunctionReference()
 
+TG.Value = function(v) {
 
+	var value = undefined;
+
+	this.valueOf = function() {
+		return value;
+	}; // valueOf()
+
+	this.set = function(v) {
+		value = v;
+		on(this, 'change').fire();
+	}; // set()
+
+	if (v) {
+		this.set(v);
+	}
+
+	setType(this, 'TG.Value');
+
+}; // TG.Value()
+});
+
+tgmodule.d('./','./tg-upon.js',function(module){
+});
+
+tgmodule.d('./','./tg-namespace.js',function(module){
+});
+
+tgmodule.d('./','./tg-dom.js',function(module){
+});
+
+tgmodule.d('./','./tg-box.js',function(module){
+TG.Box = function(x, y, w, h, mt, mr, mb, ml) {
+	this.x = x || 0;
+	this.y = y || 0;
+	this.width = w || 0;
+	this.height = h || 0;
+	this.marginTop = mt || 0;
+	this.marginRight = mr || 0;
+	this.marginBottom = mb || 0;
+	this.marginLeft = ml || 0;
+
+	this.contains = function(x, y) {
+		var ex = this.x - Math.ceil(this.marginLeft/2);
+		var ey = this.y - Math.ceil(this.marginTop/2);
+		var eright = this.x + this.width - Math.ceil(this.marginRight/2);
+		var ebottom = this.y + this.height - Math.ceil(this.marginBottom/2);
+		if (x >= ex && x <= eright && y >= ey && y <= ebottom) {
+			return true;
+		} else {
+			return false;
+		}
+	}; // contains()
+
+	this.getBottom = function() {
+		return this.y + this.height;
+	}; // getCorners()
+
+	this.getRight = function() {
+		return this.x + this.width;
+	}; // getCorners()
+
+	this.rangeOverlaps = function(aMin, aMax, bMin, bMax) {
+		return aMin <= bMax && bMin <= aMax;
+	}; // lineOverlaps()
+
+	this.xOverlaps = function(box) {
+		return this.rangeOverlaps(
+			this.x, this.getRight(), box.x, box.getRight()
+		);
+	}; // xOverlaps()
+
+	this.yOverlaps = function(box) {
+		return this.rangeOverlaps(
+			this.y, this.getBottom(), box.y, box.getBottom()
+		);
+	}; // yOverlaps()
+
+	this.overlaps = function(box) {
+		return this.xOverlaps(box) && this.yOverlaps(box);
+	}; // overlaps()
+
+}; // TG.Box()
+
+module.exports = TG.Box;
+});
+
+tgmodule.d('./','./tg-mouse-coords.js',function(module){
+require('tg-box.js');
+
+// TG.MouseCoords
+// Determines and stores the Coordinates for a mouse event
+TG.MouseCoords = function (event) {
+	var e = event || window.event;
+	if (e.changedTouches) {
+		this.x = e.changedTouches[0].pageX;
+		this.y = e.changedTouches[0].pageY;
+	} else if (e.pageX || e.pageY) {
+		this.x = e.pageX;
+		this.y = e.pageY;
+	} else if (e.clientX || e.clientY) {
+		this.x = e.clientX + document.body.scrollLeft;
+		this.y = e.clientY + document.body.scrollTop;
+	}
+}; // TG.MouseCoords
+
+module.exports = TG.MouseCoords;
+});
+
+tgmodule.d('./','./tg-dragdrop.js',function(module){
+require('tg-upon.js');
+require('tg-namespace.js');
+require('tg-dom.js');
+require('tg-mouse-coords.js');
 
 upon('Bind', function () {
-
-	TG = window.TG || {};
-
 	TG.DragDrop = TG.DragDrop || {
 
 		active_draggable: null,
@@ -2024,9 +2537,19 @@ upon('Bind', function () {
 	console.log('TG.DragDrop loaded. (2)');
 
 });
+});
 
-var TG = TG || {};
-TG.Testing = TG.Testing || {
+tgmodule.d('./','./tg-upon.js',function(module){
+});
+
+tgmodule.d('./','./tg-namespace.js',function(module){
+});
+
+tgmodule.d('./','./tg-test.js',function(module){
+require('tg-upon.js');
+require('tg-namespace.js');
+
+TG.Testing || {
 
 	Test: function(name, test) {
 		this.name = name;
@@ -2133,9 +2656,23 @@ TG.assert = function(passed, failure_description) {
 	}
 }; // TG.assert()
 
+});
 
-var TG = TG || {};
-TG.UI = TG.UI || {};
+tgmodule.d('./','./tg-upon.js',function(module){
+});
+
+tgmodule.d('./','./tg-namespace.js',function(module){
+});
+
+tgmodule.d('./','./tg-dom.js',function(module){
+});
+
+tgmodule.d('./','./tg-ui.js',function(module){
+require('tg-upon.js');
+require('tg-namespace.js');
+require('tg-dom.js');
+
+
 var _bindq = _bindq || [];
 
 TG.UI.SubmitButton = function() {
@@ -2150,7 +2687,7 @@ TG.UI.SubmitButton = function() {
 TG.UI.SubmitButton.templateMarkup = "\
 	<input type='button' data-id='submitButton' value='Sign in' />\
 ";
-_bindq.push(TG.UI.SubmitButton, 'tg-submit-button');
+_bindq.push(TG.UI.SubmitButton, '.tg-submit-button');
 
 
 TG.UI.Field = function() {
@@ -2201,7 +2738,7 @@ TG.UI.Field.templateMarkup = "\
 	<label data-id='fieldLabel' style='display: inline-block; width: 33%; margin: 0px;'></label>\
 	<input type='text' data-id='fieldInput' style=' display: inline-block; width: 60%;'></input>\
 ";
-_bindq.push(TG.UI.Field, 'tg-field');
+_bindq.push(TG.UI.Field, '.tg-field');
 
 
 TG.UI.PasswordField = function() {
@@ -2211,7 +2748,7 @@ TG.UI.PasswordField = function() {
 	onready(this).fire();
 }; // TG.UI.PasswordField
 TG.UI.PasswordField.templateMarkup = TG.UI.Field.templateMarkup;
-_bindq.push(TG.UI.PasswordField, 'tg-password-field');
+_bindq.push(TG.UI.PasswordField, '.tg-password-field');
 
 
 TG.UI.RadioGroup = function() {
@@ -2261,7 +2798,7 @@ TG.UI.RadioGroup = function() {
 }; // TG.UI.RadioGroup
 TG.UI.RadioGroup.templateMarkup = "<div data-id='container'></div>";
 // TG.UI.RadioGroup.templateMarkup = "<div data-id='radioDiv'></div>";
-_bindq.push(TG.UI.RadioGroup, 'tg-radio-group');
+_bindq.push(TG.UI.RadioGroup, '.tg-radio-group');
 
 
 TG.UI.Radio = function() {
@@ -2305,7 +2842,7 @@ TG.UI.Radio.templateMarkup = "\
 	<input type='radio' data-id='fieldInput'></input>\
 	<label data-id='fieldLabel'></label>\
 ";
-_bindq.push(TG.UI.Radio, 'tg-radio');
+_bindq.push(TG.UI.Radio, '.tg-radio');
 
 
 TG.UI.LoginLink = function() {
@@ -2360,7 +2897,7 @@ TG.UI.LoginLink.templateMarkup = "\
 	<a style='cursor: pointer;' data-id='actionLink'>Sign in</a>\
 	<div data-id='loginBox' style='display: none; width: 300px;' class='tg-login-box'></div>\
 ";
-_bindq.push(TG.UI.LoginLink, 'tg-login-link');
+_bindq.push(TG.UI.LoginLink, '.tg-login-link');
 
 
 TG.UI.LoginBox = function() {
@@ -2433,7 +2970,7 @@ TG.UI.LoginBox.templateMarkup = "\
 	<div data-id='submitButton' class='tg-submit-button'></div>\
 	</form>\
 ";
-_bindq.push(TG.UI.LoginBox, 'tg-login-box');
+_bindq.push(TG.UI.LoginBox, '.tg-login-box');
 
 
 TG.UI.DocumentList = function() {
@@ -2483,7 +3020,7 @@ TG.UI.TestRun.templateMarkup = "\
 	<h3 data-id='header'>Test Results</h3>\
 	<div data-id='loader' style='color: silver; display: none;'>running ...</div>\
 ";
-_bindq.push(TG.UI.TestRun, 'tg-test-run');
+_bindq.push(TG.UI.TestRun, '.tg-test-run');
 
 
 TG.UI.TestResult = function() {
@@ -2550,5 +3087,211 @@ TG.UI.TestResult.templateMarkup = "\
 		</td>\
 	</tr></table>\
 ";
-_bindq.push(TG.UI.TestResult, 'tg-test-result');
+_bindq.push(TG.UI.TestResult, '.tg-test-result');
 
+});
+
+tgmodule.d('./','./tg-namespace.js',function(module){
+});
+
+tgmodule.d('./','./tg-mainloop.js',function(module){
+require('tg-namespace.js');
+
+//
+// TG namespace
+//
+
+TG.MainLoop = function() {
+	// for computing "utilization"
+	var _S = new Date();
+	var _o = TG.MainLoop.objects;
+	var f = TG.MainLoop.functions;
+
+
+	// remove "dead" objects
+	var o = [];
+	for (var i in _o) {
+		if (_o[i].dead == false) {
+			o.push(_o[i]);
+		}
+	}
+	TG.MainLoop.objects = o;
+
+	// step loop
+	for (var i in o) {
+		o[i].step();
+	}
+	
+	// draw loop
+	for (var i in o) {
+		o[i].draw();
+	}
+
+	
+	// run plugins
+	for (var i in f) {
+		if (typeof(f[i]) == 'function') {
+			f[i]();
+		}
+	}
+
+
+	//
+	// benchmarking / utilization guesstimating.
+	// this is highly inaccurate at the moment. may have to introduce
+	// a multiplier to estimate CPU time used outside MainLoop ... or
+	// just find a way to track CPU time outside MainLoop.
+	//
+
+	var stats = document.getElementById('__stats');
+	if (stats) {
+		var ml = TG.MainLoop;
+		var _E1 = ml.__endLastRun;
+		var _E1_t = _E1.getTime();
+		var _E2 = new Date();
+		var _E2_t = _E2.getTime();
+
+		var _period = ml.__period + _E2_t - _E1_t;
+		if (_S.getTime() - ml.__startLastRun.getTime() > 1000 / ml.__fps) {
+			var _runtime = ml.__runtime + (_E2_t - _E1_t)/2;
+		} else {
+			var _runtime = ml.__runtime + (_E2_t - _S.getTime());
+		}
+
+		if (_period >= 1000) {
+			var _util = _runtime / Math.max(1, _period);
+			stats.innerHTML = _runtime + "/" + _period + " = " + String(Math.round(_util * 100)) + "%";
+			_runtime = 0;
+			_period = 0;
+		}
+
+		ml.__period = _period;
+		ml.__runtime = _runtime;
+		ml.__endLastRun = _E2;
+		ml.__startLastRun = _S;
+	}
+} // TG.MainLoop()
+TG.MainLoop.__fps = 30;
+TG.MainLoop.__interval = null;
+TG.MainLoop.__startLastRun = new Date();
+TG.MainLoop.__endLastRun = new Date();
+TG.MainLoop.__period = 0;
+TG.MainLoop.__runtime = 0;
+TG.MainLoop.objects = [];
+TG.MainLoop.functions = [];
+
+TG.MainLoop.running = function() {
+	return TG.MainLoop.__interval;
+} // TG.MainLoop.running()
+
+TG.MainLoop.addFunction = function(f) {
+	if (typeof(f) == 'function') {
+		var m = TG.MainLoop;
+		var mf = m.functions;
+		for (var i in mf) {
+			if (f == mf[i]) {
+				return true;
+			}
+		}
+		mf.push(f);
+		m.start();
+		return true;
+	} else {
+		return false;
+	}
+} // TG.MainLoop.addFunction()
+
+TG.MainLoop.addObject = function(o) {
+	if (typeof(o) == 'object'
+		&& o['step'] && typeof(o['step']) == 'function'
+		&& o['draw'] && typeof(o['draw']) == 'function'
+	) {
+		var m = TG.MainLoop;
+		var mo = m.objects;
+		for (var i in mo) {
+			if (o == mo[i]) {
+				return true;
+			}
+		}
+		mo.push(o);
+		m.start();
+		return true;
+	} else {
+		return false;
+	}
+} // TG.MainLoop.addObject()
+
+TG.MainLoop.removeFunction = function(f) {
+	var mf = TG.MainLoop.functions;
+	for (var i = 0; i < mf.length; i++) {
+		if (mf[i] == f) {
+			mf.splice(i, 1);
+			return;
+		}
+	}
+} // TG.MainLoop.removeFunction()
+
+TG.MainLoop.removeObject = function(o) {
+	var mo = TG.MainLoop.objects;
+	for (var i = 0; i < mo.length; i++) {
+		if (mo[i] == o) {
+			mo.splice(i, 1);
+			return;
+		}
+	}
+} // TG.MainLoop.removeObject()
+
+TG.MainLoop.start = function(fps) {
+	if (!TG.MainLoop.__interval) {
+		TG.MainLoop.__fps = fps || TG.MainLoop.__fps;
+		TG.MainLoop.__interval = setInterval(function() { TG.MainLoop(); }, 1000 / TG.MainLoop.__fps);
+	}
+} // TG.MainLoop.start()
+
+TG.MainLoop.stop = function() {
+	TG.MainLoop.__interval = clearInterval(TG.MainLoop.__interval);
+} // TG.MainLoop.stop()
+
+TG.MainLoop.pause = function() {
+	return TG.MainLoop.stop();
+} // TG.MainLoop.pause()
+
+
+var insertAfter = function(new_node, existing_node) {
+	if (existing_node.nextSibling) {
+		existing_node.parentNode.insertBefore(new_node, existing_node.nextSibling);
+	} else {
+		existing_node.parentNode.appendChild(new_node);
+	}
+} // insertAfter()
+
+
+// process the run-queue, if there is one
+if (this['__tgq']) {
+	this['__tgq'].push = function (f) {
+		if (typeof(f) == 'function') {
+			f();
+		}
+	}
+	for (var i in this['__tgq']) {
+		if (typeof(this['__tgq'][i]) == 'function') {
+			this['__tgq'][i]();
+		}
+	}
+} else {
+	this['__tgq'] = {
+		push : function (f) {
+			f();
+		}
+	}
+}
+});
+
+tgmodule.setpath('.');
+require('tg-upon.js');
+require('tg-dom.js');
+require('tg-api.js');
+require('tg-dragdrop.js');
+require('tg-test.js');
+require('tg-ui.js');
+require('tg-mainloop.js');

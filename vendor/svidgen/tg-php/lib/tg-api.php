@@ -153,15 +153,27 @@
 		//
 		// write functions
 		//
+		
+		function arg_list($f) {
+			$args = [];
+			$name = is_string($f) ? $f : $f['function'];
+			$inspector = new ReflectionFunction($name);
+			foreach ($inspector->getParameters() as $p) {
+				$args[] = $p->name;
+			}
+			return $args;
+		}
 
 		foreach ($functions as $name => $target) {
+			$args = join(',', arg_list($target));
 			$fullname = "{$namespace}.{$name}";
-			$rv[] = "{$name}=function(){return TG.API.jsonp({$api},\"{$name}\",TG.argumentsArray(arguments));};";
+			$rv[] = "{$name}=function({$args}){return TG.API.jsonp({$api},\"{$name}\",TG.argumentsArray(arguments));};";
 		}
 
 		foreach ($pollables as $name => $target) {
+			$args = join(',', arg_list($target));
 			$fullname = "{$namespace}.{$name}";
-			$rv[] = "{$name}=function(){return TG.API.start({$api},\"{$name}\",TG.argumentsArray(arguments));};";
+			$rv[] = "{$name}=function($args){return TG.API.start({$api},\"{$name}\",TG.argumentsArray(arguments));};";
 		}
 
 		return join("\n", $rv);
