@@ -1,7 +1,9 @@
 <?php
 
+define('TG_ROOT', realpath(__DIR__ . '/..'));
+define('TG_LIBDIR', TG_ROOT. '/lib');
+define('PKGROOT', getcwd());
 define('DOCROOT', $_SERVER['DOCUMENT_ROOT']);
-define('PKGROOT', realpath(__DIR__ . '/..'));
 define('LIBDIR', PKGROOT . '/lib');
 define('TEMPLATE_DIR', PKGROOT . "/templates");
 
@@ -20,30 +22,53 @@ ini_set('display_errors', '1');
 
 class HttpAdapter {
 
-	public $configuration = array();
+	public $configuration = [];
 
-	private $mimeTypes = array(
-		''		=> 'text/html',
-		'txt'	=> 'text/plain',
-		'htm'	=> 'text/html',
-		'tpl' 	=> 'text/html',
-		'html'	=> 'text/html',
-		'php'	=> 'text/html',
-		'md'	=> 'text/html',
-		'js'	=> 'text/javascript',
-		'css'	=> 'text/css',
-		'json'	=> 'text/json',
-		'jpg'	=> 'image/jpeg',
-		'jpeg'	=> 'image/jpeg',
-		'png'	=> 'image/png',
-		'svg'	=> 'image/svg+xml',
-		'gif'	=> 'image/gif',
-		'bmp'	=> 'image/bitmap',
-		'ico'	=> 'image/x-icon',
-		'*'		=> 'application/octet-stream'
-	);
+	private $mimeTypes = [
+		''      => 'text/html',
+		'txt'   => 'text/plain',
+		'htm'   => 'text/html',
+		'tpl'   => 'text/html',
+		'html'  => 'text/html',
+		'php'   => 'text/html',
+		'md'    => 'text/html',
+		'js'    => 'text/javascript',
+		'css'   => 'text/css',
+		'json'  => 'text/json',
+		'jpg'   => 'image/jpeg',
+		'jpeg'  => 'image/jpeg',
+		'png'   => 'image/png',
+		'svg'   => 'image/svg+xml',
+		'gif'   => 'image/gif',
+		'bmp'   => 'image/bitmap',
+		'ico'   => 'image/x-icon',
+		'*'	    => 'application/octet-stream'
+	];
 
-	private $cachedTypes = array('js', 'css', 'jpg', 'jpeg', 'png', 'svg', 'gif', 'bmp', 'ico');
+	private $blockedPaths = [
+		"/\/private\//",    // folders called private
+		"/\/vendor\//",     // folders called private
+		"/\/\./",           // hidden folders and files
+	];
+
+	private $cachedTypes = [
+		'bmp',
+		'css',
+		'gif',
+		'ico',
+		'jpeg',
+		'jpg',
+		'js',
+		'png',
+		'svg',
+	];
+
+	private $internalResources = [
+		'/~tg-php/tg-core.js' => 'vendor/svidgen/tg-dom/dist/tg-core.js',
+		'/~tg-php/tg-core-min.js' => 'vendor/svidgen/tg-dom/dist/tg-core-min.js',
+		'/~tg-php/tg-all.js' => 'vendor/svidgen/tg-dom/dist/tg-all.js',
+		'/~tg-php/tg-all-min.js' => 'vendor/svidgen/tg-dom/dist/tg-all-min.js',
+	];
 
 	private $mimeType;
 	private $extension;
@@ -58,17 +83,10 @@ class HttpAdapter {
 	}
 
 	public function outputRaw($data) {
-
-		if (in_array($this->extension, $this->cachedTypes)) {
-			$age = 60 * 60 * 24 * 365;
-			$expires = time() + $age;
-			header("Cache-control: max-age={$age}");
-			header('Pragma: cache');
-			header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', $expires));
-		}
+		$this->outputCachingHeaders();
 
 		if ($this->extension == 'js') {
-			require_once('tg-js/tg-require.js');
+			require_once(TG_ROOT . '/vendor/svidgen/tg-dom/src/tg-require.js');
 			$this->outputJS($data);
 			return;
 		}
@@ -86,6 +104,15 @@ class HttpAdapter {
 		print $data;
 	}
 
+	public function outputCachingHeaders() {
+		if (in_array($this->extension, $this->cachedTypes)) {
+			$age = 60 * 60 * 24 * 365;
+			$expires = time() + $age;
+			header("Cache-control: max-age={$age}");
+			header('Pragma: cache');
+			header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', $expires));
+		}
+	}
 
 	public function extractVars($markdown) {
 		$vars = array();
@@ -98,10 +125,10 @@ class HttpAdapter {
 	}
 
 	public function extractTitle($markdown) {
-		if (preg_match("/^# +(.+)$/m", $markdown, $match)) {
-			return $match[1];
+		if (preg_match("/^#\s+(.+)$/m", $markdown, $match)) {
+			return trim($match[1]);
 		} else {
-			return "frankencontent";
+			return "";
 		}
 	}
 
@@ -110,30 +137,39 @@ class HttpAdapter {
 
 		require_once('util.php');
 		$version = code_version();
-		$page_data = $this->extractVars($data);
-		if (!isset($page_data['title'])) {
-			$page_data = array(
-				'title' => $this->extractTitle($data)
-			);
+		$page = $this->extractVars($data);
+		if (!isset($page['title'])) {
+			$page['title'] = $this->extractTitle($data);
 		}
 
-		require_once('parsedown/parsedown.php');
+		require_once('parsedown.php');
 		$Parsedown = new Parsedown();
-		$page_content = $Parsedown->text($data);
+		$page['content'] = $Parsedown->text($data);
 		$configuration = $this->configuration;
 
-		if (isset($page_data['template'])) {
-			$template = $page_data['template'];
+		if (isset($page['template'])) {
+			$template = $page['template'];
 		} else {
 			$template = 'default';
 		}
 
-		require_once(TEMPLATE_DIR . "/{$template}.php");
+
+		$template = TEMPLATE_DIR . "/{$template}.php";
+		if (file_exists($template)) {
+			require_once($template);
+		} else {
+			require_once(TG_ROOT . "/lib/basic-md-template.php");
+		}
 
 		return;
 	}
 
 	public function outputTxt($data) {
+		print $data;
+	}
+
+	public function outputStatic($data) {
+		$this->outputCachingHeaders();
 		print $data;
 	}
 
@@ -418,6 +454,69 @@ class HttpAdapter {
 		}
 	}
 
+	public function serve() {
+		$filename = $_SERVER['SCRIPT_NAME'];
+		if (!$filename || $filename == '/') {
+			$filename = 'index';
+		}
+
+		if (isset($this->internalResources[$filename])) {
+			$this->setMimeType($filename);
+			$data = file_get_contents(
+				TG_ROOT . '/' . $this->internalResources[$filename]
+			);
+			if (!$data) {
+				return $this->notFound();
+			}
+			return $this->outputStatic($data);
+		}
+
+		if (strpos($filename, '.') === false) {
+			$extensions = array('php', 'md', 'html');
+			foreach ($extensions as $ext) {
+				$potential_name = "{$filename}.{$ext}";
+				$disk_path = DOCROOT . '/' . $potential_name;
+				if ($this->canServe($disk_path)) {
+					return $this->execute($potential_name);
+				}
+			}
+		}
+
+		$disk_path = DOCROOT . $filename;
+		if ($this->canServe($disk_path)) {
+			return $this->execute($filename);
+		}
+
+		return $this->notFound();
+	}
+
+	public function block($path) {
+		$this->blockedPaths[] = $path;
+	}
+
+	public function canServe($disk_path) {
+		foreach ($this->blockedPaths as $p) {
+			if (preg_match($p, $disk_path)) {
+				error_log("blocked: {$disk_path}");
+				return false;
+			}
+			if (!file_exists($disk_path)) {
+				error_log("does not exist: {$disk_path}");
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public function notFound() {
+		http_response_code(404);
+		foreach (['php', 'md', 'html'] as $ext) {
+			if (file_exists(DOCROOT . "/404.{$ext}")) {
+				$this->execute("404.{$ext}");
+			}
+		}
+	}
+
 }
 
 $oldpath = get_include_path();
@@ -427,33 +526,19 @@ set_include_path(join(array(
 	PKGROOT,
 	LIBDIR,
 	TEMPLATE_DIR,
+	TG_ROOT,
+	TG_LIBDIR,
 	$oldpath
 ), PATH_SEPARATOR));
 
 $adapter = new HttpAdapter();
 include_once('config.php');
 require_once('serializer.php');
+require_once('repository.php');
 require_once('document.php');
 require_once('session-handler.php');
 
-$filename = $_SERVER['SCRIPT_NAME'];
-if (!$filename || $filename == '/') {
-	$filename = 'index';
-}
 
-if (strpos($filename, '.') === false) {
-	$extensions = array('php', 'md', 'html');
-	foreach ($extensions as $ext) {
-		$potential_name = "{$filename}.{$ext}";
-		if (file_exists(DOCROOT . '/' . $potential_name)) {
-			$filename = $potential_name;
-			break;
-		}
-	}
-}
-
-// need to log here ...
-
-$adapter->execute($filename);
+$adapter->serve();
 
 ?>

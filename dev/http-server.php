@@ -11,8 +11,8 @@ class HttpServer {
 	private $clients = [];
 	private $connections = [];
 
-	function __construct($port, $poolsize = 8) {
-		$this->worker_pool = new WorkerPool($port, $poolsize);
+	function __construct($port, $poolsize, $docroot, $router) {
+		$this->worker_pool = new WorkerPool($port, $poolsize, $docroot, $router);
 		$this->server = stream_socket_server("tcp://0.0.0.0:{$port}");
 		if (!$this->server) {
 			throw new Exception("Could not bind to port {$port}");
@@ -22,7 +22,8 @@ class HttpServer {
 		print "Press Ctrl-C to exit.\n\n";
 	}
 
-	function handle_signal($signal) {
+	function terminate($signal) {
+		print "Received signal ({$signal}).\nExiting ... \n";
 		fclose($this->server);
 		$this->worker_pool->terminate();
 		exit(0);
@@ -30,9 +31,9 @@ class HttpServer {
 
 	function run() {
 		if (function_exists('pcntl_signal')) {
-			pcntl_signal(SIGTERM, [$this, "handle_signal"]);
-			pcntl_signal(SIGHUP, [$this, "handle_signal"]);
-			pcntl_signal(SIGINT, [$this, "handle_signal"]);
+			pcntl_signal(SIGTERM, [$this, "terminate"]);
+			pcntl_signal(SIGHUP, [$this, "terminate"]);
+			pcntl_signal(SIGINT, [$this, "terminate"]);
 		}
 
 		while (true) {
