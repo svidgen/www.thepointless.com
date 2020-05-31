@@ -67,7 +67,7 @@ SS.Board = function() {
 		this.minY = 0;
 		this.maxY = 100;
 
-		var box = new Bind.NodeBox(this);
+		var box = new TG.NodeBox(this);
 
 		// make square
 		var max = Math.max(box.width, box.height);
@@ -176,7 +176,7 @@ SS.Board = function() {
 		if (!this.enabled) { return; }
 
 		var mc = new TG.MouseCoords(e);
-		var tc = new Bind.NodeBox(this);
+		var tc = new TG.NodeBox(this);
 		var destination = {
 			x: 100 * (mc.x - tc.x)/tc.width,
 			y: 100 * (mc.y - tc.y)/tc.height
@@ -323,8 +323,8 @@ Bind(SS.StartButton, 'ss:startbutton');
 
 
 SS.MagicallySizedObject = function() {
-	var coords = new Bind.NodeBox(this);
-	var pCoords = new Bind.NodeBox(this.parentNode || document.body);
+	var coords = new TG.NodeBox(this);
+	var pCoords = new TG.NodeBox(this.parentNode || document.body);
 
 	this.width = 100 * coords.width / pCoords.width;
 	this.height = 100 * coords.height / pCoords.height;
@@ -506,10 +506,10 @@ SS.Projectile = function() {
 	}; // findCollisions()
 
 	this.findCollisionsWith = function(search) {
-		var box = new Bind.NodeBox(this);
+		var box = new TG.NodeBox(this);
 		var nodes = getNodes(document, search);
 		for (var i = 0; i < nodes.length; i++) {
-			if (box.overlaps(new Bind.NodeBox(nodes[i]))) {
+			if (box.overlaps(new TG.NodeBox(nodes[i]))) {
 				on(this, 'collide').fire(nodes[i]);
 				on(nodes[i], 'collide').fire(this);
 			}
@@ -679,7 +679,7 @@ SS.GameOverSplash = function() {
 	});
 
 	setTimeout(function() {
-		addClassname(_t, 'visible');
+		TG.addClassname(_t, 'visible');
 	}, this.delay);
 
 	setType(this, 'SS.GameOverSplash');

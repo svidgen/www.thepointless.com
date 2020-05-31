@@ -1241,9 +1241,9 @@ TPDC.Thing = function() {
 	}; // setName()
 
 	this.drawNotice = function() {
-		addClassname(_t, 'urgent');
+		TG.addClassname(_t, 'urgent');
 		setTimeout(function() {
-			removeClassname(_t, 'urgent');
+			TG.removeClassname(_t, 'urgent');
 		}, 250);
 	}; // drawNotice()
 
