@@ -2,180 +2,97 @@
 
 namespace TG;
 
-global $adapter;
-$config = $adapter->configuration;
-
-require_once(__DIR__."/{$config['data-adapter']}-adapter.php");
 require_once(__DIR__."/initializable.php");
-
+require_once(__DIR__."/repository.php");
+ 
 trait Document {
 	use Initializable;
 
-	public static function getDatabase() {
-		global $adapter;
-		$config = $adapter->configuration;
-		$db = DB::connect($config);
-		$db->debugging = $config['debug'];
-		return $db;
+	private static $default_repository = null;
+
+	public static function getRepository() {
+		if (!self::$default_repository) {
+			self::$default_repository = new Repository();
+		}
+		return self::$default_repository;
 	}
 
-	public static function getCollectionName() {
+	public static function getClass() {
 		return get_class();
 	}
 
 	public static function get($key = 0, $options = array()) {
-		$db = self::getDatabase();
-		$sample = new self();
+		return self::getRepository()->get(self::getClass(), $key, $options);
+	}
 
-		$criteria = array(
-			'collection' => self::getCollectionName(),
-			'key' => (string)$key
+	public static function getRange(
+		$start, $end, $include_start = true, $include_end = true
+	) {
+		return self::getRepository()->getRange(
+			self::getClass(), $start, $end, $include_start , $include_end
 		);
-
-		$rows = $db->select('documents', $criteria, $options);
-		if (sizeof($rows) == 1) {
-			$rv = new self();
-			$rv->initialize(unserialize($rows[0]['data']));
-			$rv->{'$id'} = $key;
-			return $rv;
-		} else {
-			return null;
-		}
 	}
 
 	public static function getOrCreate($key = 0, $options = array()) {
-		$rv = self::get($key, $options);
-		if ($rv == null) {
-			$rv = new self();
-			$rv->save($key);
-		}
-		return $rv;
+		return self::getRepository()->getOrCreate(
+			self::getClass(),
+			$key,
+			$options
+		);
 	}
 
 	public static function find($keySearch, $options = array()) {
-		$db = self::getDatabase();
-		$sample = new self();
-
-		$criteria = array(
-			'collection' => self::getCollectionName(),
-			'key like' => "%{$keySearch}%"
+		return self::getRepository()->find(
+			self::getClass(),
+			$keySearch,
+			$options
 		);
-
-		$rv = array();
-		$rows = $db->select('documents', $criteria, $options);
-		foreach ($rows as $row) {
-			$rv_row = new self();
-			$rv_row->initialize(unserialize($row['data']));
-			$rv[] = $rv_row;
-		}
-		return $rv;
 	}
 
 	public static function getPage(
-		$startingWith,
+		$startingAfter,
 		$direction = "asc",
 		$size = 25,
 		$query = null
 	) {
-		$db = self::getDatabase();
-		$sample = new self();
-
-		$criteria = array(
-			'collection' => self::getCollectionName(),
+		return self::getRepository()->getPage(
+			self::getClass(),
+			$startingAfter,
+			$direction,
+			$size,
+			$query
 		);
-
-		if ($query) {
-			$criteria['key like'] = "%{$query}%";
-		}
-
-		// sanitization
-		$direction = $direction == 'desc' ? $direction : 'asc';
-
-		if ($startingWith) {
-			if ($direction == "asc") {
-				$criteria["key >"] = $startingWith;
-			} else {
-				$criteria["key <"] = $startingWith;
-			}
-		}
-
-		$rv = array();
-		$rows = $db->select('documents', $criteria, array(
-			'order' => "`key` {$direction}",
-			'limit' =>  $size
-		));
-		foreach ($rows as $row) {
-			$rv_row = new self();
-			$rv_row->initialize(unserialize($row['data']));
-			$rv[] = $rv_row;
-		}
-		return $rv;
 	}
 
 	public function reload() {
-		$selfFromDisk = self::get($this->{'$id'});
+		$selfFromDisk = self::getRepository()->get(
+			self::getClass(),
+			$this->{'$id'}
+		);
+
 		if ($selfFromDisk) {
 			$this->initialize($selfFromDisk);
 		}
 	}
 
 	public function save($key = null) {
-		$db = self::getDatabase();
-		$collection = self::getCollectionName();
-		
-		$data = serialize($this);
-		$row = array(
-			'collection' => $collection,
-			'data' => $data
-		);
-
-		if ($key) {
-			$row['key'] = $key;
-			$this->{'$id'} = $key;
-			if (!$db->insert('documents', $row)) {
-				return $this->save();
-			}
-			return $key;
-		} else if (isset($this->{'$id'})) {
-			$row['key'] = $this->{'$id'};
-			if ($db->update('documents', array('key','collection'), $row)) {
-				return $this->{'$id'};
-			}
-		} else {
-			return $this->save(uniqid('', true));
-		}
-		
-		throw new \Exception("Database error. Could not save.");
+		return self::getRepository()->save($this, $key);
 	}
 
 	public function delete() {
-		if (isset($this->{'$id'}) && $this->{'$id'}) {
-			$criteria = array(
-				'collection' => self::getCollectionName(),
-				'key' => (string)$this->{'$id'}
-			);
-		} else {
-			throw new \Exception("A `key` was not provided as deletion criteria."); 
-		}
-
-		$db = self::getDatabase();
-		return $db->delete('documents', $criteria);
-	}
-
-
-
-	public function toArray() {
-		return get_object_vars($this);
-	}
-
-	public function serialize($o) {
-
+		return self::getRepository()->delete($this);
 	}
 
 	public function unserialize($str) {
 		// $str = str_replace("[[NULL]]"
 	}
 
+	public function serialize($o) {
+	}
+
+	public function toArray() {
+		return get_object_vars($this);
+	}
 }
 
 

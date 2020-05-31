@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+	<head>
+		<title>tg-dom tests</title>
+		<style type='text/css'>
+			@import url('vendor/qunit-1-23-1.css');
+		</style>
+	</head>
+	<body>
+		<div id='qunit'></div>
+		<div id='qunit-fixture'></div>
+		<script type='text/javascript' src='dist/tg-all.js'></script>
+		<script type='text/javascript' src='vendor/qunit-1-23-1.js'></script>
+		<script type='text/javascript'>
+			QUnit.config.testTimeout = 10000;
+			var assertions = [];
+			QUnit.log(function(assertion) {
+				assertions.push(assertion);
+			});
+		</script>
+		<script type='text/javascript' src='dist/tests.js'></script>
+	</body>
+</html>

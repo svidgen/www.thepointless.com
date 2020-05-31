@@ -1,52 +1,24 @@
 # tg-php
+
 PHP handlers to make building PHP sites and services trivial.
 
-### Contributing
-```
-git clone git@github.com:svidgen/tg-php && cd tg-php
-```
+* [Installing](#installing)
+* [Using](#using)
+* [Contributing](#contributing)
 
-### Using
-If you don't already have [composer](https://getcomposer.org/) installed, install it:
-```
-curl -sS https://getcomposer.org/installer | php
-```
+### Installing
 
-Add this repository to the `composer.json` file at the root of your package:
-```
-{
-	"type": "vcs",
-	"url": "https://github.com/svidgen/tg-dom"
-}
-```
+We suggest pulling `tg-php` down as a [`git subtree`](https://manpages.debian.org/testing/git-man/git-subtree.1.en.html):
 
-And this package to your `require` section:
 ```
-"svidgen/tg-dom": "master"
-```
-
-If this is your only dependency, your `composer.json` could look like this:
-```
-{
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/svidgen/tg-php"
-        }
-    ],
-    "require": {
-        "svidgen/tg-php": "master"
-    }
-}
-```
-
-Run the composer install/update.
-```
-php composer.phar update
+git remote add tg-php git@github.com:svidgen/tg-php.git
+git subtree add --prefix=vendor/svidgen/tg-php tg-php master
 php vendor/svidgen/tg-php/install.php
 ```
 
-And start using `tg-php` stuff in your project:
+### Using
+
+To start using `tg-php` stuff in your project:
 ```
 <?php
 
@@ -59,4 +31,12 @@ class Widget {
 ?>
 ```
 
+(Further documentation pending.)
+
 Etc.
+
+### Contributing
+```
+git clone git@github.com:svidgen/tg-php && cd tg-php
+```
+
