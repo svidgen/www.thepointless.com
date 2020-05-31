@@ -23,7 +23,7 @@ class StreamConnection {
 	}
 
 	function close() {
-		fclose($this->stream);
+		@fclose($this->stream);
 		$this->stream = null;
 	}
 

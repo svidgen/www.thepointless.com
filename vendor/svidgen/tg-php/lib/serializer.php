@@ -53,7 +53,8 @@ class HtmlSerializer {
 			$js = '';
 			$js_src  = preg_replace("/\.[a-zA-Z0-9]+$/", '.js', $page_url);
 			if (file_exists('./' . $js_src)) {
-				$js = "<script src='{$js_src}?v={$version}'></script>\n";
+				$js = "<script src='~tg-php/tg-all.js?v={$version}'></script>\n"
+					. "<script src='{$js_src}?v={$version}'></script>\n";
 			}
 
 			$outputPrefix = "<!doctype html>\n<html><head>\n"
@@ -62,11 +63,7 @@ class HtmlSerializer {
 				. "</head><body>\n"
 			;
 
-			$outputSuffix = "\n"
-				. "<script src='/tg-js/tg-all.js?v={$version}'></script>\n"
-				. $js
-				. "</body></html>"
-			;
+			$outputSuffix = "\n{$js}</body></html>";
 		} else {
 			$outputPrefix = "";
 			$outputSuffix = "";

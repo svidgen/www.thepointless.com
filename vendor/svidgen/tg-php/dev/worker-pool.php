@@ -4,17 +4,23 @@ require(__DIR__ . '/worker.php');
 
 class WorkerPool {
 
+	private $running = true;
 	private $idle_workers = [];
 	private $active_workers = [];
 
-	function __construct($port, $poolsize = 8) {
+	function __construct($port, $poolsize, $docroot, $router) {
 		for ($i = 0; $i < $poolsize; $i++) {
-			$this->idle_workers[] = new Worker($this, (int)$port + 1 + $i);
+			$this->idle_workers[] = new Worker(
+				$this,
+				(int)$port + 1 + $i,
+				$docroot,
+				$router
+			);
 		}
 	}
 
 	function has_free_workers() {
-		if (sizeof($this->idle_workers) > 0) {
+		if ($this->running && sizeof($this->idle_workers) > 0) {
 			return true;
 		}
 	}
@@ -34,7 +40,15 @@ class WorkerPool {
 	}
 
 	function terminate() {
-		return;
+		$this->running = false;
+		$this->terminate_all($this->active_workers);
+		$this->terminate_all($this->idle_workers);
+	}
+
+	function terminate_all($workers) {
+		foreach ($workers as $worker) {
+			$worker->terminate();
+		}
 	}
 
 }

@@ -1,6 +1,7 @@
 <?php
 
 require(__DIR__ . '/socket-connection.php');
+require(__DIR__ . '/../lib/background-job.php');
 
 class Worker {
 
@@ -9,15 +10,15 @@ class Worker {
 	public $connection = null;
 	public $pool = null;
 
-	function __construct($pool, $port) {
+	function __construct($pool, $port, $docroot, $router) {
 		$this->pool = $pool;
 		$this->port = $port;
-		$command = "php -S 0.0.0.0:{$port} -t . router.php";
-		$this->proc = popen($command, 'r');
+		$command = "php -S 0.0.0.0:{$port} -t {$docroot} {$router}";
+		$this->proc = new BackgroundJob($command);
 	}
 
-	function destroy() {
-		pclose($this->proc);
+	function terminate() {
+		$this->proc->stop();
 	}
 
 	function close() {
