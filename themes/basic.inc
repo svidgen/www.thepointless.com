@@ -13,6 +13,7 @@
 	<?php if (isset($args['extra_meta_tags'])) { print $args['extra_meta_tags']; } ?>
 	<meta name="google-site-verification" content="zYKsu_Prv58mFQyRGJA3j1sDsQzAytFhE2SjFMaQk14" />
 	<link rel='shortcut icon' href='/images/favicon.ico?v=<?php print $general_version; ?>' />
+	<link rel='manifest' href='<?php print @$args['manifest']; ?>' />
 	<?php include('includes/google_analytics.inc'); ?> 
 	<script type='text/javascript' src='/js/tg-all.js?v=<?php print $general_version; ?>'></script>
 </head>

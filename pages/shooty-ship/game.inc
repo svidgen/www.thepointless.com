@@ -1,6 +1,9 @@
 <?php
-	$meta_title = 'shooty ship - thepointless.com';
-	$require_theme = 'basic';
+
+$meta_title = 'shooty ship - thepointless.com';
+$require_theme = 'basic';
+$manifest = 'manifest.json';
+
 ?>
 
 <style type='text/css'>
@@ -13,27 +16,19 @@
 		padding: 0px;
 		position: relative;
 	}
-
 </style>
 
 <ss:board></ss:board>
-
 
 <script type='text/javascript' src='/ajax/api?v=<?php print $general_version; ?>'></script>
 <script type='text/javascript' src='/js/tpdc.js?v=<?php print $general_version; ?>'></script>
 <script type='text/javascript'>
 
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker.register('sw.js');
+};
 
 var SS = SS || {};
-
-
-SS.isIDevice = function() {
-	if (SS.isIDevice.rv === null) {
-		SS.isIDevice.rv = navigator.userAgent.match(/ipad|ipod|iphone/i);
-	}
-	return SS.isIDevice.rv;
-}; // isIDevice()
-SS.isIDevice.rv = null;
 
 
 SS.Board = function() {
@@ -694,58 +689,9 @@ SS.GameOverSplash.templateMarkup = "\
 		<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>\
 		<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
 		<ss:sharebutton data-id='share'></ss:sharebutton>\
-		<br /><a href='https://play.google.com/store/apps/details?id=com.thepointless.shootyship&hl=en' target='_blank'><img src='/images/google-play-129x45.png' /></a>\
 	</div>\
 ";
 Bind(SS.GameOverSplash, 'ss:gameoversplash');
-
-
-SS.ShareButton = function() {
-	var _t = this;
-
-	this.score = 0;
-	this.max = 0;
-	this.enabled = true;
-
-	this.setScores = function(score, max) {
-		this.score = score;
-		this.max = max;
-	}; // setScores()
-
-	this.onclick = function() {
-		if (!this.enabled) {
-			return;
-		}
-
-		this.enabled = false;
-		this.style.cursor = 'default';
-		this.style.opacity = 0.5;
-		this.style.filter = 'alpha(opacity=50)';
-
-		this.innerHTML = "Sharing..";
-		FB.login(function() {
-			FB.api('/me/feed', 'post', {
-				message: "Pew pew pew! I got " + _t.score + " in #shootyship!",
-				link: "http://www.thepointless.com/shooty-ship/game"
-			}, function(response) {
-				if (!response || response.error) {
-					_t.innerHTML = "Failed";
-				} else {
-					_t.innerHTML = "Shared";
-				}
-			});
-		},
-		{scope: 'publish_actions'});
-	}; // onclick
-	this.ontouchend = this.onclick;
-
-	setType(this, 'SS.ShareButton');
-	onready(this).fire();
-}; // ShareButton
-SS.ShareButton.templateMarkup = "\
-	FB Share\
-";
-Bind(SS.ShareButton, 'ss:sharebutton');
 
 
 SS.BannerAd = function() {
@@ -766,17 +712,4 @@ Bind(SS.BannerAd, 'ss:bannerad');
 </script>
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script type='text/javascript' src='https://connect.facebook.net/en_US/all.js'></script>
-<script type='text/javascript'>
-<?php print "
-	FB.init({
-		appId: '{$facebook_appId}',
-		channelUrl: '{$base_url}fbchannel.html',
-		status: true,
-		cookie: true,
-		xfbml: true,
-		oauth: true
-	});
-";
-?>
 </script>
