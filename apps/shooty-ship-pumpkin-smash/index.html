@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 	<meta name='viewport' content='width=device-width, initial-scale=1' />
-	<script type='text/javascript' src='js/tg-all.js'></script>
+	<link rel='manifest' href='manifest.json' />
 </head>
 <body id="thebody">
 
@@ -13,7 +13,7 @@
 	<div id="content">
 		
 <style type='text/css'>
-	@import url(css/sheet.css?v=482);
+	@import url(css/sheet.css);
 
 	html, body, #content {
 		width: 100%;
@@ -27,8 +27,14 @@
 
 <ss:board></ss:board>
 
+<script type='text/javascript' src='js/tg-all.js'></script>
 <script type='text/javascript' src='js/tpdc.js'></script>
 <script type='text/javascript' src='js/game.js'></script>
+<script type='text/javascript'>
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker.register('sw.js');
+};
+</script>
 
 	</div>
 

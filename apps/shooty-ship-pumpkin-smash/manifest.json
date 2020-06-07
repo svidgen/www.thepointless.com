@@ -1,0 +1,16 @@
+{
+	"short_name": "Pumpkin Smash",
+	"name": "Shooty Ship - Pumpkin Smash",
+	"description": "Pew pew pew!\nHalloween horrors approach! Shoot as many as you can!\nPew pew pew!",
+	"icons": [
+		{
+			"src": "/images/shooty-ship-pumpkin-smash-icon.png",
+			"type": "image/png",
+			"sizes": "512x512"	
+		}
+	],
+	"start_url": "index.html",
+	"display": "fullscreen",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff"
+}
