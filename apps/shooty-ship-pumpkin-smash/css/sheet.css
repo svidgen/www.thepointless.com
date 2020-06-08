@@ -195,3 +195,29 @@ ss\:bannerad {
 	left: 0px;
 	z-index: 10000;
 }
+
+tpdc\:installlink {
+	display: none;
+}
+
+tpdc\:installlink.show {
+	display: block;
+	text-align: center;
+}
+
+tpdc\:installlink .button {
+	display: inline-block;
+	padding: 0.1em 1.5em;
+	margin: 0.5em;
+	border: 0.15em solid green;
+	border-radius: 0.5em 0.5em;
+	color: darkgreen;
+	font-size: x-large;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+tpdc\:installlink .button [data-id='icon_img'] {
+	height: 1em;
+	vertical-align: middle;
+}

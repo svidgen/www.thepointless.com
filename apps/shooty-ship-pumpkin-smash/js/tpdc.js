@@ -1630,6 +1630,40 @@ TPDC.awardMultiple = function(awards) {
 } // TPDC.awardMultiple()
 
 
+TPDC.InstallLink = function() {
+	var _t = this;
+	this.icon_img.src = this.icon;
+	if (TPDC.InstallLink.evt) {
+		_t.classList.add('show');
+		_t.addEventListener('click', (e) => {
+			TPDC.InstallLink.evt.prompt();
+			TPDC.InstallLink.evt.userChoice.then((choiceResult) => {
+				if (choiceResult.outcome === 'accepted') {
+					_t.classList.remove('show');
+					console.log('User accepted the A2HS prompt');
+				} else {
+					console.log('User dismissed the A2HS prompt');
+				}
+				TPDC.InstallLink.evt = null;
+			});
+		});
+	}
+};
+TPDC.InstallLink.templateMarkup = "\
+	<hr />\
+	<div class='button'>\
+		<img data-id='icon_img' />\
+		Install\
+	</div>\
+";
+Bind(TPDC.InstallLink, 'tpdc:installlink');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+	e.preventDefault();
+	TPDC.InstallLink.evt = e;
+});
+
+
 if (this['FB']) {
 	// catch Like's 
 	FB.Event.subscribe('edge.create',

@@ -806,6 +806,7 @@ SS.GameOverSplash.templateMarkup = "\
 		<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>\
 		<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
 		<ss:sharebutton data-id='share'></ss:sharebutton>\
+		<tpdc:installlink icon='img/shooty-ship-pumpkin-smash-icon.png'></tpdc:installlink>\
 	</div>\
 ";
 Bind(SS.GameOverSplash, 'ss:gameoversplash');
