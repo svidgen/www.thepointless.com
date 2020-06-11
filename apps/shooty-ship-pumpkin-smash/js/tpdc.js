@@ -1,17 +1,4 @@
 //
-// Copyright (c) 2012 http://www.thepointless.com/
-//
-// Provided as is, without warranty of any kind. This IS
-// a work in progress. So, it's probaby buggy.
-//
-// Use it and abuse it however you like. But, if you'd be
-// so kind, leave this notice in tact and don't hotlink!
-//
-// Jon Wire
-// http://www.linkedin.com/in/jonwire
-//
-
-//
 // TPDC namespace
 //
 
@@ -159,7 +146,7 @@ TPDC.FacebookPublish = function(o) {
 
 var Game = Game || function(override_c) {
 	// default configuration
-} // TPDC.FacebookPublish()
+} // Game
 
 
 TPDC.voterCB = function(new_token, id, vote, newcount) {
@@ -682,7 +669,7 @@ TPDC.Conversation = function() {
 	}
 
 	var s = document.createElement('script');
-	s.src = '//google-code-prettify.googlecode.com/svn/branches/release-1-Jun-2011/src/prettify.js';
+	s.src = '//cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js';
 	s.type = 'text/javascript';
 	document.body.appendChild(s);
 
@@ -693,7 +680,7 @@ TPDC.Conversation.templateMarkup =
 	"<tpdc:growingtextarea data-id='messageBox'></tpdc:growingtextarea>" +
 	"<br /><input type='button' data-id='sendButton' value='send' /></div>" +
 	"</tpdc:message>" +
-	"<link href='//google-code-prettify.googlecode.com/svn/branches/release-1-Jun-2011/src/prettify.css' rel='stylesheet' type='text/css'/>"
+	"<link href='//cdn.rawgit.com/google/code-prettify/master/src/prettify.css' rel='stylesheet' type='text/css'/>"
 ;
 Bind(TPDC.Conversation, 'tpdc:conversation');
 
@@ -704,7 +691,7 @@ TPDC.Message = function() {
 	this['message-id'] = Number(this['message-id']) || 0;
 
 	if (this.messageNode.innerHTML == '') {
-		upon(function() { return typeof(prettyPrintOne) == 'function'; }, function() {
+		upon(function() { return window.PR && typeof(PR.prettyPrintOne) == 'function'; }, function() {
 
 			// TODO: make better!
 
@@ -717,7 +704,7 @@ TPDC.Message = function() {
 					var c = arguments[1] || arguments[2];
 					c = c.replace(/ /g, "&nbsp;")
 					var rv = "<code class='prettyprint'>"
-						+ prettyPrintOne(c)
+						+ PR.prettyPrintOne(c)
 						+ "</code>";
 					k = k + 1;
 					cache[k] = rv;
@@ -1253,6 +1240,13 @@ TPDC.Thing = function() {
 		this.name.innerHTML = v;
 	}; // setName()
 
+	this.drawNotice = function() {
+		TG.addClassname(_t, 'urgent');
+		setTimeout(function() {
+			TG.removeClassname(_t, 'urgent');
+		}, 250);
+	}; // drawNotice()
+
 	this.icon.image_id = this.icon_id;
 	this.icon.width = 64;
 	this.icon.height = 64;
@@ -1351,6 +1345,8 @@ TPDC.DBImage = function() {
 	this.style.display = 'inline-block';
 	this.style.padding = '0px';
 	this.style.margin = '0px';
+	this.image.style.width = width + "px";
+	this.image.style.height = height + "px";
 };
 TPDC.DBImage.templateMarkup =
 	"<img data-id='image' />"
@@ -1523,6 +1519,231 @@ TPDC.GrowingTextarea.templateMarkup =
 Bind(TPDC.GrowingTextarea, 'tpdc:growingtextarea');
 
 
+TPDC.ResultCard = function() {
+
+	var _t = this;
+
+	this.setImage = function(src) {
+		if (src) {
+			this.imageImg.src = src;
+			this.imageImg.style.display = '';
+		} else {
+			this.imageImg.style.display = 'none';
+		}
+	}; // setImage()
+
+	this.getShareData = function() {
+	}; // getShareData();
+
+	this.setImage(this.image);
+
+	this.share_buttons.object = {
+		title: (_t['share-title'] || _t.header.innerText || '')
+			.replace('{subject}', 'I'),
+		image: _t.image,
+		'text': (_t['share-text'] || _t.result.innerText
+			|| _t.description.innerText || '')
+				.replace('{subject}', 'I'),
+		url: _t.url
+	};
+
+	this.header.innerHTML = this.header.innerHTML.replace('{subject}', 'You');
+	this.result.innerHTML = this.result.innerHTML.replace('{subject}', 'You');
+	this.description.innerHTML = this.description
+		.innerHTML.replace('{subject}', 'You');
+
+	setTimeout(function() {
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	}, 250);
+
+	setType(this, 'TPDC.ResultCard');
+}; // ScoreCard
+TPDC.ResultCard.templateMarkup = "\
+<!-- ResultCard Responsive -->\
+	<ins class=\"adsbygoogle\"\
+		style=\"display: block;\"\
+		data-ad-client=\"ca-pub-6115341109827821\"\
+		data-ad-slot=\"7180845135\"\
+		data-ad-format=\"auto\"></ins>\
+	<br />\
+	<h1 class='result-title' data-id='header'>Congratulations!</h1>\
+	<div data-id='imageContainer' class='result-image'>\
+		<img data-id='imageImg' style='display: none;' />\
+	</div>\
+	<h3 class='result-result' data-id='result'></h3>\
+	<div data-id='description' class='result-description'></div>\
+	<tpdc:share data-id='share_buttons'></tpdc:share>\
+";
+Bind(TPDC.ResultCard, 'tpdc:resultcard');
+
+
+TPDC.Share = function() {
+	var _t = this;
+
+	var inner_object;
+
+	this.getObject = function() {
+		// hack to prevent re-processing and url-breaking.
+		var rv = {};
+
+		if (_t.object) {
+			rv = _t.object;
+		} else {
+			rv = _t;
+		}
+
+		if (inner_object) {
+			rv.url = inner_object.url;
+		} else if (!rv.url) {	
+			rv.url = document.location;
+		} else {
+			rv.url = document.origin + rv.url;
+		}
+
+		if (!rv.title) {
+			rv.title = document.title;
+		}
+
+		if (!rv.text) {
+			var meta = document.querySelector("meta[name=\'description\']");
+			if (meta) {
+				rv.text = meta.getAttribute("content");
+			}
+		}
+
+		if (!rv.image) {
+			rv.image = document.origin + "/images/big_giant.jpg";
+		}
+
+		if (typeof(rv.proxy) == 'undefined') {
+			rv.proxy = true;
+		}
+
+		inner_object = rv;
+
+		return rv;
+	}; // getObject()
+
+	this.track = function(channel) {
+		var o = _t.getObject();
+		window._gaq = window._gaq || [];
+		_gaq.push(['_trackEvent', 'Share', channel, o['url'], null])
+	}; // track()
+
+	this.fb_link.onclick = function() {
+		_t.track('Facebook');
+		var o = _t.getObject();
+
+		var url = "https://www.facebook.com/sharer.php?u=";
+
+		if (o.proxy) {
+			url = url + "http://" + (location.host || location.hostname) + "/share-data?"
+				+ encodeURIComponent(
+					"t=" + encodeURIComponent(o['title'] || '')
+					+ "&b=" + encodeURIComponent(o['text'] || '')
+					+ "&i=" + encodeURIComponent(o['image'] || '')
+					+ "&u=" + encodeURIComponent(o['url'] || '')
+				)
+			;
+		} else {
+			url = url + o['url'];
+		}
+
+		window.open(url, 'facebook_share');
+		return false;
+	}; // fb_link.onclick()
+
+	this.twitter_link.onclick = function() {
+		_t.track('Twitter');
+		var o = _t.getObject();
+		var title = "#" + (o['title'] || 'thepointlessdotcom')
+			.toLowerCase()
+			.replace(/thepointless\.com/, '')
+			.replace(/[^a-z0-9]/g, '')
+		;
+		var	url = "https://twitter.com/share?"
+			+ "u=" + encodeURIComponent(o['url'])
+			+ "&text=" + encodeURIComponent(
+				(o['text'] || '') + ' ' + title
+			)
+		;
+		window.open(url, 'twitter_share');
+		return false;
+	}; // twitter_link.onclick()
+
+	this.email_link.onclick = function() {
+		_t.track('Email');
+		var o = _t.getObject();
+		var url = "mailto:?to=&"
+			+ "subject=" + encodeURIComponent(o['title'] || 'thepointless.com')
+			+ "&body=" + encodeURIComponent(o['text'] || '')
+			 	+ encodeURIComponent("\n\n")
+				+ encodeURIComponent(o['url'] || document.location)
+		;
+		window.open(url, 'email_share');
+		return false;
+	}; // email_link.onclick()
+
+}; // Share
+TPDC.Share.templateMarkup = "\
+	<br />Make it happen, Cap'n.<br /><br />\
+		<a data-id='fb_link' class='social-link'>\
+			<img class='social-icon' src='img/fb_icon_22px.png' />\
+		</a>\
+		<a data-id='twitter_link' class='social-link'>\
+			<img class='social-icon' src='img/twitter_logo_22px.png' />\
+		</a>\
+		<a data-id='email_link' class='social-link'>\
+			<img class='social-icon' src='img/email_logo_22px_h.png' />\
+		</a>\
+";
+Bind(TPDC.Share, 'tpdc:share');
+
+
+TPDC.Newsletter = function() {
+}; // NewsLetter
+TPDC.Newsletter.templateMarkup = "\
+<!-- Begin MailChimp Signup Form -->\
+<div id=\"mc_embed_signup\">\
+<form action=\"//thepointless.us9.list-manage.com/subscribe/post?u=84481ee60f04e91f8da6998fc&amp;id=02b170bfa0\" method=\"post\" id=\"mc-embedded-subscribe-form\" name=\"mc-embedded-subscribe-form\" class=\"validate\" target=\"_blank\" novalidate>\
+    <div id=\"mc_embed_signup_scroll\">\
+<div class=\"mc-field-group\">\
+	<input type=\"email\" value=\"\" name=\"EMAIL\" class=\"required email\" id=\"mce-EMAIL\" placeholder='zebra@zoo.com'>\
+    <input type=\"submit\" value=\"Subscribe\" name=\"subscribe\" id=\"mc-embedded-subscribe\" class=\"button\">\
+</div>\
+	<div id=\"mce-responses\" class=\"clear\">\
+		<div class=\"response\" id=\"mce-error-response\" style=\"display:none\"></div>\
+		<div class=\"response\" id=\"mce-success-response\" style=\"display:none\"></div>\
+	</div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->\
+    <div style=\"position: absolute; left: -5000px;\"><input type=\"text\" name=\"b_84481ee60f04e91f8da6998fc_02b170bfa0\" tabindex=\"-1\" value=\"\"></div>\
+    </div>\
+</form>\
+</div>\
+<!--End mc_embed_signup-->\
+";
+Bind(TPDC.Newsletter, 'tpdc:newsletter');
+
+
+TPDC.Meme = function() {
+	this.image.src = '/images/features/' + this['data-name'] + '.png';
+
+	this.share.object = {
+		url: '/features/meme?name=' + this['data-name'],
+		proxy: false,
+		title: "meme'd",
+		image: this.image.src
+	};
+
+}; // Meme()
+TPDC.Meme.templateMarkup = "\
+	<div style='text-align: center;'>\
+		<img data-id='image' alt='probably toilet paper' style='max-width: 90%;' />\
+	</div>\
+	<tpdc:share data-id='share'></tpdc:share>\
+";
+Bind(TPDC.Meme, 'tpdc:meme');
+
+
 TPDC.FartCounter = function() {
 
 	var _t = this;
@@ -1579,6 +1800,21 @@ TPDC.FartCounter.templateMarkup = ""
 Bind(TPDC.FartCounter, 'tpdc:fartcounter');
 
 
+TPDC.SignInPlea = function() {
+	var _t = this;
+
+	this.link.href = "/signin?return=" + encodeURIComponent(
+		document.location.pathname
+	);
+
+	TPDC.API.getAuthenticatedUser().returnTo(function(rv) {
+		if (rv) { _t.style.display = 'none'; }
+	});
+}; // SignInPlea
+TPDC.SignInPlea.templateMarkup = "<a data-id='link'></a>";
+Bind(TPDC.SignInPlea, 'tpdc:signinplea');
+
+
 // auth
 TPDC.setUserMenu = function(o) {
 	document.getElementById('user_menu').innerHTML = o['menu'];
@@ -1600,25 +1836,14 @@ TPDC.award = function(q, i, t, m) {
 
 
 TPDC.awardMultiple = function(awards) {
-	var r = {
-		token: TPDC.award.t,
-		items: []
-	};
+	var _awards = awards.map(function(a) { return {
+		item: a.item,
+		quantity: a.quantity
+	}});
 
-	for (var i = 0; i < awards.length; i++) {
-		r.items.push({
-			item: awards[i].item,
-			quantity: awards[i].quantity
-		});
-	}
-
-	TPDC.jsonp('game', r, function(rv) {
-		if (rv.new_token) {
-			TPDC.award.t = rv.new_token;
-		}
-
+	TPDC.API.awardThings(_awards).returnTo(function(rv) {
 		for (var i = 0; i < awards.length; i++) {
-			if (rv.awarded[awards[i].item]) {
+			if (rv[i] && rv[i].awarded > 0) {
 				var title = awards[i].title || "Item Collected";
 				var message = awards[i].message
 					|| awards[i].quantity + " " + awards[i].item;
@@ -1628,40 +1853,6 @@ TPDC.awardMultiple = function(awards) {
 	});
 
 } // TPDC.awardMultiple()
-
-
-TPDC.InstallLink = function() {
-	var _t = this;
-	this.icon_img.src = this.icon;
-	if (TPDC.InstallLink.evt) {
-		_t.classList.add('show');
-		_t.addEventListener('click', (e) => {
-			TPDC.InstallLink.evt.prompt();
-			TPDC.InstallLink.evt.userChoice.then((choiceResult) => {
-				if (choiceResult.outcome === 'accepted') {
-					_t.classList.remove('show');
-					console.log('User accepted the A2HS prompt');
-				} else {
-					console.log('User dismissed the A2HS prompt');
-				}
-				TPDC.InstallLink.evt = null;
-			});
-		});
-	}
-};
-TPDC.InstallLink.templateMarkup = "\
-	<hr />\
-	<div class='button'>\
-		<img data-id='icon_img' />\
-		Install\
-	</div>\
-";
-Bind(TPDC.InstallLink, 'tpdc:installlink');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-	e.preventDefault();
-	TPDC.InstallLink.evt = e;
-});
 
 
 if (this['FB']) {
@@ -1708,3 +1899,4 @@ if (this['__tpdcq']) {
 		}
 	}
 }
+

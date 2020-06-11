@@ -221,3 +221,7 @@ tpdc\:installlink .button [data-id='icon_img'] {
 	height: 1em;
 	vertical-align: middle;
 }
+
+.social-link {
+	cursor: pointer;
+}

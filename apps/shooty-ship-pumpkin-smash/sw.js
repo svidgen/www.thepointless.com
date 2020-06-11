@@ -15,6 +15,9 @@ var urlsToCache = [
 	'img/square-candy-colored-150x76.png',
 	'img/round-red-candy-150x81.png',
 	'img/shooty-ship-pumpkin-smash-icon.png',
+	'img/fb_icon_22px.png',
+	'img/twitter_logo_22px.png',
+	'img/email_logo_22px_h.png',
 ];
 
 self.addEventListener('install', function(event) {
