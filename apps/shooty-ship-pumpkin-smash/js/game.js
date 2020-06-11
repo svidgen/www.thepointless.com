@@ -757,6 +757,11 @@ SS.GameOverSplash = function() {
 
 	if (score == 0) {
 		this.share.parentNode.removeChild(this.share);
+	} else {
+		this.share.object = {
+			text: "I scored " + score + " in Shooty Ship Pumpkin Smash!"
+				+ " It's SpOoKy FuN! Try it out!"
+		};
 	}
 
 	var max = 0;

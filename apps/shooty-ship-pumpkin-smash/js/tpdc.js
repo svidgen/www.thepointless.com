@@ -1577,6 +1577,10 @@ TPDC.ResultCard.templateMarkup = "\
 Bind(TPDC.ResultCard, 'tpdc:resultcard');
 
 
+//
+// TODO: add or replace link(s) with native share API when available
+// https://web.dev/web-share/
+//
 TPDC.Share = function() {
 	var _t = this;
 
