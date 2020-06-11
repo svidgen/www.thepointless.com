@@ -1576,10 +1576,8 @@ TPDC.ResultCard.templateMarkup = "\
 ";
 Bind(TPDC.ResultCard, 'tpdc:resultcard');
 
-
 //
-// TODO: add or replace link(s) with native share API when available
-// https://web.dev/web-share/
+// https://www.iconfinder.com/search/?q=share&price=free&size=128
 //
 TPDC.Share = function() {
 	var _t = this;
@@ -1688,6 +1686,23 @@ TPDC.Share = function() {
 		return false;
 	}; // email_link.onclick()
 
+	this.native_link.onclick = function() {
+		var o = _t.getObject();
+		navigator.share({
+			title: o.title,
+			text: o.text,
+			url: o.url,
+		});
+	}; // native_share.onclick()
+
+	if (navigator.share) {
+		this.fb_link.style.display = 'none';
+		this.twitter_link.style.display = 'none';
+		this.email_link.style.display = 'none';
+	} else {
+		this.native_link.style.display = 'none';
+	}
+
 }; // Share
 TPDC.Share.templateMarkup = "\
 	<br />Make it happen, Cap'n.<br /><br />\
@@ -1699,6 +1714,9 @@ TPDC.Share.templateMarkup = "\
 		</a>\
 		<a data-id='email_link' class='social-link'>\
 			<img class='social-icon' src='img/email_logo_22px_h.png' />\
+		</a>\
+		<a data-id='native_link' class='social-link'>\
+			<img class='social-icon' src='img/native-share.svg' />\
 		</a>\
 ";
 Bind(TPDC.Share, 'tpdc:share');

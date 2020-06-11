@@ -18,6 +18,7 @@ var urlsToCache = [
 	'img/fb_icon_22px.png',
 	'img/twitter_logo_22px.png',
 	'img/email_logo_22px_h.png',
+	'img/native-share.svg',
 ];
 
 self.addEventListener('install', function(event) {
