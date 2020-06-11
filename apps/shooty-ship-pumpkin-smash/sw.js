@@ -1,4 +1,4 @@
-var CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v1';
+var CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v2';
 var urlsToCache = [
 	'index.html',
 	'css/sheet.css',
@@ -32,7 +32,7 @@ self.addEventListener('install', function(event) {
 
 
 self.addEventListener('activate', function(event) {
-	var cacheWhitelist = ['shooty-ship-pumpkin-smash-cache-v1'];
+	var cacheWhitelist = [CACHE_NAME];
 	event.waitUntil(
 		caches.keys().then(function(cacheNames) {
 			return Promise.all(
