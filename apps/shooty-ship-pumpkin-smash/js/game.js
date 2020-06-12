@@ -15,12 +15,14 @@ SS.Board = function() {
 
 	this.enable = function() {
 		if (!this.enabled) {
+			this.register_event_proxies();
 			this.enabled = true;
 			TPDC.MainLoop.addObject(_t);
 		}
 	}; // enable();
 
 	this.disable = function() {
+		this.unregister_event_proxies();
 		this.enabled = false;
 	}; // disable()
 
@@ -161,6 +163,32 @@ SS.Board = function() {
 		return false;
 	}; // interact()
 
+	this.register_event_proxies = function() {
+		this.ontouchstart = eventProxy(_t, function(e) { _t.interact(e); });
+		this.ontouchmove = function() { return false; }
+		this.ontouchend = function() { return false; }
+		this.ontouchleave  = function() { return false; }
+		this.ontouchcancel = function() { return false; }
+		this.onmousedown = eventProxy(_t, function(e) { _t.interact(e); });
+		this.onclick = function() { return false; }
+		this.onmouseup = function() { return false; }
+	};
+
+	this.unregister_event_proxies = function() {
+		[
+			'touchstart',
+			'touchmove',
+			'touchend',
+			'touchleave',
+			'touchecancel',
+			'mousedown',
+			'click',
+			'mouseup'
+		].forEach(function(event_name) {
+			_t['on' + event_name] = null;
+		});
+	};
+
 	var eventProxy = function(o, fn) {
 		return function(e) {
 			var evt = e || window.event;
@@ -176,16 +204,6 @@ SS.Board = function() {
 			return rv;
 		};
 	}; // eventProxy()
-
-	this.ontouchstart = eventProxy(_t, function(e) { _t.interact(e); });
-	this.ontouchmove = function() { return false; }
-	this.ontouchend = function() { return false; }
-	this.ontouchleave  = function() { return false; }
-	this.ontouchcancel = function() { return false; }
-
-	this.onmousedown = eventProxy(_t, function(e) { _t.interact(e); });
-	this.onclick = function() { return false; }
-	this.onmouseup = function() { return false; }
 
 	on(_t.presplash, 'restartClick', function() { _t.start(); });
 

@@ -225,3 +225,8 @@ ss\:installlink .button [data-id='icon_img'] {
 .social-link {
 	cursor: pointer;
 }
+
+.social-icon {
+	height: 2em;
+	margin: 0.1em 0.5em;
+}
