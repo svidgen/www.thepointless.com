@@ -1,4 +1,5 @@
-var CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v3';
+var CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v4';
+
 var urlsToCache = [
 	'index.html',
 	'css/sheet.css',
@@ -25,7 +26,12 @@ self.addEventListener('install', function(event) {
 	event.waitUntil(
 		caches.open(CACHE_NAME).then(function(cache) {
 			console.log('Opened cache');
-			return cache.addAll(urlsToCache);
+			// return cache.addAll(urlsToCache);
+			return Promise.all(urlsToCache.map(function(url) {
+				return fetch(url, {cache: 'no-cache'}).then(function(response) {
+					return cache.put(url, response);
+				});
+			}));
 		})
 	);
 });
