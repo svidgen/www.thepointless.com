@@ -1687,12 +1687,18 @@ TPDC.Share = function() {
 	}; // email_link.onclick()
 
 	this.native_link.onclick = function() {
+		console.log('starting native share');
 		var o = _t.getObject();
+		console.log('native share', o);
 		navigator.share({
 			title: o.title,
 			text: o.text,
 			url: o.url,
-		});
+		}).then(
+			() => console.log('shared')
+		).catch(
+			() => console.log('not shared')
+		);
 	}; // native_share.onclick()
 
 	if (navigator.share) {

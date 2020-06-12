@@ -196,16 +196,16 @@ ss\:bannerad {
 	z-index: 10000;
 }
 
-tpdc\:installlink {
+ss\:installlink {
 	display: none;
 }
 
-tpdc\:installlink.show {
+ss\:installlink.show {
 	display: block;
 	text-align: center;
 }
 
-tpdc\:installlink .button {
+ss\:installlink .button {
 	display: inline-block;
 	padding: 0.1em 1.5em;
 	margin: 0.5em;
@@ -217,7 +217,7 @@ tpdc\:installlink .button {
 	cursor: pointer;
 }
 
-tpdc\:installlink .button [data-id='icon_img'] {
+ss\:installlink .button [data-id='icon_img'] {
 	height: 1em;
 	vertical-align: middle;
 }

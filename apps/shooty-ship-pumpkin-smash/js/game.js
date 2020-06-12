@@ -72,7 +72,7 @@ SS.Board = function() {
 
 	this.step = function() {
 		if (!this.enabled) { return; }
-	
+
 		if (this.rocks < this.maxRocks) {
 			var spawn = this.getSpawnPoint();
 			var target = {
@@ -206,8 +206,8 @@ SS.Board = function() {
 	onready(this).fire();
 }; // Board
 SS.Board.templateMarkup = "\
-<ss:gameoversplash data-id='presplash' heading='Shooty Ship Pumpkin Smash' no-ad='1'></ss:gameoversplash>\
-<ss:ship data-id='ship' style='top: -100%; left: -100%;'></ss:ship>";
+	<ss:gameoversplash data-id='presplash' heading='Shooty Ship Pumpkin Smash' no-ad='1'></ss:gameoversplash>\
+	<ss:ship data-id='ship' style='top: -100%; left: -100%;'></ss:ship>";
 Bind(SS.Board, 'ss:board');
 
 
@@ -639,7 +639,7 @@ SS.Pumpkin = function() {
 			speed: 0.25,
 			mass: 1.5
 		});
-		
+
 		momentum.impactBy(impact);
 
 		var rv = New(SS.Shrapnel, {
@@ -760,7 +760,7 @@ SS.GameOverSplash = function() {
 	} else {
 		this.share.object = {
 			text: "I scored " + score + " in Shooty Ship Pumpkin Smash!"
-				+ " It's SpOoKy FuN! Try it out!"
+			+ " It's SpOoKy FuN! Try it out!"
 		};
 	}
 
@@ -806,80 +806,15 @@ SS.GameOverSplash.templateMarkup = "\
 	<div class='background'></div>\
 	<ss:bannerad data-id='bannerad'></ss:bannerad>\
 	<div class='foreground'>\
-		<h1 data-id='heading'>Game Over</h1>\
-		<div class='scoreline'>Your score: <span data-id='score' class='score'>...?</span></div>\
-		<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>\
-		<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
-		<tpdc:share data-id='share'></tpdc:share>\
+	<h1 data-id='heading'>Game Over</h1>\
+	<div class='scoreline'>Your score: <span data-id='score' class='score'>...?</span></div>\
+	<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>\
+	<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
+	<tpdc:share data-id='share'></tpdc:share>\
+	<ss:installlink icon='img/shooty-ship-pumpkin-smash-icon.png'></ss:installlink>\
 	</div>\
 ";
-// <tpdc:installlink icon='img/shooty-ship-pumpkin-smash-icon.png'></tpdc:installlink>\
 Bind(SS.GameOverSplash, 'ss:gameoversplash');
-
-
-SS.ShareButton = function() {
-	var _t = this;
-
-	this.score = 0;
-	this.max = 0;
-	this.enabled = true;
-
-	this.setScores = function(score, max) {
-		this.score = score;
-		this.max = max;
-	}; // setScores()
-
-	this.onclick = function() {
-		if (!this.enabled) {
-			return;
-		}
-
-		this.enabled = false;
-		this.style.cursor = 'default';
-		this.style.opacity = 0.5;
-		this.style.filter = 'alpha(opacity=50)';
-
-		if (!window.FB) {
-			this.innerHTML = 'No connection';
-			return;
-		}
-
-		this.innerHTML = "Sharing..";
-		FB.login(function() {
-			FB.api({
-				method: 'post',
-				path: '/me/feed',
-				params: {
-					message: "Pew pew pew! I got "
-						+ _t.score + " in #shootyship #pumpkinsmash!",
-					link: "https://play.google.com/store/apps/details?id=com.thepointless.shootyshippumpkinsmash"
-				},
-				success: function(response) {
-					if (!response || response.error) {
-						_t.innerHTML = "Failed";
-					} else {
-						_t.innerHTML = "Shared";
-					}
-				},
-				fail: function(response) {
-					_t.innerHTML = "Failed";
-				}
-			});
-		},
-		{scope: 'publish_actions'});
-	}; // onclick
-	this.ontouchend = this.onclick;
-
-	this.init = function() {
-		onready(this).fire();
-	}; // init()
-
-	setType(this, 'SS.ShareButton');
-}; // ShareButton
-SS.ShareButton.templateMarkup = "\
-	FB Share\
-";
-Bind(SS.ShareButton, 'ss:sharebutton');
 
 
 SS.BannerAd = function() {
@@ -888,10 +823,10 @@ SS.BannerAd = function() {
 		this.innerHTML = "\
 			<!-- Shooty Ship Responsive -->\
 			<ins class=\"adsbygoogle\"\
-				 style=\"display:block\"\
-				 data-ad-client=\"ca-pub-6115341109827821\"\
-				 data-ad-slot=\"6469936332\"\
-				 data-ad-format=\"auto\"></ins>\
+		style=\"display:block\"\
+		data-ad-client=\"ca-pub-6115341109827821\"\
+		data-ad-slot=\"6469936332\"\
+		data-ad-format=\"auto\"></ins>\
 		";
 		setTimeout(function() {
 			(adsbygoogle = window.adsbygoogle || []).push({});
@@ -910,3 +845,39 @@ SS.BannerAd = function() {
 SS.BannerAd.templateMarkup = " ";
 Bind(SS.BannerAd, 'ss:bannerad');
 
+
+SS.InstallLink = function() {
+	var _t = this;
+	this.icon_img.src = this.icon;
+
+	if (SS.InstallLink.evt) {
+		_t.classList.add('show');
+	}
+
+	this.button.onclick = function(e) {
+		SS.InstallLink.evt.prompt();
+		SS.InstallLink.evt.userChoice.then((choiceResult) => {
+			if (choiceResult.outcome === 'accepted') {
+				_t.classList.remove('show');
+				console.log('User accepted the A2HS prompt');
+			} else {
+				console.log('User dismissed the A2HS prompt');
+			}
+			SS.InstallLink.evt = null;
+		});
+	};
+};
+SS.InstallLink.templateMarkup = "\
+	<hr />\
+	<div data-id='button' class='button'>\
+	<img data-id='icon_img' />\
+Install\
+	</div>\
+";
+Bind(SS.InstallLink, 'ss:installlink');
+
+
+window.addEventListener('beforeinstallprompt', (e) => {
+	e.preventDefault();
+	SS.InstallLink.evt = e;
+});
