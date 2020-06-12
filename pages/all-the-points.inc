@@ -51,13 +51,13 @@ upon('TPDC', function() {
 			_t.sharer.object = {
 				text: "I have " + totals.total + " " + _t.point + "s!"
 			};
-			addClassname(_t.clicker, 'inactive');
-			removeClassname(_t.availability, 'inactive');
+			TG.addClassname(_t.clicker, 'inactive');
+			TG.removeClassname(_t.availability, 'inactive');
 		}; // update()
 
 		on(_t.nextAwardable, 'end', function() {
-			removeClassname(_t.clicker, 'inactive');
-			addClassname(_t.availability, 'inactive');
+			TG.removeClassname(_t.clicker, 'inactive');
+			TG.addClassname(_t.availability, 'inactive');
 		});
 
 		_t.clicker.point = _t.point;

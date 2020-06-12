@@ -79,6 +79,7 @@ function load_file($file, $theme) {
 
 $routes = [
 	"/^\/?(images\/.+\.([^.]+))$/" => 'load_file',
+	"/^\/?(apps\/.+\.([^.]+))$/" => 'load_file',
 	"/^([^.]+)$/" => function($page) {
 		load_page($page, 'default');
 	},

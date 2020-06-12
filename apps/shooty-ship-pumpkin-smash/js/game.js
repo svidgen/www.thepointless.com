@@ -1,33 +1,3 @@
-<?php
-
-$meta_title = 'shooty ship - thepointless.com';
-$require_theme = 'basic';
-$manifest = 'manifest.json';
-
-?>
-
-<style type='text/css'>
-	@import url(sheet.css?v=<?php print $general_version; ?>);
-
-	html, body, #content {
-		width: 100%;
-		height: 100%;
-		margin: 0px;
-		padding: 0px;
-		position: relative;
-	}
-</style>
-
-<ss:board></ss:board>
-
-<script type='text/javascript' src='/ajax/api?v=<?php print $general_version; ?>'></script>
-<script type='text/javascript' src='/js/tpdc.js?v=<?php print $general_version; ?>'></script>
-<script type='text/javascript'>
-
-if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register('sw.js');
-};
-
 var SS = SS || {};
 
 
@@ -41,14 +11,18 @@ SS.Board = function() {
 	this.minY = 0;
 	this.maxY = 100;
 
+	this.enemies = [];
+
 	this.enable = function() {
 		if (!this.enabled) {
+			this.register_event_proxies();
 			this.enabled = true;
 			TPDC.MainLoop.addObject(_t);
 		}
 	}; // enable();
 
 	this.disable = function() {
+		this.unregister_event_proxies();
 		this.enabled = false;
 	}; // disable()
 
@@ -62,7 +36,7 @@ SS.Board = function() {
 		this.minY = 0;
 		this.maxY = 100;
 
-		var box = new TG.NodeBox(this);
+		var box = new Bind.NodeBox(this);
 
 		// make square
 		var max = Math.max(box.width, box.height);
@@ -100,7 +74,7 @@ SS.Board = function() {
 
 	this.step = function() {
 		if (!this.enabled) { return; }
-	
+
 		if (this.rocks < this.maxRocks) {
 			var spawn = this.getSpawnPoint();
 			var target = {
@@ -113,33 +87,42 @@ SS.Board = function() {
 			var run = target.x - spawn.x;
 			var d = Math.atan2(rise, run);
 
-			var enemy = New(SS.Enemy, {
+			var enemy = New(SS.Pumpkin, {
 				x: spawn.x, y: spawn.y, direction: d,
 				speed: 0.2 + (Math.random() * _t.maxRocks / 3.3),
 				game: _t
 			});
 
-			on(enemy, 'shot', function() {
-				_t.score += 1;
-				_t.maxRocks = Math.log(_t.score)/Math.log(Math.E) || 1;
-			});
-
-			on(enemy, 'destroy', function() {
-				_t.rocks -= 1;
-				TPDC.award(1, 'Paper Rock');
-			});
-
-			this.appendChild(enemy);
-			this.rocks++;
+			this.addEnemy(enemy);
 		}
 	}; // step()
+
+	this.addEnemy = function(enemy) {
+
+		on(enemy, 'shot', function() {
+			_t.score += 1;
+			_t.maxRocks = Math.log(_t.score)/Math.log(Math.E) || 1;
+		});
+
+		on(enemy, 'destroy', function() {
+			_t.rocks -= 1;
+			_t.enemies.splice(_t.enemies.indexOf(enemy));
+		});
+
+		on(enemy, 'shatter', function(newEnemy) {
+			_t.addEnemy(newEnemy);
+		});
+
+		this.appendChild(enemy);
+		this.enemies.push(enemy);
+		this.rocks++;
+	}; // addEnemy()
 
 	this.draw = function() {
 	}; // draw()
 
 	this.gameover = function() {
 		this.disable();
-		this.returnEvents();
 		setTimeout(function() {
 			var splash = New(SS.GameOverSplash, {
 				board: _t,
@@ -151,10 +134,11 @@ SS.Board = function() {
 	}; // gameover()
 
 	this.start = function() {
-		var rocks = getNodes(this, SS.Enemy);
+		var rocks = this.enemies;
 		for (var i = 0; i < rocks.length; i++) {
 			rocks[i].explode('');
 		}
+		this.enemies = [];
 
 		this.score = 0;
 		this.rocks = 0;
@@ -163,15 +147,13 @@ SS.Board = function() {
 		this.enable();
 		this.ship.respawn();
 		this.ship.leapTo(50 - _t.ship.width/2, 50 - _t.ship.height/2);
-
-		this.stealEvents();
 	}; // restart()
 
 	this.interact = function(e) {
 		if (!this.enabled) { return; }
 
 		var mc = new TG.MouseCoords(e);
-		var tc = new TG.NodeBox(this);
+		var tc = new Bind.NodeBox(this);
 		var destination = {
 			x: 100 * (mc.x - tc.x)/tc.width,
 			y: 100 * (mc.y - tc.y)/tc.height
@@ -180,6 +162,32 @@ SS.Board = function() {
 
 		return false;
 	}; // interact()
+
+	this.register_event_proxies = function() {
+		this.ontouchstart = eventProxy(_t, function(e) { _t.interact(e); });
+		this.ontouchmove = function() { return false; }
+		this.ontouchend = function() { return false; }
+		this.ontouchleave  = function() { return false; }
+		this.ontouchcancel = function() { return false; }
+		this.onmousedown = eventProxy(_t, function(e) { _t.interact(e); });
+		this.onclick = function() { return false; }
+		this.onmouseup = function() { return false; }
+	};
+
+	this.unregister_event_proxies = function() {
+		[
+			'touchstart',
+			'touchmove',
+			'touchend',
+			'touchleave',
+			'touchecancel',
+			'mousedown',
+			'click',
+			'mouseup'
+		].forEach(function(event_name) {
+			_t['on' + event_name] = null;
+		});
+	};
 
 	var eventProxy = function(o, fn) {
 		return function(e) {
@@ -196,28 +204,6 @@ SS.Board = function() {
 			return rv;
 		};
 	}; // eventProxy()
-
-	this.stealEvents = function() {
-		this.ontouchstart = eventProxy(_t, function(e) { _t.interact(e); });
-		this.ontouchmove = function() { return false; }
-		this.ontouchend = function() { return false; }
-		this.ontouchleave  = function() { return false; }
-		this.ontouchcancel = function() { return false; }
-		this.onmousedown = eventProxy(_t, function(e) { _t.interact(e); });
-		this.onclick = function() { return false; }
-		this.onmouseup = function() { return false; }
-	}; // stealEvents()
-
-	this.returnEvents = function() {
-		this.ontouchstart = null;
-		this.ontouchmove = null;
-		this.ontouchend = null;
-		this.ontouchleave = null;
-		this.ontouchcancel = null;
-		this.onmousedown = null;
-		this.onclick = null;
-		this.onmouseup = null;
-	}; // returnEvents()
 
 	on(_t.presplash, 'restartClick', function() { _t.start(); });
 
@@ -238,8 +224,8 @@ SS.Board = function() {
 	onready(this).fire();
 }; // Board
 SS.Board.templateMarkup = "\
-<ss:gameoversplash data-id='presplash' heading='Shooty Ship'></ss:gameoversplash>\
-<ss:ship data-id='ship' style='top: -100%; left: -100%;'></ss:ship>";
+	<ss:gameoversplash data-id='presplash' heading='Shooty Ship Pumpkin Smash' no-ad='1'></ss:gameoversplash>\
+	<ss:ship data-id='ship' style='top: -100%; left: -100%;'></ss:ship>";
 Bind(SS.Board, 'ss:board');
 
 
@@ -298,6 +284,24 @@ SS.Audio = {
 	}
 }; // Audio()
 
+SS.Audio.errors = [];
+
+document.addEventListener('deviceready', function() {
+	if (window.plugins && window.plugins.LowLatencyAudio) {
+		var lla = window.plugins.LowLatencyAudio;
+		for (var k in SS.Audio.channels) {
+			(function(src) { 
+				lla.preloadFX(src, src);
+				var a = {
+					play: function() { lla.play(src); }
+				};
+				SS.Audio.channels[src] = a;
+			})(k);
+		}
+	}
+
+	// admob.initAdmob('ca-app-pub-6115341109827821/9629088734','ca-app-pub-6115341109827821/9629088734');
+}, false);
 
 SS.Button = function() {
 	this.onclick = function() {
@@ -318,8 +322,8 @@ Bind(SS.StartButton, 'ss:startbutton');
 
 
 SS.MagicallySizedObject = function() {
-	var coords = new TG.NodeBox(this);
-	var pCoords = new TG.NodeBox(this.parentNode || document.body);
+	var coords = new Bind.NodeBox(this);
+	var pCoords = new Bind.NodeBox(this.parentNode || document.body);
 
 	this.width = 100 * coords.width / pCoords.width;
 	this.height = 100 * coords.height / pCoords.height;
@@ -445,8 +449,11 @@ SS.Ship = function() {
 		}
 	});
 
+	this.init = function() {
+		onready(this).fire();
+	}; // init()
+
 	setType(this, 'SS.Ship');
-	onready(this).fire();
 }; // Ship
 SS.Ship.templateMarkup = "";
 Bind(SS.Ship, 'ss:ship');
@@ -501,16 +508,15 @@ SS.Projectile = function() {
 	}; // findCollisions()
 
 	this.findCollisionsWith = function(search) {
-		var box = new TG.NodeBox(this);
+		var box = new Bind.NodeBox(this);
 		var nodes = getNodes(document, search);
 		for (var i = 0; i < nodes.length; i++) {
-			if (box.overlaps(new TG.NodeBox(nodes[i]))) {
+			if (box.overlaps(new Bind.NodeBox(nodes[i]))) {
 				on(this, 'collide').fire(nodes[i]);
 				on(nodes[i], 'collide').fire(this);
 			}
 		}
 	}; // findCollisionsWith()
-
 
 	setType(this, 'SS.Projectile');
 }; // Projectile
@@ -520,7 +526,7 @@ SS.Bullet = function() {
 	var _t = this;
 
 	this.speed = this.speed || 2;
-	this.conflicts = [SS.Enemy];
+	this.conflicts = [SS.Enemy, SS.Pumpkin, SS.Shrapnel];
 
 	on(this, 'collide', function(o) {
 		if (isa(o, 'SS.Enemy')) {
@@ -528,15 +534,16 @@ SS.Bullet = function() {
 		}
 	});
 
-	SS.Audio.play(SS.Bullet.sound);
+	this.init = function() {
+		SS.Audio.play(SS.Bullet.sound);
+		TPDC.MainLoop.addObject(this);
+		onready(this).fire();
+	}; // init()
 
 	SS.Projectile.apply(this);
 	setType(this, 'SS.Bullet');
-	TPDC.MainLoop.addObject(this);
-	onready(this).fire();
-
 }; // Bullet
-SS.Bullet.sound = "/images/pew-128.mp3";
+SS.Bullet.sound = "audio/pew-128.mp3";
 SS.Audio.prepare(SS.Bullet.sound);
 SS.Bullet.templateMarkup = " ";
 Bind(SS.Bullet, 'ss:bullet');
@@ -561,17 +568,17 @@ SS.Enemy = function() {
 		this._step();
 	}; // step()
 
-	this._draw = this.draw;
+	var innerDraw = this.draw;
 	this.draw = function() {
 		var d = Number(this.visibleDirection) + (Math.PI/2);
 		this.style.transform = 'rotate(' + d + 'rad)';
 		this.style.webkitTransform = 'rotate(' + d + 'rad)';
 		this.style.mozTransform = 'rotate(' + d + 'rad)';
 		this.style.msTransform = 'rotate(' + d + 'rad)';
-		this._draw();
+		innerDraw.call(this);
 	}; // draw()
 
-	this.explode = function(v) {
+	this.explode = function(v, impact) {
 		on(_t, 'shot').fire();
 		_t.parentNode.appendChild(New(SS.Explosion, {
 			x: _t.x,
@@ -582,15 +589,105 @@ SS.Enemy = function() {
 	}; // explode()
 
 	on(this, 'collide', function(o) {
-		if (isa(o, 'SS.Bullet')) { _t.explode(); }
+		if (isa(o, 'SS.Bullet')) {
+			_t.explode(_t.game.score + 1, New(SS.Momentum, {
+				direction: o.direction, speed: o.speed, mass: 1
+			}));
+		}
 	});
 
+	this.init = function() {
+		TPDC.MainLoop.addObject(this);
+		onready(this).fire();
+	}; // init()
+
 	setType(this, 'SS.Enemy');
-	TPDC.MainLoop.addObject(this);
-	onready(this).fire();
 }; // Enemy
 SS.Enemy.templateMarkup = "";
 Bind(SS.Enemy, 'ss:enemy');
+
+
+SS.Pumpkin = function() {
+	var _t = this;
+	SS.Enemy.apply(this);
+
+	this.mass = 5;
+
+	var baseExplode = this.explode;
+	this.explode = function(v, impact) {
+		baseExplode.call(this, v);
+
+		if (!impact) {
+			return;
+		}
+
+		// todo: make this math ... umm ... based on actual physics.
+
+		var combined_impact = New(SS.Momentum, {
+			direction: this.direction,
+			speed: this.speed,
+			mass: this.mass
+		});
+
+		combined_impact.impactBy(impact);
+
+		var shrapnel_count = 3; // Math.floor(Math.random() * 4);
+		combined_impact.speed = (combined_impact.speed*0.75)/shrapnel_count;
+		for (var i = 0; i < shrapnel_count; i++) {
+			this.emitRandomShrapnel(combined_impact);
+		}
+	}; // explode()
+
+	this.emitRandomShrapnel = function(impact) {
+		var subtypes = [
+			'round-red-candy',
+			'mummy',
+			'candle',
+			'square-candy'
+		];
+
+		var subtype = subtypes[Math.floor(Math.random() * subtypes.length)];
+
+		this.emitShrapnel(impact, subtype);
+	}; // emitRandomShrapnel()
+
+	this.emitShrapnel = function(impact, subtype) {
+		var momentum = New(SS.Momentum, {
+			direction: (Math.random() * Math.PI * 2) - Math.PI,
+			speed: 0.25,
+			mass: 1.5
+		});
+
+		momentum.impactBy(impact);
+
+		var rv = New(SS.Shrapnel, {
+			x: _t.x, y: _t.y, direction: momentum.direction,
+			speed: momentum.speed,
+			game: _t.game,
+			subtype: subtype
+		});
+
+		on(this, 'shatter').fire(rv);
+	}; // emitShrapnel()
+
+
+	setType(this, 'SS.Pumpkin');
+}; // Pumpkin
+SS.Pumpkin.templateMarkup = SS.Enemy.templateMarkup;
+Bind(SS.Pumpkin, 'ss:pumpkin');
+
+
+SS.Shrapnel = function() {
+	SS.Enemy.apply(this);
+
+	if (this.subtype) {
+		addClassname(this, this.subtype);
+	}
+
+	setType(this, 'SS.Shrapnel');
+}; // Shrapnel
+SS.Shrapnel.templateMarkup = "";
+Bind(SS.Shrapnel, 'ss:shrapnel');
 
 
 SS.Explosion = function() {
@@ -629,16 +726,44 @@ SS.Explosion = function() {
 		this.style.fontSize = this.offsetWidth * 0.5 + 'px';
 	}; // draw()
 
+	this.init = function() {
+		TPDC.MainLoop.addObject(this);
+		SS.Audio.play(SS.Explosion.sound);
+		onready(this).fire();
+	}; // init()
+
 	setType(this, 'SS.Explosion');
-	TPDC.MainLoop.addObject(this);
-	SS.Audio.play(SS.Explosion.sound);
-	onready(this).fire();
 }; // Explosion
-SS.Explosion.sound = '/images/pkewh.mp3';
+SS.Explosion.sound = 'audio/pkewh.mp3';
 SS.Audio.prepare(SS.Explosion.sound);
 SS.Explosion.templateMarkup =
 	"<table><tr><td data-id='text'></td></tr></table>";
 Bind(SS.Explosion, 'ss:explosion');
+
+
+SS.Momentum = function() {
+
+	this.direction = this.direction || 0;
+	this.speed = this.speed || 0;
+	this.mass = this.mass || 1;
+
+	this.impactBy = function(impactVector) {
+		var x = this.getXMomentum() + impactVector.getXMomentum();
+		var y = this.getYMomentum() + impactVector.getYMomentum();
+		this.direction = Math.atan2(y, x);
+		this.speed = Math.sqrt(x * x + y * y) / this.mass;
+	}; // impactBy()
+
+	this.getXMomentum = function() {
+		return Math.cos(this.direction) * this.speed * this.mass;
+	}; // getX()
+
+	this.getYMomentum = function() {
+		return Math.sin(this.direction) * this.speed * this.mass;
+	}; // getY()
+
+	setType(this, 'SS.Momentum');	
+}; // SS.Momentum()
 
 
 SS.GameOverSplash = function() {
@@ -650,6 +775,11 @@ SS.GameOverSplash = function() {
 
 	if (score == 0) {
 		this.share.parentNode.removeChild(this.share);
+	} else {
+		this.share.object = {
+			text: "I scored " + score + " in Shooty Ship Pumpkin Smash!"
+			+ " It's SpOoKy FuN! Try it out!"
+		};
 	}
 
 	var max = 0;
@@ -669,47 +799,103 @@ SS.GameOverSplash = function() {
 	});
 
 	on(_t.restart, 'click', function() {
+		_t.bannerad.hide();
 		on(_t, 'restartClick').fire();
 		_t.parentNode.removeChild(_t);
 	});
 
-	setTimeout(function() {
-		TG.addClassname(_t, 'visible');
-	}, this.delay);
+	onready(_t.bannerad, function() {
+		if (!Boolean(parseInt(_t.attributes['no-ad']))) {
+			_t.bannerad.show();
+		}
+	});
+
+	this.init = function() {
+		setTimeout(function() {
+			addClassname(_t, 'visible');
+		}, this.delay);
+		onready(this).fire();
+	}; // init()
+
 
 	setType(this, 'SS.GameOverSplash');
-	onready(this).fire();
 }; // GameOverSplash()
 SS.GameOverSplash.templateMarkup = "\
 	<div class='background'></div>\
-	<ss:bannerad></ss:bannerad>\
+	<ss:bannerad data-id='bannerad'></ss:bannerad>\
 	<div class='foreground'>\
-		<h1 data-id='heading'>Game Over</h1>\
-		<div class='scoreline'>Your score: <span data-id='score' class='score'>...?</span></div>\
-		<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>\
-		<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
-		<ss:sharebutton data-id='share'></ss:sharebutton>\
+	<h1 data-id='heading'>Game Over</h1>\
+	<div class='scoreline'>Your score: <span data-id='score' class='score'>...?</span></div>\
+	<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>\
+	<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
+	<tpdc:share data-id='share'></tpdc:share>\
+	<ss:installlink icon='img/shooty-ship-pumpkin-smash-icon.png'></ss:installlink>\
 	</div>\
 ";
 Bind(SS.GameOverSplash, 'ss:gameoversplash');
 
 
 SS.BannerAd = function() {
-	setTimeout(function() {
-		(adsbygoogle = window.adsbygoogle || []).push({});
-	}, 250);
+
+	this.show = function() {
+		this.innerHTML = "\
+			<!-- Shooty Ship Responsive -->\
+			<ins class=\"adsbygoogle\"\
+		style=\"display:block\"\
+		data-ad-client=\"ca-pub-6115341109827821\"\
+		data-ad-slot=\"6469936332\"\
+		data-ad-format=\"auto\"></ins>\
+		";
+		setTimeout(function() {
+			(adsbygoogle = window.adsbygoogle || []).push({});
+		}, 250);
+	}; // show()
+
+	this.hide = function() {
+	}; // destroy()
+
+	this.init = function() {
+		onready(this).fire();
+	}; // init()
+
+	setType(this, 'SS.BannerAd');
 }; // BannerAd
-SS.BannerAd.templateMarkup = "\
-<!-- Shooty Ship Responsive -->\
-<ins class=\"adsbygoogle\"\
-     style=\"display:block\"\
-     data-ad-client=\"ca-pub-6115341109827821\"\
-     data-ad-slot=\"6469936332\"\
-     data-ad-format=\"auto\"></ins>\
-";
+SS.BannerAd.templateMarkup = " ";
 Bind(SS.BannerAd, 'ss:bannerad');
 
-</script>
 
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-</script>
+SS.InstallLink = function() {
+	var _t = this;
+	this.icon_img.src = this.icon;
+
+	if (SS.InstallLink.evt) {
+		_t.classList.add('show');
+	}
+
+	this.button.onclick = function(e) {
+		SS.InstallLink.evt.prompt();
+		SS.InstallLink.evt.userChoice.then((choiceResult) => {
+			if (choiceResult.outcome === 'accepted') {
+				_t.classList.remove('show');
+				console.log('User accepted the A2HS prompt');
+			} else {
+				console.log('User dismissed the A2HS prompt');
+			}
+			SS.InstallLink.evt = null;
+		});
+	};
+};
+SS.InstallLink.templateMarkup = "\
+	<hr />\
+	<div data-id='button' class='button'>\
+	<img data-id='icon_img' />\
+Install\
+	</div>\
+";
+Bind(SS.InstallLink, 'ss:installlink');
+
+
+window.addEventListener('beforeinstallprompt', (e) => {
+	e.preventDefault();
+	SS.InstallLink.evt = e;
+});

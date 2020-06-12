@@ -85,9 +85,6 @@ TG.Data = TG.Data || {};
 TG.UI = TG.UI || {};
 });
 
-tgmodule.d('./','./tg-upon.js',function(module){
-});
-
 tgmodule.d('./','./tg-events.js',function(module){
 TG.Event = function (singleFire, o, a) {
 
@@ -396,6 +393,96 @@ module.exports = {
 };
 });
 
+tgmodule.d('./','./tg-box.js',function(module){
+TG.Box = function(x, y, w, h, mt, mr, mb, ml) {
+	this.x = x || 0;
+	this.y = y || 0;
+	this.width = w || 0;
+	this.height = h || 0;
+	this.marginTop = mt || 0;
+	this.marginRight = mr || 0;
+	this.marginBottom = mb || 0;
+	this.marginLeft = ml || 0;
+
+	this.contains = function(x, y) {
+		var ex = this.x - Math.ceil(this.marginLeft/2);
+		var ey = this.y - Math.ceil(this.marginTop/2);
+		var eright = this.x + this.width - Math.ceil(this.marginRight/2);
+		var ebottom = this.y + this.height - Math.ceil(this.marginBottom/2);
+		if (x >= ex && x <= eright && y >= ey && y <= ebottom) {
+			return true;
+		} else {
+			return false;
+		}
+	}; // contains()
+
+	this.getBottom = function() {
+		return this.y + this.height;
+	}; // getCorners()
+
+	this.getRight = function() {
+		return this.x + this.width;
+	}; // getCorners()
+
+	this.rangeOverlaps = function(aMin, aMax, bMin, bMax) {
+		return aMin <= bMax && bMin <= aMax;
+	}; // lineOverlaps()
+
+	this.xOverlaps = function(box) {
+		return this.rangeOverlaps(
+			this.x, this.getRight(), box.x, box.getRight()
+		);
+	}; // xOverlaps()
+
+	this.yOverlaps = function(box) {
+		return this.rangeOverlaps(
+			this.y, this.getBottom(), box.y, box.getBottom()
+		);
+	}; // yOverlaps()
+
+	this.overlaps = function(box) {
+		return this.xOverlaps(box) && this.yOverlaps(box);
+	}; // overlaps()
+
+}; // TG.Box()
+
+module.exports = TG.Box;
+});
+
+tgmodule.d('./','./tg-nodebox.js',function(module){
+var Box = require('tg-box.js');
+
+TG.NodeBox = function(n) {
+	this.x = n.offsetLeft;
+	this.y = n.offsetTop;
+
+	var temp = n;
+	while (temp = temp.offsetParent) {
+		this.x += temp.offsetLeft;
+		this.y += temp.offsetTop;
+	}
+
+	this.left = this.x;
+	this.top = this.y;
+	this.width = n.offsetWidth;
+	this.height = n.offsetHeight;
+	this.right = this.x + this.width;
+	this.bottom = this.x + this.height;
+
+	var style = {
+		marginLeft: '', marginRight: '', marginTop: '', marginBottom: ''
+	};
+
+	this.marginLeft = parseInt(style.marginLeft.replace(/[^0-9]/g, '') || '0');
+	this.marginRight = parseInt(style.marginRight.replace(/[^0-9]/g, '') || '0');
+	this.marginTop = parseInt(style.marginTop.replace(/[^0-9]/g, '') || '0');
+	this.marginBottom = parseInt(style.marginBottom.replace(/[^0-9]/g, '') || '0');
+}; // getCoordinates()
+TG.NodeBox.prototype = new Box();
+
+module.exports = TG.NodeBox;
+});
+
 tgmodule.d('./','./tg-profiler.js',function(module){
 TGProfiler = new function() {
 
@@ -472,6 +559,8 @@ require('tg-events.js');
 require('tg-set.js');
 require('tg-types.js');
 require('tg-css.js');
+require('tg-box.js');
+require('tg-nodebox.js');
 
 var Profiler = require('tg-profiler.js');
 
@@ -1082,12 +1171,6 @@ this.New = Build;
 
 
 console.log('Loaded Bind.');
-});
-
-tgmodule.d('./','./tg-namespace.js',function(module){
-});
-
-tgmodule.d('./','./tg-upon.js',function(module){
 });
 
 tgmodule.d('./','./tg-api.js',function(module){
@@ -1784,71 +1867,6 @@ TG.Value = function(v) {
 }; // TG.Value()
 });
 
-tgmodule.d('./','./tg-upon.js',function(module){
-});
-
-tgmodule.d('./','./tg-namespace.js',function(module){
-});
-
-tgmodule.d('./','./tg-dom.js',function(module){
-});
-
-tgmodule.d('./','./tg-box.js',function(module){
-TG.Box = function(x, y, w, h, mt, mr, mb, ml) {
-	this.x = x || 0;
-	this.y = y || 0;
-	this.width = w || 0;
-	this.height = h || 0;
-	this.marginTop = mt || 0;
-	this.marginRight = mr || 0;
-	this.marginBottom = mb || 0;
-	this.marginLeft = ml || 0;
-
-	this.contains = function(x, y) {
-		var ex = this.x - Math.ceil(this.marginLeft/2);
-		var ey = this.y - Math.ceil(this.marginTop/2);
-		var eright = this.x + this.width - Math.ceil(this.marginRight/2);
-		var ebottom = this.y + this.height - Math.ceil(this.marginBottom/2);
-		if (x >= ex && x <= eright && y >= ey && y <= ebottom) {
-			return true;
-		} else {
-			return false;
-		}
-	}; // contains()
-
-	this.getBottom = function() {
-		return this.y + this.height;
-	}; // getCorners()
-
-	this.getRight = function() {
-		return this.x + this.width;
-	}; // getCorners()
-
-	this.rangeOverlaps = function(aMin, aMax, bMin, bMax) {
-		return aMin <= bMax && bMin <= aMax;
-	}; // lineOverlaps()
-
-	this.xOverlaps = function(box) {
-		return this.rangeOverlaps(
-			this.x, this.getRight(), box.x, box.getRight()
-		);
-	}; // xOverlaps()
-
-	this.yOverlaps = function(box) {
-		return this.rangeOverlaps(
-			this.y, this.getBottom(), box.y, box.getBottom()
-		);
-	}; // yOverlaps()
-
-	this.overlaps = function(box) {
-		return this.xOverlaps(box) && this.yOverlaps(box);
-	}; // overlaps()
-
-}; // TG.Box()
-
-module.exports = TG.Box;
-});
-
 tgmodule.d('./','./tg-mouse-coords.js',function(module){
 require('tg-box.js');
 
@@ -2539,12 +2557,6 @@ upon('Bind', function () {
 });
 });
 
-tgmodule.d('./','./tg-upon.js',function(module){
-});
-
-tgmodule.d('./','./tg-namespace.js',function(module){
-});
-
 tgmodule.d('./','./tg-test.js',function(module){
 require('tg-upon.js');
 require('tg-namespace.js');
@@ -2656,15 +2668,6 @@ TG.assert = function(passed, failure_description) {
 	}
 }; // TG.assert()
 
-});
-
-tgmodule.d('./','./tg-upon.js',function(module){
-});
-
-tgmodule.d('./','./tg-namespace.js',function(module){
-});
-
-tgmodule.d('./','./tg-dom.js',function(module){
 });
 
 tgmodule.d('./','./tg-ui.js',function(module){
@@ -3089,9 +3092,6 @@ TG.UI.TestResult.templateMarkup = "\
 ";
 _bindq.push(TG.UI.TestResult, '.tg-test-result');
 
-});
-
-tgmodule.d('./','./tg-namespace.js',function(module){
 });
 
 tgmodule.d('./','./tg-mainloop.js',function(module){

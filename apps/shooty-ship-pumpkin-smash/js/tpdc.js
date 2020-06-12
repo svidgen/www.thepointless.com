@@ -1576,7 +1576,9 @@ TPDC.ResultCard.templateMarkup = "\
 ";
 Bind(TPDC.ResultCard, 'tpdc:resultcard');
 
-
+//
+// https://www.iconfinder.com/search/?q=share&price=free&size=128
+//
 TPDC.Share = function() {
 	var _t = this;
 
@@ -1684,17 +1686,43 @@ TPDC.Share = function() {
 		return false;
 	}; // email_link.onclick()
 
+	this.native_link.onclick = function() {
+		console.log('starting native share');
+		var o = _t.getObject();
+		console.log('native share', o);
+		navigator.share({
+			title: o.title,
+			text: o.text,
+			url: o.url,
+		}).then(
+			() => console.log('shared')
+		).catch(
+			() => console.log('not shared')
+		);
+	}; // native_share.onclick()
+
+	if (navigator.share) {
+		this.fb_link.style.display = 'none';
+		this.twitter_link.style.display = 'none';
+		this.email_link.style.display = 'none';
+	} else {
+		this.native_link.style.display = 'none';
+	}
+
 }; // Share
 TPDC.Share.templateMarkup = "\
 	<br />Make it happen, Cap'n.<br /><br />\
 		<a data-id='fb_link' class='social-link'>\
-			<img class='social-icon' src='/images/fb_icon_22px.png' />\
+			<img class='social-icon' src='img/fb_icon_22px.png' />\
 		</a>\
 		<a data-id='twitter_link' class='social-link'>\
-			<img class='social-icon' src='/images/twitter_logo_22px.png' />\
+			<img class='social-icon' src='img/twitter_logo_22px.png' />\
 		</a>\
 		<a data-id='email_link' class='social-link'>\
-			<img class='social-icon' src='/images/email_logo_22px_h.png' />\
+			<img class='social-icon' src='img/email_logo_22px_h.png' />\
+		</a>\
+		<a data-id='native_link' class='social-link'>\
+			<img class='social-icon' src='img/native-share.svg' />\
 		</a>\
 ";
 Bind(TPDC.Share, 'tpdc:share');
