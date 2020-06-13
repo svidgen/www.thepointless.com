@@ -293,8 +293,6 @@ document.addEventListener('deviceready', function() {
 			})(k);
 		}
 	}
-
-	// admob.initAdmob('ca-app-pub-6115341109827821/9629088734','ca-app-pub-6115341109827821/9629088734');
 }, false);
 
 SS.Button = function() {
@@ -793,15 +791,8 @@ SS.GameOverSplash = function() {
 	});
 
 	on(_t.restart, 'click', function() {
-		_t.bannerad.hide();
 		on(_t, 'restartClick').fire();
 		_t.parentNode.removeChild(_t);
-	});
-
-	onready(_t.bannerad, function() {
-		if (!Boolean(parseInt(_t.attributes['no-ad']))) {
-			_t.bannerad.show();
-		}
 	});
 
 	this.init = function() {
@@ -811,16 +802,15 @@ SS.GameOverSplash = function() {
 		onready(this).fire();
 	}; // init()
 
-
 	setType(this, 'SS.GameOverSplash');
 }; // GameOverSplash()
 SS.GameOverSplash.templateMarkup = "\
 	<div class='background'></div>\
-	<ss:bannerad data-id='bannerad'></ss:bannerad>\
 	<div class='foreground'>\
 	<h1 data-id='heading'>Game Over</h1>\
 	<div class='scoreline'>Your score: <span data-id='score' class='score'>...?</span></div>\
 	<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>\
+	<ss:bannerad data-id='bannerad'></ss:bannerad>\
 	<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
 	<tpdc:share data-id='share'></tpdc:share>\
 	<ss:installlink icon='img/shooty-ship-pumpkin-smash-icon.png'></ss:installlink>\
@@ -830,19 +820,14 @@ Bind(SS.GameOverSplash, 'ss:gameoversplash');
 
 
 SS.BannerAd = function() {
-
 	this.show = function() {
-		this.innerHTML = "\
-			<!-- Shooty Ship Responsive -->\
-			<ins class=\"adsbygoogle\"\
-		style=\"display:block\"\
-		data-ad-client=\"ca-pub-6115341109827821\"\
-		data-ad-slot=\"6469936332\"\
-		data-ad-format=\"auto\"></ins>\
-		";
-		setTimeout(function() {
-			(adsbygoogle = window.adsbygoogle || []).push({});
-		}, 250);
+		try {
+			setTimeout(function() {
+				(window.adsbygoogle = window.adsbygoogle || []).push({});
+			}, 250);
+		} catch {
+			// nothing
+		}
 	}; // show()
 
 	this.hide = function() {
@@ -852,9 +837,20 @@ SS.BannerAd = function() {
 		onready(this).fire();
 	}; // init()
 
+	this.show();
+
 	setType(this, 'SS.BannerAd');
 }; // BannerAd
-SS.BannerAd.templateMarkup = " ";
+SS.BannerAd.templateMarkup = '\
+	<!-- Shooty Ship Pumpkin Smash --> \
+	<ins class="adsbygoogle" \
+		style="display:block" \
+		data-ad-client="ca-pub-6115341109827821" \
+		data-ad-slot="9599170847" \
+		data-ad-format="auto" \
+		data-full-width-responsive="true"> \
+	</ins>\
+';
 Bind(SS.BannerAd, 'ss:bannerad');
 
 
