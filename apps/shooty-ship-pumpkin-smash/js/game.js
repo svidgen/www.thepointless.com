@@ -75,7 +75,7 @@ SS.Board = function() {
 	this.step = function() {
 		if (!this.enabled) { return; }
 
-		if (this.rocks < this.maxRocks) {
+		if (this.enemies.length < this.maxRocks) {
 			var spawn = this.getSpawnPoint();
 			var target = {
 				x: this.ship.x + (Math.random() * 20 - 10),
@@ -98,15 +98,13 @@ SS.Board = function() {
 	}; // step()
 
 	this.addEnemy = function(enemy) {
-
 		on(enemy, 'shot', function() {
 			_t.score += 1;
-			_t.maxRocks = Math.log(_t.score)/Math.log(Math.E) || 1;
+			_t.maxRocks = Math.max(1, Math.log(_t.score)/Math.log(Math.E));
 		});
 
 		on(enemy, 'destroy', function() {
-			_t.rocks -= 1;
-			_t.enemies.splice(_t.enemies.indexOf(enemy));
+			_t.enemies.splice(_t.enemies.indexOf(enemy), 1);
 		});
 
 		on(enemy, 'shatter', function(newEnemy) {
@@ -115,7 +113,6 @@ SS.Board = function() {
 
 		this.appendChild(enemy);
 		this.enemies.push(enemy);
-		this.rocks++;
 	}; // addEnemy()
 
 	this.draw = function() {
@@ -134,14 +131,11 @@ SS.Board = function() {
 	}; // gameover()
 
 	this.start = function() {
-		var rocks = this.enemies;
-		for (var i = 0; i < rocks.length; i++) {
-			rocks[i].explode('');
-		}
-		this.enemies = [];
+		this.enemies.forEach(function(enemy) {
+			enemy.destroy();
+		});
 
 		this.score = 0;
-		this.rocks = 0;
 		this.maxRocks = 1;
 
 		this.enable();
