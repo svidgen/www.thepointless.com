@@ -1602,6 +1602,10 @@ TPDC.Share = function() {
 			rv.url = document.origin + rv.url;
 		}
 
+		if (!rv.category) {
+			rv.category = 'page';
+		}
+
 		if (!rv.title) {
 			rv.title = document.title;
 		}
@@ -1628,12 +1632,13 @@ TPDC.Share = function() {
 
 	this.track = function(channel) {
 		var o = _t.getObject();
-		window._gaq = window._gaq || [];
-		_gaq.push(['_trackEvent', 'Share', channel, o['url'], null])
+		gtag('event', 'share', {
+			'event_category': o.category
+		});
 	}; // track()
 
 	this.fb_link.onclick = function() {
-		_t.track('Facebook');
+		_t.track('facebook');
 		var o = _t.getObject();
 
 		var url = "https://www.facebook.com/sharer.php?u=";
@@ -1656,7 +1661,7 @@ TPDC.Share = function() {
 	}; // fb_link.onclick()
 
 	this.twitter_link.onclick = function() {
-		_t.track('Twitter');
+		_t.track('twitter');
 		var o = _t.getObject();
 		var title = "#" + (o['title'] || 'thepointlessdotcom')
 			.toLowerCase()
@@ -1674,7 +1679,7 @@ TPDC.Share = function() {
 	}; // twitter_link.onclick()
 
 	this.email_link.onclick = function() {
-		_t.track('Email');
+		_t.track('email');
 		var o = _t.getObject();
 		var url = "mailto:?to=&"
 			+ "subject=" + encodeURIComponent(o['title'] || 'thepointless.com')
@@ -1687,9 +1692,8 @@ TPDC.Share = function() {
 	}; // email_link.onclick()
 
 	this.native_link.onclick = function() {
-		console.log('starting native share');
+		_t.track('native');
 		var o = _t.getObject();
-		console.log('native share', o);
 		navigator.share({
 			title: o.title,
 			text: o.text,

@@ -1,6 +1,16 @@
 var SS = SS || {};
 
 
+var trackEvent = function(action, o_label, o_value, o_noninteraction) {
+	gtag('event', action, {
+		'event_category': 'game',
+		'event_label': o_label,
+		'value': o_value,
+		'non_interaction': o_noninteraction
+	});
+};
+
+
 SS.Board = function() {
 	var _t = this;
 
@@ -141,6 +151,8 @@ SS.Board = function() {
 		this.enable();
 		this.ship.respawn();
 		this.ship.leapTo(50 - _t.ship.width/2, 50 - _t.ship.height/2);
+
+		trackEvent('play');
 	}; // restart()
 
 	this.interact = function(e) {
@@ -770,7 +782,8 @@ SS.GameOverSplash = function() {
 	} else {
 		this.share.object = {
 			text: "I scored " + score + " in Shooty Ship Pumpkin Smash!"
-			+ " It's SpOoKy FuN! Try it out!"
+			+ " It's SpOoKy FuN! Try it out!",
+			category: "game"
 		};
 	}
 
@@ -785,10 +798,6 @@ SS.GameOverSplash = function() {
 	} else {
 		this.maxScoreLine.parentNode.removeChild(this.maxScoreLine);
 	}
-
-	onready(this.share, function() {
-		_t.share.setScores(score, max);
-	});
 
 	on(_t.restart, 'click', function() {
 		on(_t, 'restartClick').fire();
@@ -868,8 +877,10 @@ SS.InstallLink = function() {
 			if (choiceResult.outcome === 'accepted') {
 				_t.classList.remove('show');
 				console.log('User accepted the A2HS prompt');
+				trackEvent('install');
 			} else {
 				console.log('User dismissed the A2HS prompt');
+				trackEvent('cancelled-install');
 			}
 			SS.InstallLink.evt = null;
 		});
