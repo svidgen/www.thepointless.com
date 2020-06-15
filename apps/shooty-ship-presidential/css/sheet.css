@@ -74,24 +74,6 @@ ss\:shrapnel {
 	background-size: 100% 100%;
 }
 
-ss\:shrapnel.mummy {
-	width: calc(6.25% * (93/150));
-	height: 6.25%;
-	background-image: url('../img/mummy-93x150.png');
-}
-
-ss\:shrapnel.candle {
-	width: calc(3.9% * (88/150));
-	height: 3.9%;
-	background-image: url('../img/candle-88x150.png');
-}
-
-ss\:shrapnel.square-candy {
-	width: 4.75%;
-	height: calc(4.75% * (76/150));
-	background-image: url('../img/square-candy-colored-150x76.png');
-}
-
 ss\:explosion {
 	position: absolute;
 	display: block;
