@@ -230,7 +230,7 @@ SS.Board = function() {
 	onready(this).fire();
 }; // Board
 SS.Board.templateMarkup = "\
-	<ss:gameoversplash data-id='presplash' heading='Shooty Ship - Presidential Edition' no-ad='1'></ss:gameoversplash>\
+	<ss:gameoversplash data-id='presplash' heading='Shooty Ship - PRESIDENTIAL Edition' no-ad='1'></ss:gameoversplash>\
 	<ss:ship data-id='ship' style='top: -100%; left: -100%;'></ss:ship>";
 Bind(SS.Board, 'ss:board');
 
@@ -845,7 +845,7 @@ SS.GameOverSplash = function() {
 SS.GameOverSplash.templateMarkup = "\
 	<div class='background'></div>\
 	<div class='foreground'>\
-	<h1 data-id='heading'>Game Over</h1>\
+	<h1 data-id='heading'><img class='fired' src='img/youre-fired.png' /></h1>\
 	<div class='scoreline'>Your score: <span data-id='score' class='score'>...?</span></div>\
 	<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>\
 	<ss:bannerad data-id='bannerad'></ss:bannerad>\
