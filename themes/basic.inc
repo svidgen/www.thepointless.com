@@ -1,6 +1,7 @@
 <?php
 	require_once('includes/game-inserts.inc');
 	require_once('includes/sitemap.inc');
+	require_once('includes/session.inc');
 ?>
 <!doctype html>
 <html xmlns:tpdc="http://www.thepointless.com/ns/tpdc" xmlns:fb="http://www.facebook.com/">

@@ -1,6 +1,5 @@
 <?php
 
-
 	//
 	// basically just wrappers for APC functions.
 	//
