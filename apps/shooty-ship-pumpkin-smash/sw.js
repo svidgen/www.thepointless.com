@@ -1,4 +1,4 @@
-var CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v5';
+var CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v7';
 
 var urlsToCache = [
 	'index.html',
@@ -9,7 +9,7 @@ var urlsToCache = [
 	'audio/pew-128.mp3',
 	'audio/pkewh.mp3',
 	'img/shiny.jpg',
-	'img/shooty-ship-128x73.png',
+	'img/shooty-ship.png',
 	'img/shooty-ship-pumpkin-150x150.png',
 	'img/candle-88x150.png',
 	'img/mummy-93x150.png',

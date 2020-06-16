@@ -5,7 +5,7 @@
 	"description": "Pew pew pew!\n",
 	"icons": [
 		{
-			"src": "/images/shooty-ship-presidential-icon.png",
+			"src": "img/icon.png",
 			"type": "image/png",
 			"sizes": "512x512"	
 		}

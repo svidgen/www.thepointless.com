@@ -1,4 +1,4 @@
-var CACHE_NAME = 'shooty-ship-presidential-cache-v1';
+var CACHE_NAME = 'shooty-ship-presidential-cache-v3';
 
 var urlsToCache = [
 	'index.html',
@@ -9,11 +9,27 @@ var urlsToCache = [
 	'audio/pew-128.mp3',
 	'audio/pkewh.mp3',
 	'img/shiny.jpg',
-	'img/shooty-ship-128x73.png',
+	'img/shooty-ship.png',
 	'img/fb_icon_22px.png',
 	'img/twitter_logo_22px.png',
 	'img/email_logo_22px_h.png',
 	'img/native-share.svg',
+	'img/believe-me.png',
+	'img/big.png',
+	'img/definitely.png',
+	'img/fake-news.png',
+	'img/huge.png',
+	'img/maybe.png',
+	'img/probably.png',
+	'img/really.png',
+	'img/trump-1.png',
+	'img/trump-2.png',
+	'img/trump-3.png',
+	'img/trump-4.png',
+	'img/trump-5.png',
+	'img/trump-6.png',
+	'img/youre-fired.png',
+	'img/zero.png',
 ];
 
 self.addEventListener('install', function(event) {

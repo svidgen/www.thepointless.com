@@ -856,7 +856,7 @@ SS.GameOverSplash.templateMarkup = "\
 	<ss:bannerad data-id='bannerad'></ss:bannerad>\
 	<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
 	<tpdc:share data-id='share'></tpdc:share>\
-	<ss:installlink icon='img/shooty-ship-presidential-icon.png'></ss:installlink>\
+	<ss:installlink icon='img/icon.png'></ss:installlink>\
 	</div>\
 ";
 Bind(SS.GameOverSplash, 'ss:gameoversplash');
