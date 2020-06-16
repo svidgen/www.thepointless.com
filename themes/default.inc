@@ -3,6 +3,7 @@
 require_once('includes/game-inserts.inc');
 require_once('includes/sitemap.inc');
 require_once('includes/dbconnect.inc');
+require_once('includes/session.inc');
 
 ?>
 <!doctype html>

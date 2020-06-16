@@ -512,10 +512,15 @@ SS.Projectile = function() {
 	}; // findCollisions()
 
 	this.findCollisionsWith = function(search) {
+		if (this.dead) {
+			return;
+		}
+
 		var box = new Bind.NodeBox(this);
 		var nodes = getNodes(document, search);
 		for (var i = 0; i < nodes.length; i++) {
-			if (box.overlaps(new Bind.NodeBox(nodes[i]))) {
+			var target = nodes[i];
+			if (!target.dead && box.overlaps(new Bind.NodeBox(target))) {
 				on(this, 'collide').fire(nodes[i]);
 				on(nodes[i], 'collide').fire(this);
 			}
