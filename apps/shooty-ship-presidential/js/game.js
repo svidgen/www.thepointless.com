@@ -1,5 +1,6 @@
 var SS = SS || {};
 
+var HIGHSCORE_KEY = 'shooty-ship-presidential.highscore';
 
 var trackEvent = function(action, o_label, o_value, o_noninteraction) {
 	gtag('event', action, {
@@ -823,10 +824,10 @@ SS.GameOverSplash = function() {
 
 	var max = 0;
 	if (localStorage) {
-		max = parseInt(localStorage.getItem('highscore'));
+		max = parseInt(localStorage.getItem(HIGHSCORE_KEY));
 		if (!max || max === Math.NaN || max < score) {
 			max = score;
-			localStorage.setItem('highscore', max);
+			localStorage.setItem(HIGHSCORE_KEY, max);
 		}
 		this.maxScore.innerHTML = max;
 	} else {

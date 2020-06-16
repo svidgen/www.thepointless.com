@@ -1,4 +1,4 @@
-var CACHE_NAME = 'shooty-ship-presidential-cache-v3';
+var CACHE_NAME = 'shooty-ship-presidential-cache-v4';
 
 var urlsToCache = [
 	'index.html',

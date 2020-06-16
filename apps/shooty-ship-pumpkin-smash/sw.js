@@ -1,4 +1,4 @@
-var CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v7';
+var CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v8';
 
 var urlsToCache = [
 	'index.html',
