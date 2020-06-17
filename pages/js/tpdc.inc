@@ -1547,9 +1547,9 @@ TPDC.ResultCard = function() {
 		url: _t.url
 	};
 
-	this.header.innerHTML = this.header.innerHTML.replace('{subject}', 'You');
-	this.result.innerHTML = this.result.innerHTML.replace('{subject}', 'You');
-	this.description.innerHTML = this.description
+	this.__dom.header.innerHTML = this.__dom.header.innerHTML.replace('{subject}', 'You');
+	this.__dom.result.innerHTML = this.__dom.result.innerHTML.replace('{subject}', 'You');
+	this.__dom.description.innerHTML = this.__dom.description
 		.innerHTML.replace('{subject}', 'You');
 
 	setTimeout(function() {

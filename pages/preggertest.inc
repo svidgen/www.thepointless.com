@@ -86,43 +86,6 @@
 			n.style.color = color;
 		}
 	} // setColor()
-
-
-	    function fb_publish() {
-        FB.ui(
-            {
-                'method':'stream.publish',
-                'message':'',
-                'attachment': {
-                    'name': 'online pregnancy test',
-                    'caption': 'pregnancy testing in the cloud',
-                    'description': (
-                        'Using the sensors in your keyboard or mobile device, we are now able to remotely triangulate your hormone levels and detect the faint, early indicators of pregnancy.'
-                    ),
-                    'href': '<?php print $base_url; ?>preggertest',
-                    'media': [
-                        {
-                            'type': 'image',
-                            'href': '<?php print $base_url; ?>preggertest',
-                            'src': '<?php print $base_url; ?>images/preggertest.png',
-                        }
-                    ]
-                },
-                'action_links': [
-                    {'text': 'Take the test!', 'href': '<?php print $base_url; ?>preggertest'}
-                ],
-                'user_message_prompt': 'Share the new technology!'
-            },
-            function(fb_response) {
-                if (fb_response && fb_response.post_id) {
-                    // post published
-                    _gaq.push(['_trackEvent', 'Social Media', 'FB Publish', 'preggertest share', ]);
-                } else {
-                    // post not published
-                }
-            }
-        );
-    } // fb_publish()
 </script>
 
 <div>Using the sensors in your keyboard, we are now able to remotely triangulate your hormone levels and detect the faint, early indicators of pregnancy.</div>
@@ -141,6 +104,6 @@
 	<div class='testbutton' onclick='dotest();'>Am I Preggerz?</div>
 </div>
 <div style='margin: 30px auto; text-align: center;'>
-	<a class='facebook' href='javascript:fb_publish();'><span>Share</span></a>
+	<tpdc:share text="It's never too soon (or LATE) to know if you're preggerz. Get tested online TODAY."></tpdc:share>
 </div>
 <div id='footnote_1' style='color: gray; font-size: small;'><b>*</b> If it is physically difficult for you to urinate on your keyboard or mobile device, you may also submerge it in a urine-filled toilet.</div>

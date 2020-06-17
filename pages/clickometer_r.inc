@@ -7,13 +7,13 @@
 	//
 	// first off .. validate the form submission
 	//
-	if (!isset($_POST['submit_token'])) {
-		redirect('/clickometer');
-	}
+	// if (!isset($_POST['submit_token'])) {
+	// 	redirect('/clickometer');
+	// }
 
-	if (get_token($_POST['submit_token']) != "clickometer") {
-		redirect('/clickometer');
-	}
+	// if (get_token($_POST['submit_token']) != "clickometer") {
+	// 	redirect('/clickometer');
+	// }
 
 
 
@@ -97,15 +97,15 @@
 	}
 
 
-	// display_score isn't markup'd. it's just the score
-	// adjusted for level.
-	if (get_user_id()) {
-		// $rows = select_user_things(array('name' => 'Click Power'));
-		// if (is_array($rows) && sizeof($rows) > 0) {
-		// } else {
-		// }
-		award_and_notify("Click Power", $display_score, $display_score);
-	}
+	// // display_score isn't markup'd. it's just the score
+	// // adjusted for level.
+	// if (get_user_id()) {
+	// 	// $rows = select_user_things(array('name' => 'Click Power'));
+	// 	// if (is_array($rows) && sizeof($rows) > 0) {
+	// 	// } else {
+	// 	// }
+	// 	award_and_notify("Click Power", $display_score, $display_score);
+	// }
 
 
 	if ($broken_clickometer) {
@@ -121,48 +121,70 @@
 	}
 
 
-	print "
-		<style type='text/css'>
-			#score {
-				color: {$colorCode};
-				font-size: large;
-				font-weight: bold;
-				text-align: left;
-				margin: 40px 20px 0px;
-			}
+	// print "
+	// 	<style type='text/css'>
+	// 		#score {
+	// 			color: {$colorCode};
+	// 			font-size: large;
+	// 			font-weight: bold;
+	// 			text-align: left;
+	// 			margin: 40px 20px 0px;
+	// 		}
 
-			#score span {
-				font-size: 200%;
-			}
+	// 		#score span {
+	// 			font-size: 200%;
+	// 		}
 
-			#score img {
-				text-align: left;
-				vertical-align: bottom;
-				width: 75px;
-				height: 103px;
-			}
+	// 		#score img {
+	// 			text-align: left;
+	// 			vertical-align: bottom;
+	// 			width: 75px;
+	// 			height: 103px;
+	// 		}
 
-			#explanation {
-				margin: 10px 20px;
+	// 		#explanation {
+	// 			margin: 10px 20px;
 
-			}
+	// 		}
 
-		</style>
+	// 	</style>
 	
-		<div id='score'>
-			<img src='/images/{$mouse_image}' alt='mouse' title='clickometer awesomeness' />
-			{$score_line}
-		</div>
+	// 	<div id='score'>
+	// 		<img src='/images/{$mouse_image}' alt='mouse' title='clickometer awesomeness' />
+	// 		{$score_line}
+	// 	</div>
 
-		<div id='explanation'>
-		{$explanation}
-		</div>		
+	// 	<div id='explanation'>
+	// 	{$explanation}
+	// 	</div>		
 		
-	<div id='action_links' style='text-align: center;'>
-		{$try_again_link}
-	</div>
+	// <div id='action_links' style='text-align: center;'>
+	// 	{$try_again_link}
+	// </div>
 
-	";
+	// ";
+
+	print resultcard_html(
+		// "result"
+		"{$score_line}",
+
+		// image
+		"/images/{$mouse_image}",
+
+		// title
+		"WoW!!!?",
+
+		// description
+		$explanation,
+
+		$_SERVER['HTTP_REFERER']
+	);
+
+	print "
+		<div id='action_links' style='text-align: center;'>
+			{$try_again_link}
+		</div>"
+	;
 
 
 	function rounded_and_limited($v, $lowval, $highval) {
@@ -173,18 +195,3 @@
 	} // rounded_and_limited()
 
 ?>
-
-
-<script type='text/javascript'>
-	var action_links = document.getElementById('action_links');
-	var current_action_html = action_links.innerHTML;
-	action_links.innerHTML = "<a href='javascript:fb_publish();' class='facebook'><span>Inform the Masses</span></a> and " + current_action_html;
-
-	function fb_publish() {
-		TPDC.FacebookPublish({
-			name: <?php print json_encode($social_score_line); ?>,
-			description: <?php print json_encode($explanation); ?>,
-			image: '<?php print $base_url; ?>images/<?php @print $mouse_image; ?>'
-		});
-	} // fb_publish()
-</script>

@@ -1079,7 +1079,10 @@ if (!this.Bind) {
 		}
 		var nodes = o.parameters;
 		for (var i = nodes.length - 1; i >= 0; i--) {
-			var id = nodes[i]['data-id'] || nodes[i].getAttribute('data-id');
+			var id = nodes[i]['data-id'];
+			if (!id && nodes[i].getAttribute) {
+				id = nodes[i].getAttribute('data-id');
+			}
 			if (id) {
 				// Bind.copyDefaultAttributes(o[id], nodes[i]);
 				o[id] = nodes[i];

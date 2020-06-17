@@ -264,24 +264,6 @@
 	} // check_credentials()
 
 
-	// mykeygen()
-	// generates a random string, consisting of a-z, 0-9.
-	// default length is 16 characters.
-	function mykeygen($l = 0) {
-		if ((int)$l < 1) {
-			$l = 16;
-		}
-		
-		$k = '';
-		$vc = array_merge(range('a','z'), range(0,9));
-		for ($i = 0; $i < $l; $i++) {
-			$k .= $vc[array_rand($vc)];
-		}
-
-		return $k;
-	} // mykeygen()
-
-
 	// mycrypt()
 	// NOTE: NEEDS TO BE REPLACED. ... Not that anything do we here needs to be
 	// high security inherently. But, we should be using more secure hashing for

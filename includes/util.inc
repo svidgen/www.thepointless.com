@@ -174,6 +174,24 @@ function rebuild_url($parts) {
 } // rebuild_url()
 
 
+// mykeygen()
+// generates a random string, consisting of a-z, 0-9.
+// default length is 16 characters.
+function mykeygen($l = 0) {
+	if ((int)$l < 1) {
+		$l = 16;
+	}
+	
+	$k = '';
+	$vc = array_merge(range('a','z'), range(0,9));
+	for ($i = 0; $i < $l; $i++) {
+		$k .= $vc[array_rand($vc)];
+	}
+
+	return $k;
+} // mykeygen()
+
+
 function add_token($action, $token = false) {
 	if (!isset($_SESSION['action_tokens']) || !is_array($_SESSION['action_tokens'])) {
 		$_SESSION['action_tokens'] = array();

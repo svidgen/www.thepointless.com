@@ -216,3 +216,7 @@ ss\:installlink .button [data-id='icon_img'] {
 .fired {
 	height: 3em;
 }
+
+.copyright, .copyright a {
+	color: gray;
+}

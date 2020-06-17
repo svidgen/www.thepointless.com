@@ -858,6 +858,8 @@ SS.GameOverSplash.templateMarkup = "\
 	<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
 	<tpdc:share data-id='share'></tpdc:share>\
 	<ss:installlink icon='img/icon.png'></ss:installlink>\
+	<hr />\
+	<div class='copyright'><a target='_blank' href='https://www.thepointless.com'>www.thepointless.com</a></div>\
 	</div>\
 ";
 Bind(SS.GameOverSplash, 'ss:gameoversplash');

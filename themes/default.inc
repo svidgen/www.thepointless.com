@@ -3,7 +3,6 @@
 require_once('includes/game-inserts.inc');
 require_once('includes/sitemap.inc');
 require_once('includes/dbconnect.inc');
-require_once('includes/session.inc');
 
 ?>
 <!doctype html>
@@ -115,23 +114,22 @@ require_once('includes/session.inc');
 
 	</div>
 
-<div id='fb-root'></div>
 <script type='text/javascript' src='/ajax/api?v=<?php print $general_version; ?>'></script>
 <script type='text/javascript' src='/js/tpdc.js?v=<?php print $general_version; ?>'></script>
 <script type='text/javascript'>
 <?php
 
-	allow_award(award_cap("Social Butterfly", 1, 30));
+	// allow_award(award_cap("Social Butterfly", 1, 30));
 
-	$award_token = isset($award_token) ? $award_token : '';
-	print "TPDC.award.t = " . json_encode($award_token) . ";\n";
+	// $award_token = isset($award_token) ? $award_token : '';
+	// print "TPDC.award.t = " . json_encode($award_token) . ";\n";
 
-	if ($u = get_authenticated_user()) {
-		$pu = trim_user_fat($u);
-		print "TPDC.authenticatedUser = " . json_encode($pu) . ";\n";
-	}
+	// if ($u = get_authenticated_user()) {
+	// 	$pu = trim_user_fat($u);
+	// 	print "TPDC.authenticatedUser = " . json_encode($pu) . ";\n";
+	// }
 
-	print tpdc_notifications_js();
+	// print tpdc_notifications_js();
 
 ?>
 </script>

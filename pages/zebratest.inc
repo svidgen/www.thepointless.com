@@ -105,18 +105,21 @@
 		if ($score == 0) {
 			$result = "You <u>are</u> a zebra.";
 			$plain_result = "You are a zebra.";
+			$share_results = "Uh oh. I might be a zebra.";
 			$overlay_url = checkmark_url();
 			$explanation = "Your responses are unmistakable. Remember, being a zebra is nothing to be ashamed of. However, this does put you at a great disadvantage in a society littered with zebra discrimination. Remember to seek the support of your family and friends. More importantly, spread zebra awareness!";
 			award_and_notify("Postive Test Result", 1, 3);
 		} elseif ($score == 1) {
 			$result = "You <u>might</u> be a zebra.";
 			$plain_result = "You might be a zebra.";
+			$share_results = "Uh oh. I might be a zebra.";
 			$overlay_url = question_mark_url();
 			$explanation = "The results are inconclusive! It would be best if you could <a href='/zebratest?test=start'>retake the test</a> to ensure you answered all of the questions correctly. We can't have zebras walking around thinking they're people ...";
 			award_and_notify("Inconclusive Test Result", 1, 3);
 		} else {
 			$result = "You are <u>not</u> a zebra.";
 			$plain_result = "You are not a zebra.";
+			$share_results = "Woot! I am not a zebra. (No offense to zebras!!!)";
 			$overlay_url = red_x_url();
 			$explanation = "This is great news! Free from the burdens and discriminations of zebrahood, you will find it easy to adhere to human activities such as shaking hands and driving cars. You can breath easy. But, spread the awareness: anyone you know could unwittingly be a zebra.";
 			award_and_notify("Negative Test Result", 1, 3);
@@ -169,55 +172,11 @@
 	} // checkmark_url()
 
 
-	if ($facebook_button) {
 ?>
 
 <div id='action_links' style='text-align: center; margin: 20px;'><a href='/zebratest?test=start'>Retake the test</a></div>
 
-<script type='text/javascript'>
-	var action_links = document.getElementById('action_links');
-	var current_action_html = action_links.innerHTML;
-	action_links.innerHTML = "<a href='javascript:fb_publish();' class='facebook'><span>Share your results</span></a> or " + current_action_html;
-
-	function fb_publish() {
-		FB.ui(
-			{
-				'method':'stream.publish',
-				'message':'',
-				'attachment': {
-					'name': '<?php print addslashes($plain_result); ?>',
-					'caption': 'zebra awareness test',
-					'description': (
-						'<?php 
-							// print htmlentities($explanation, ENT_QUOTES, 'utf-8');
-							print addslashes(str_replace("\n", '<br />', $explanation));
-						?>'
-					),
-					'href': '<?php print $base_url; ?>zebratest',
-					'media': [
-						{
-							'type': 'image',
-							'href': '<?php print $base_url; ?>zebratest',
-							'src': '<?php print zebra_url(81); ?>',
-						}
-					]
-				},
-				'action_links': [
-					{'text': 'Take the test!', 'href': '<?php print $base_url; ?>zebratest'}
-				],
-				'user_message_prompt': 'Share your zebra awareness test results!'
-			},
-			function(fb_response) {
-				if (fb_response && fb_response.post_id) {
-					// post published
-					_gaq.push(['_trackEvent', 'Social Media', 'FB Publish', 'zebra awareness test', <?php $score; ?>]);
-				} else {
-					// post not published
-				}
-			}
-		);
-	} // fb_publish()
-</script>
-<?php
-	}
-?>
+<tpdc:share
+	text="<?php print $share_results; ?> Please help spread zebra awareness!"
+	image="/images/zebratest/zebra.png"
+></tpdc:share>

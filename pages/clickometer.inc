@@ -2,25 +2,28 @@
 
 $meta_title = 'the clickometer';
 
-if (isset($_GET['level']) && isset($_SESSION['clickometer_level'])) {
-	if ($_GET['level'] == $_SESSION['clickometer_level']) {
-		$lval = (int)$_SESSION['clickometer_level'];
-		$meta_title = "the s00p3r cLiCkOmEtEr - thepointless.com";
-		$html_title = "the s00p3r cLiCkOmEtEr";
-	} else {
-		$lval = 1;
-	}
+// if (isset($_GET['level']) && isset($_SESSION['clickometer_level'])) {
+// 	if ($_GET['level'] == $_SESSION['clickometer_level']) {
+// 		$lval = (int)$_SESSION['clickometer_level'];
+// 		$meta_title = "the s00p3r cLiCkOmEtEr - thepointless.com";
+// 		$html_title = "the s00p3r cLiCkOmEtEr";
+// 	} else {
+// 		$lval = 1;
+// 	}
 
-	unset($_SESSION['clickometer_level']);
-} else {
-	$lval = 1;
-}
+// 	unset($_SESSION['clickometer_level']);
+// } else {
+// 	$lval = 1;
+// }
 
-if ($lval == 1) {
-	$breakable = 1;
-} else {
-	$breakable = 0;
-}
+// if ($lval == 1) {
+// 	$breakable = 1;
+// } else {
+// 	$breakable = 0;
+// }
+
+$lval = 1;
+$breakable = 0;
 
 ?>
 <div>
