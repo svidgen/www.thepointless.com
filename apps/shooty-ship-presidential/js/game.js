@@ -632,7 +632,7 @@ SS.President = function() {
 		_t.style.width = img.width * _t.scale + 'vmin';
 		_t.style.height = img.height * _t.scale + 'vmin';
 	};
-	img.src = 'img/trump-' + img_id + ".png";
+	img.src = 'img/trump-' + img_id + "-tl.png";
 
 	this.style.backgroundImage = "url('" + img.src + "')";
 

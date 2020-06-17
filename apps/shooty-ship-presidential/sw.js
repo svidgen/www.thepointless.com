@@ -1,4 +1,4 @@
-var CACHE_NAME = 'shooty-ship-presidential-cache-v4';
+var CACHE_NAME = 'shooty-ship-presidential-cache-v5';
 
 var urlsToCache = [
 	'index.html',
@@ -22,12 +22,12 @@ var urlsToCache = [
 	'img/maybe.png',
 	'img/probably.png',
 	'img/really.png',
-	'img/trump-1.png',
-	'img/trump-2.png',
-	'img/trump-3.png',
-	'img/trump-4.png',
-	'img/trump-5.png',
-	'img/trump-6.png',
+	'img/trump-1-tl.png',
+	'img/trump-2-tl.png',
+	'img/trump-3-tl.png',
+	'img/trump-4-tl.png',
+	'img/trump-5-tl.png',
+	'img/trump-6-tl.png',
 	'img/youre-fired.png',
 	'img/zero.png',
 ];
