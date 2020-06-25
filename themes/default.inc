@@ -108,9 +108,9 @@ require_once('includes/dbconnect.inc');
 			| <a href='/careers'>careers</a>
 			| <a href='/all-the-stuff'>meh</a>
 			| <a href='/about'>about</a>
-			<div style='color: #bbbbbb; margin-top: 3em;'><a href='/myip'><?php print $_SERVER['REMOTE_ADDR']; ?></a></div>
 		</div>
 
+		<br />
 
 	</div>
 
