@@ -7,7 +7,7 @@ if ($is_local_ip && !$is_load_balancer) {
 	// print "<div style='width: 468px; height: 60px; border: 1px solid silver; background-color: white;'>Google Ads go here.</div>\n";
 	print "<!-- Google analytics would go here. -->";
 	print "<!-- {$_SERVER['REMOTE_ADDR']} -->";
-	print "<!-- " . print_r($_SERVER, 1) ." -->";
+	print "<!-- " . print_r(getallheaders(), 1) ." -->";
 } else if ($google_analytics_id) {
 
 	// require_once('includes/auth.inc');
