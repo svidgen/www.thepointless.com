@@ -1,6 +1,9 @@
 <?php
 
-$is_local_ip = preg_match("/(192.168.*)|(127.0.0.1)|(10\..*)/", $_SERVER['REMOTE_ADDR']);
+// temporarily removing 10.* IP's b/c Rackspace Load balancers use them and we do not.
+// $is_local_ip = preg_match("/(192.168.*)|(127.0.0.1)|(10\..*)/", $_SERVER['REMOTE_ADDR']);
+$is_local_ip = preg_match("/(192.168.*)|(127.0.0.1)/", $_SERVER['REMOTE_ADDR']);
+
 $is_load_balancer = isset($_SERVER['X-Forwarded-For']);
 
 if ($is_local_ip && !$is_load_balancer) {
