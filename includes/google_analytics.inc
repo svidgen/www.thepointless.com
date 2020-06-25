@@ -1,8 +1,11 @@
 <?php
 
-if (preg_match("/(192.168.*)|(127.0.0.1)|(10\..*)/", $_SERVER['REMOTE_ADDR'])) {
+$is_local_ip = preg_match("/(192.168.*)|(127.0.0.1)|(10\..*)/", $_SERVER['REMOTE_ADDR']);
+$is_load_balancer = isset($_SERVER['X-Forwarded-For']);
+
+if ($is_local_ip && !$is_load_balancer) {
 	// print "<div style='width: 468px; height: 60px; border: 1px solid silver; background-color: white;'>Google Ads go here.</div>\n";
-	print "<!-- Google analytics go here. -->";
+	print "<!-- Google analytics would go here. -->";
 } else if ($google_analytics_id) {
 
 	// require_once('includes/auth.inc');
