@@ -30,8 +30,6 @@ if ($is_local_ip && !$is_load_balancer) {
 
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', '<?php print $google_analytics_id; ?>']);
-  _gaq.push(['_setCustomVar', 1, 'Username', <?php print $ga_username; ?>, 3]);
-  _gaq.push(['_setCustomVar', 2, 'Display Name', <?php print $ga_display_name; ?>, 3]);
   _gaq.push(['_setSiteSpeedSampleRate',10]);
   _gaq.push(['_trackPageview']);
 
