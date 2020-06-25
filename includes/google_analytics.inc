@@ -5,15 +5,15 @@ if (preg_match("/(192.168.*)|(127.0.0.1)|(10\..*)/", $_SERVER['REMOTE_ADDR'])) {
 	print "<!-- Google analytics go here. -->";
 } else if ($google_analytics_id) {
 
-	require_once('includes/auth.inc');
-	$ga_user = authenticated_user();
-	if ($ga_user) {
-		$ga_username = json_encode($ga_user['username']);
-		$ga_display_name = json_encode($ga_user['name']);
-	} else {
-		$ga_username = '""';
-		$ga_display_name = '""';
-	}
+	// require_once('includes/auth.inc');
+	// $ga_user = authenticated_user();
+	// if ($ga_user) {
+	// 	$ga_username = json_encode($ga_user['username']);
+	// 	$ga_display_name = json_encode($ga_user['name']);
+	// } else {
+	// 	$ga_username = '""';
+	// 	$ga_display_name = '""';
+	// }
 
 ?>
 
