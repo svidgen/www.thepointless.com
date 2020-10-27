@@ -1,4 +1,4 @@
-var CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v9';
+var CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v10';
 
 var urlsToCache = [
 	'index.html',
@@ -15,7 +15,7 @@ var urlsToCache = [
 	'img/mummy-93x150.png',
 	'img/square-candy-colored-150x76.png',
 	'img/round-red-candy-150x81.png',
-	'img/shooty-ship-pumpkin-smash-icon.png',
+	'img/icon.png',
 	'img/fb_icon_22px.png',
 	'img/twitter_logo_22px.png',
 	'img/email_logo_22px_h.png',

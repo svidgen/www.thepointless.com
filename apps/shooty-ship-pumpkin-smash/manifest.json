@@ -5,7 +5,7 @@
 	"description": "Pew pew pew!\nHalloween horrors approach! Shoot as many as you can!\nPew pew pew!",
 	"icons": [
 		{
-			"src": "/images/shooty-ship-pumpkin-smash-icon.png",
+			"src": "/images/icon.png",
 			"type": "image/png",
 			"sizes": "512x512"	
 		}
