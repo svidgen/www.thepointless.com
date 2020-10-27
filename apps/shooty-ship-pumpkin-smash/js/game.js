@@ -483,9 +483,9 @@ SS.Projectile = function() {
 	this.conflicts = this.conflicts || [];
 
 	this.destroy = function() {
+		on(this, 'destroy').fire();
 		this.dead = true;
 		this.parentNode ? this.parentNode.removeChild(this) : 1;
-		on(this, 'destroy').fire();
 	}; // destroy()
 
 	this.step = function() {
@@ -829,6 +829,7 @@ SS.GameOverSplash.templateMarkup = "\
 	<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
 	<tpdc:share data-id='share'></tpdc:share>\
 	<ss:installlink icon='img/shooty-ship-pumpkin-smash-icon.png'></ss:installlink>\
+	<div class='copyright'><a target='_blank' href='https://www.thepointless.com'>www.thepointless.com</a></div>\
 	</div>\
 ";
 Bind(SS.GameOverSplash, 'ss:gameoversplash');
