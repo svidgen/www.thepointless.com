@@ -828,7 +828,7 @@ SS.GameOverSplash.templateMarkup = "\
 	<ss:bannerad data-id='bannerad'></ss:bannerad>\
 	<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
 	<tpdc:share data-id='share'></tpdc:share>\
-	<ss:installlink icon='img/shooty-ship-pumpkin-smash-icon.png'></ss:installlink>\
+	<ss:installlink icon='img/icon.png'></ss:installlink>\
 	<div class='copyright'><a target='_blank' href='https://www.thepointless.com'>www.thepointless.com</a></div>\
 	</div>\
 ";
