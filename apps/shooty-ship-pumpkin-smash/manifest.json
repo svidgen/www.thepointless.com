@@ -5,7 +5,7 @@
 	"description": "Pew pew pew!\nHalloween horrors approach! Shoot as many as you can!\nPew pew pew!",
 	"icons": [
 		{
-			"src": "/images/icon.png",
+			"src": "img/icon.png",
 			"type": "image/png",
 			"sizes": "512x512"	
 		}
