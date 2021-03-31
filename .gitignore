@@ -6,3 +6,6 @@
 
 site_config.inc
 test-stdout.log
+
+node_modules
+dist

@@ -1,0 +1,38 @@
+{
+  "name": "thepointless.com",
+  "version": "1.0.0",
+  "description": "source for thepointless.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress:run",
+    "build": "webpack",
+    "start": "webpack serve --hot --mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svidgen/www.thepointless.com.git"
+  },
+  "author": "Jon Wire",
+  "license": "AGPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/svidgen/www.thepointless.com/issues"
+  },
+  "homepage": "https://github.com/svidgen/www.thepointless.com#readme",
+  "devDependencies": {
+    "copy-webpack-plugin": "^8.1.0",
+    "css-loader": "^5.2.0",
+    "cypress": "^6.8.0",
+    "file-loader": "^6.2.0",
+    "jsdom": "^16.5.2",
+    "marked": "^2.0.1",
+    "raw-loader": "^4.0.2",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-serve": "^3.2.0"
+  },
+  "dependencies": {
+    "aws-amplify": "^3.3.26"
+  }
+}

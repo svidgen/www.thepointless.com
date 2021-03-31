@@ -1,5 +1,0 @@
-*.swo
-*.swp
-
-data/test-*
-test-stdout.log
