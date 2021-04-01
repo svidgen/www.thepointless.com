@@ -2,18 +2,41 @@ const path = require('path');
 const glob = require('glob');
 const CopyWebpackPlugin = require('copy-webpack-plugin'); 
 const marked = require('marked');
+const YAML = require('yaml');
 
-const templates = {};
-const CollectTemplates = {
+// TODO: Refactor these transforms out of here.
+// TODO: Create a separate package to manage all of this for easy reuse on
+// other projects.
+
+const layouts = {};
+const CollectLayouts = {
 	transformer: (content, path) => {
-		templates[path] = content;
-		return null;
+		// add one to dirname prefix to include separating slash
+		const relativePath = path.slice(__dirname.length + 1);
+		layouts[relativePath] = content.toString();
+
+		// return a string to make webpack copy source plugin happy
+		return '';
 	}
 };
 
 const SSG = {
 	transformer: (content, path) => {
-		return `<!doctype html><html><body>${marked(content.toString())}</body></html>`;
+		let [_, header, body] = content.toString().split(/^---+$/mg);
+		meta = header && body ? YAML.parse(header) : {};
+
+		const metatags = Object.entries(meta).map(entry => {
+			return `<meta name="${entry[0]}" content="${entry[1]}" />`;
+		}).join('\n');
+		title = meta.title;
+		body = marked(body || content.toString());
+
+		const layout = layouts[
+			'src/layouts/'
+			+ (meta.layout || 'default')
+			+ '.html'
+		];
+		return eval('`' + layout + '`');
 	}
 };
 
@@ -44,11 +67,11 @@ module.exports = (env, argv) => {
 			new CopyWebpackPlugin({
 				patterns: [
 					{ from: 'static' },
-					/* {
-						from: 'templates',
+					{
+						from: 'src/layouts/**/*.html',
 						to: '/dev/null',
-						transform: CollectTemplates
-					}, */
+						transform: CollectLayouts
+					},
 					{
 						from: 'src/pages/**/*.md',
 						to: '[name].html',
