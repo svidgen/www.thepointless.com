@@ -14,9 +14,7 @@ const CollectLayouts = {
 		// add one to dirname prefix to include separating slash
 		const relativePath = path.slice(__dirname.length + 1);
 		layouts[relativePath] = content.toString();
-
-		// return a string to make webpack copy source plugin happy
-		return '';
+		return content.toString();
 	}
 };
 
@@ -69,7 +67,6 @@ module.exports = (env, argv) => {
 					{ from: 'static' },
 					{
 						from: 'src/layouts/**/*.html',
-						to: '/dev/null',
 						transform: CollectLayouts
 					},
 					{
