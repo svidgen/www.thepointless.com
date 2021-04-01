@@ -1,9 +1,9 @@
----
-layout: default
-title: Home
-author: svidgen
-description: This is a site about things and stuff.
----
+${meta({
+	layout: "default",
+	title: "Home",
+	author: "svidgen",
+	description: "This is a site about things and stuff."
+})}
 Welcome, dear friend.
 
 It's spooky out there. We're already seeing **lots of spooky masks** out there. If you're scared, we don't blame you, and we're here to help.

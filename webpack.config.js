@@ -2,11 +2,12 @@ const path = require('path');
 const glob = require('glob');
 const CopyWebpackPlugin = require('copy-webpack-plugin'); 
 const marked = require('marked');
-const YAML = require('yaml');
 
 // TODO: Refactor these transforms out of here.
 // TODO: Create a separate package to manage all of this for easy reuse on
 // other projects.
+// TODO: consider whether using the front-end framework for SSG would be safe,
+// and intuitive, rather than having two completely separate rendering modes.
 
 const layouts = {};
 const CollectLayouts = {
@@ -20,18 +21,24 @@ const CollectLayouts = {
 
 const SSG = {
 	transformer: (content, path) => {
-		let [_, header, body] = content.toString().split(/^---+$/mg);
-		meta = header && body ? YAML.parse(header) : {};
 
-		const metatags = Object.entries(meta).map(entry => {
+		// TODO: move to a directives module.
+		let _meta = {};
+		function meta(o) {
+			_meta = o;
+			return '';
+		}
+
+		const body = marked(eval('`' + content.toString() + '`'));
+
+		const metatags = Object.entries(_meta).map(entry => {
 			return `<meta name="${entry[0]}" content="${entry[1]}" />`;
 		}).join('\n');
-		title = meta.title;
-		body = marked(body || content.toString());
+		title = _meta.title;
 
 		const layout = layouts[
 			'src/layouts/'
-			+ (meta.layout || 'default')
+			+ (_meta.layout || 'default')
 			+ '.html'
 		];
 		return eval('`' + layout + '`');
