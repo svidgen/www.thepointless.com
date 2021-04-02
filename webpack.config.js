@@ -60,12 +60,16 @@ module.exports = (env, argv) => {
 			liveReload: true
 		},
 		entry:
-			// glob.sync('./src/pages/**/*.js')
-			[]
-			.concat(['./src/index.js'])
+			[
+				'./src/index.js'
+			].concat(glob.sync('./src/pages/**/*.js'))
+			.reduce((files, path) => {
+				files[path.toString().slice('./src/'.length)] = path;
+				return files;
+			}, {})
 		,
 		output: {
-			filename: "[name].js"
+			filename: "[name]"
 		},
 		devtool,
 		plugins: [
@@ -80,6 +84,10 @@ module.exports = (env, argv) => {
 						from: 'src/pages/**/*.md',
 						to: '[name].html',
 						transform: SSG
+					},
+					{
+						from: 'src/pages/**/*.html',
+						to: '[name].html'
 					}
 				],
 			})

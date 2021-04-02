@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "cypress:run",
-    "build": "webpack",
-    "start": "webpack serve --hot --mode=development"
+    "build": "webpack && node scripts/contributors.js > dist/contributors.json",
+    "start": "webpack serve --hot --mode=development",
+	"contributors": "node scripts/contributors.js"
   },
   "repository": {
     "type": "git",
