@@ -7,7 +7,7 @@
     "test": "cypress:run",
     "build": "webpack && node scripts/contributors.js > dist/contributors.json",
     "start": "webpack serve --hot --mode=development",
-	"contributors": "node scripts/contributors.js"
+    "contributors": "node scripts/contributors.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "copy-webpack-plugin": "^8.1.0",
     "css-loader": "^5.2.0",
     "cypress": "^6.8.0",
+    "ex-gratia": "file:../../js/ex-gratia",
     "file-loader": "^6.2.0",
     "jsdom": "^16.5.2",
     "marked": "^2.0.1",

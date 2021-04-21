@@ -29,19 +29,34 @@ const SSG = {
 			return '';
 		}
 
-		const body = marked(eval('`' + content.toString() + '`'));
+		let body;
+		try {
+			const bodyMarkdown = eval('`' + content.toString() + '`')
+			body = marked(bodyMarkdown);
+		} catch (err) {
+			console.error(`Could not parse page ${path}`, err);
+			throw err;
+		}
 
-		const metatags = Object.entries(_meta).map(entry => {
-			return `<meta name="${entry[0]}" content="${entry[1]}" />`;
+		const metatags = Object.entries(_meta).map(([tag, content]) => {
+			tag = tag.replace(/"/g, '&quot;');
+			content = content.replace(/"/g, '&quot;');
+			return `<meta name="${tag}" content="${content}" />`;
 		}).join('\n');
 		title = _meta.title;
 
-		const layout = layouts[
-			'src/layouts/'
+		const layoutPath = 'src/layouts/'
 			+ (_meta.layout || 'default')
 			+ '.html'
-		];
-		return eval('`' + layout + '`');
+		;
+		const layout = layouts[layoutPath];
+		
+		try {
+			return eval('`' + layout + '`');
+		} catch (err) {
+			console.error(`Could not parse layout ${layoutPath}`, err);
+			throw err;
+		}
 	}
 };
 
