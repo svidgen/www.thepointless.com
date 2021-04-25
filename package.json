@@ -2,12 +2,10 @@
   "name": "thepointless.com",
   "version": "1.0.0",
   "description": "source for thepointless.com",
-  "main": "index.js",
   "scripts": {
-    "test": "cypress:run",
-    "build": "webpack && node scripts/contributors.js > dist/contributors.json",
-    "start": "webpack serve --hot --mode=development",
-    "contributors": "node scripts/contributors.js"
+    "test": "jest",
+    "build": "yarn ex-gratia && webpack",
+    "start": "webpack serve --hot --mode=development"
   },
   "repository": {
     "type": "git",
