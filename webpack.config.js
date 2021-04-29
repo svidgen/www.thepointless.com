@@ -19,7 +19,7 @@ function distPath({subpathOut = '', subpathIn = ''} = {}) {
 		const relativeName = path.join('./', absoluteFilename.slice(prefixIn.toString().length));
 		const fullOutPath = path.resolve(prefixOut, relativeName)
 			.replace(/\.md$/, ".html");
-		console.log('distPath', { subpathIn, subpathOut, prefixIn, prefixOut, relativeName, fullOutPath });
+		console.log(`Mapping ${relativeName} to ${fullOutPath}`);
 		return fullOutPath;
 	};
 };
@@ -83,11 +83,11 @@ module.exports = (env, argv) => {
 	}
 
 	const sources = ['./src/index.js']
-		.concat(glob.sync('./src/pages/**/*.js'))
+		.concat(glob.sync('./src/routes/**/*.js'))
 	;
 	const entry = sources.reduce((files, path) => {
-		if (path.match(/pages/)) {
-			files[path.toString().slice('./src/pages'.length)] = path;
+		if (path.match(/routes/)) {
+			files[path.toString().slice('./src/routes'.length)] = path;
 		} else {
 			files['index.js'] = path;
 		}
@@ -119,29 +119,30 @@ module.exports = (env, argv) => {
 						transform: CollectLayouts
 					},
 					{
-						from: './src/pages/**/*.md',
-						to: distPath({ subpathIn: 'src/pages' }),
+						from: './src/routes/**/*.md',
+						to: distPath({ subpathIn: 'src/routes' }),
 						transform: SSG
 					},
 					{
-						from: './src/pages/**/*.html',
-						to: distPath({ subpathIn: 'src/pages' })
+						from: './src/routes/**/*.html',
+						to: distPath({ subpathIn: 'src/routes' })
 					},
 					{
-						from: './src/pages/**/*.css',
-						to: distPath({ subpathIn: 'src/pages' })
+						from: './src/routes/**/*.css',
+						to: distPath({ subpathIn: 'src/routes' })
+						// trasform: ???
 					},
 					{
-						from: './src/pages/**/*.png',
-						to: distPath({ subpathIn: 'src/pages' })
+						from: './src/routes/**/*.png',
+						to: distPath({ subpathIn: 'src/routes' })
 					},
 					{
-						from: './src/pages/**/*.jpg',
-						to: distPath({ subpathIn: 'src/pages' })
+						from: './src/routes/**/*.jpg',
+						to: distPath({ subpathIn: 'src/routes' })
 					},
 					{
-						from: './src/pages/**/*.json',
-						to: distPath({ subpathIn: 'src/pages' })
+						from: './src/routes/**/*.json',
+						to: distPath({ subpathIn: 'src/routes' })
 					},
 				],
 			})
