@@ -95,15 +95,15 @@ module.exports = (env, argv) => {
 	}, {});
 
 	return {
-		devServer: {
-			// contentBase: path.join(__dirname, 'dist'),
-			compress: true,
-			// open: true,
-			port: 9999,
-			watchContentBase: true,
-			liveReload: true,
-			hot: true
-		},
+		// devServer: {
+		// 	// contentBase: path.join(__dirname, 'dist'),
+		// 	compress: true,
+		// 	// open: true,
+		// 	port: 9999,
+		// 	watchContentBase: true,
+		// 	liveReload: true,
+		// 	hot: true
+		// },
 		entry,
 		output: {
 			filename: "[name]"
