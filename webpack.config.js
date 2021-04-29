@@ -12,6 +12,18 @@ const exgratia = new ExGratia();
 // TODO: consider whether using the front-end framework for SSG would be safe,
 // and intuitive, rather than having two completely separate rendering modes.
 
+function distPath({subpathOut = '', subpathIn = ''} = {}) {
+	return function({context, absoluteFilename}) {
+		const prefixIn = path.resolve(context, subpathIn);
+		const prefixOut = path.resolve(context, 'dist', subpathOut);
+		const relativeName = path.join('./', absoluteFilename.slice(prefixIn.toString().length));
+		const fullOutPath = path.resolve(prefixOut, relativeName)
+			.replace(/\.md$/, ".html");
+		console.log('distPath', { subpathIn, subpathOut, prefixIn, prefixOut, relativeName, fullOutPath });
+		return fullOutPath;
+	};
+};
+
 const layouts = {};
 const CollectLayouts = {
 	transformer: (content, path) => {
@@ -23,7 +35,7 @@ const CollectLayouts = {
 };
 
 const SSG = {
-	transformer: (content, path) => {
+	transformer: (content, _path) => {
 
 		// TODO: move to a directives module.
 		let _meta = {};
@@ -37,7 +49,7 @@ const SSG = {
 			const bodyMarkdown = eval('`' + content.toString() + '`')
 			body = marked(bodyMarkdown);
 		} catch (err) {
-			console.error(`Could not parse page ${path}`, err);
+			console.error(`Could not parse page ${_path}`, err);
 			throw err;
 		}
 
@@ -48,10 +60,11 @@ const SSG = {
 		}).join('\n');
 		title = _meta.title;
 
-		const layoutPath = 'src/layouts/'
-			+ (_meta.layout || 'default')
-			+ '.html'
-		;
+		const layoutPath = path.join(
+			'src',
+			'layouts',
+			(_meta.layout || 'default')
+		) + '.html';
 		const layout = layouts[layoutPath];
 		
 		try {
@@ -69,6 +82,21 @@ module.exports = (env, argv) => {
 		devtool = 'eval-cheap-source-map';
 	}
 
+	const sources = ['./src/index.js']
+		.concat(glob.sync('./src/pages/**/*.js'))
+	;
+	const entry = sources.reduce((files, path) => {
+		if (path.match(/pages/)) {
+			files[path.toString().slice('./src/pages'.length)] = path;
+		} else {
+			files['index.js'] = path;
+		}
+		return files;
+	}, {});
+
+	// console.log('sources', sources);
+	// console.log('entrypoints', entry);
+
 	return {
 		devServer: {
 			contentBase: path.join(__dirname, 'dist'),
@@ -77,15 +105,7 @@ module.exports = (env, argv) => {
 			watchContentBase: true,
 			liveReload: true
 		},
-		entry:
-			[
-				'./src/index.js'
-			].concat(glob.sync('./src/pages/**/*.js'))
-			.reduce((files, path) => {
-				files[path.toString().slice('./src/'.length)] = path;
-				return files;
-			}, {})
-		,
+		entry,
 		output: {
 			filename: "[name]"
 		},
@@ -95,18 +115,34 @@ module.exports = (env, argv) => {
 				patterns: [
 					{ from: 'static' },
 					{
-						from: 'src/layouts/**/*.html',
+						from: './src/layouts/**/*.html',
 						transform: CollectLayouts
 					},
 					{
-						from: 'src/pages/**/*.md',
-						to: '[name].html',
+						from: './src/pages/**/*.md',
+						to: distPath({ subpathIn: 'src/pages' }),
 						transform: SSG
 					},
 					{
-						from: 'src/pages/**/*.html',
-						to: '[name].html'
-					}
+						from: './src/pages/**/*.html',
+						to: distPath({ subpathIn: 'src/pages' })
+					},
+					{
+						from: './src/pages/**/*.css',
+						to: distPath({ subpathIn: 'src/pages' })
+					},
+					{
+						from: './src/pages/**/*.png',
+						to: distPath({ subpathIn: 'src/pages' })
+					},
+					{
+						from: './src/pages/**/*.jpg',
+						to: distPath({ subpathIn: 'src/pages' })
+					},
+					{
+						from: './src/pages/**/*.json',
+						to: distPath({ subpathIn: 'src/pages' })
+					},
 				],
 			})
 		],

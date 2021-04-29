@@ -4,7 +4,8 @@
   "description": "source for thepointless.com",
   "scripts": {
     "test": "jest",
-    "build": "yarn ex-gratia && webpack",
+    "build": "rimraf dist && webpack",
+    "not_build": "yarn ex-gratia && webpack",
     "start": "webpack serve --hot --mode=development"
   },
   "repository": {
@@ -20,11 +21,11 @@
   "devDependencies": {
     "copy-webpack-plugin": "^8.1.0",
     "css-loader": "^5.2.0",
-    "ex-gratia": "file:../../js/ex-gratia",
     "file-loader": "^6.2.0",
     "jsdom": "^16.5.2",
     "marked": "^2.0.1",
     "raw-loader": "^4.0.2",
+    "rimraf": "^3.0.2",
     "style-loader": "^2.0.0",
     "webpack": "^5.28.0",
     "webpack-cli": "^4.6.0",
@@ -32,6 +33,7 @@
     "webpack-serve": "^3.2.0"
   },
   "dependencies": {
-    "aws-amplify": "^3.3.26"
+    "aws-amplify": "^3.3.26",
+    "ex-gratia": "^1.0.2"
   }
 }
