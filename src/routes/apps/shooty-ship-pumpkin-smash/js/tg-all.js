@@ -14,7 +14,7 @@
 var upon = function(test, fn) {
 	if (typeof(test) == 'function' && test()) {
 		fn();
-	} else if (typeof(test) == 'string' && window[test]) {
+	} else if (typeof(test) == 'string' && global[test]) {
 		fn();
 	} else {
 		setTimeout(function() { upon(test, fn); }, 50);
@@ -29,7 +29,7 @@ var upon = function(test, fn) {
 
 var TG = TG || {};
 
-window.console = window.console || {
+global.console = global.console || {
 	log_items: [],
 	log: function () {
 		for (var i = 0; i < arguments.length; i++) {
@@ -39,8 +39,8 @@ window.console = window.console || {
 } // console
 
 
-Element = window.Element || function () { return true; };
-Node = window.Node || window.Element;
+Element = global.Element || function () { return true; };
+Node = global.Node || global.Element;
 
 
 var setType = function (o, constructor) {
@@ -76,7 +76,7 @@ var isa = function (o, constructor) {
 	
 		// IE8 apparently throws a fit of this happens to be a text node.
 		// ... not entirely sure what to do about that.
-		if (window.Text && o instanceof Text) {
+		if (global.Text && o instanceof Text) {
 			if (constructor == Element || constructor == Node) {
 				return true;
 			}
@@ -589,7 +589,7 @@ if (!Bind) {
 	// TG.MouseCoords
 	// Determines and stores the Coordinates for a mouse event
 	TG.MouseCoords = function (event) {
-		var e = event || window.event;
+		var e = event || global.event;
 		if (e.changedTouches) {
 			this.x = e.changedTouches[0].pageX;
 			this.y = e.changedTouches[0].pageY;
@@ -603,10 +603,10 @@ if (!Bind) {
 	}; // TG.MouseCoords
 
 
-	window.getNodes = window.getNodes || function (n, q) {
+	global.getNodes = global.getNodes || function (n, q) {
 		var rv;
 
-		if (typeof (q) == 'function' && window.Bind) {
+		if (typeof (q) == 'function' && global.Bind) {
 			rv = [];
 			var bindings = Bind.getBindings(q);
 			for (var i = 0; i < bindings.length; i++) {
@@ -671,7 +671,7 @@ var New = Build;
 console.log('Loaded Bind.');
 
 upon(function() { return document.body; }, function() {
-	window._bindq = window._bindq || {};
+	_bindq = global._bindq || {};
 	_bindq.push = function(c,b) { Bind(c,b); };
 	if (_bindq instanceof Array) {
 		for (var i = 0; i < _bindq.length; i += 2) {
@@ -724,7 +724,7 @@ TG.jsonAddSlashes = function(s) {
 TG.getNodeKeys = function(tag) {
 	var o = {};
 		o.childNodes = 1;
-		o.contentWindow = 1;
+		o.contentglobal = 1;
 		o.contentDocument = 1;
 		o.ownerDocument = 1;
 
@@ -856,7 +856,7 @@ TG.API.multijsonp = function(api, actions, longpoll) {
 			}
 
 			// send request
-			var r = window.XMLHttpRequest ? new XMLHttpRequest()
+			var r = global.XMLHttpRequest ? new XMLHttpRequest()
 				: new ActiveXObject("Microsoft.XMLHTTP");
 			r.open('post', api, true);
 			r.setRequestHeader(
@@ -1118,7 +1118,7 @@ TG.API.requestToken = function(api) {
 
 TG.findGlobal = function(s) {
 	var parts = s.split('.');
-	var rv = window;
+	var rv = global;
 	for (var i = 0; i < parts.length; i++) {
 		var part = rv[parts[i]];
 		if (part) {
@@ -1287,7 +1287,7 @@ TG.FunctionReference = function() {
 
 upon('Bind', function () {
 
-	TG = window.TG || {};
+	TG = global.TG || {};
 
 	TG.DragDrop = TG.DragDrop || {
 
@@ -1887,7 +1887,7 @@ upon('Bind', function () {
 
 		if (n.currentStyle) {
 			style = n.currentStyle;
-		} else if (window.getComputedStyle) {
+		} else if (global.getComputedStyle) {
 			style = getComputedStyle(n);
 		}
 
@@ -1916,7 +1916,7 @@ upon('Bind', function () {
 
 
 	document.onmousedown = function (evt) {
-		var e = evt || window.event;
+		var e = evt || global.event;
 		var mc = new TG.MouseCoords(e);
 		if (TG.DragDrop.grab(mc) && typeof(e.preventDefault) == 'function') {
 			e.preventDefault();
@@ -1924,7 +1924,7 @@ upon('Bind', function () {
 	}; // document.onmousedown()
 
 	document.onmousemove = function (evt) {
-		var e = evt || window.event;
+		var e = evt || global.event;
 		var mc = new TG.MouseCoords(e);
 		if (TG.DragDrop.drag(mc) && typeof(e.preventDefault) == 'function') {
 			e.preventDefault();
@@ -1932,7 +1932,7 @@ upon('Bind', function () {
 	}; // document.onmousemove()
 
 	document.onmouseup = function (evt) {
-		var e = evt || window.event;
+		var e = evt || global.event;
 		var mc = new TG.MouseCoords(e);
 		if (TG.DragDrop.drop(mc) && typeof(e.preventDefault) == 'function') {
 			e.preventDefault();
@@ -2452,3 +2452,4 @@ TG.UI.TestResult.templateMarkup = "\
 ";
 _bindq.push(TG.UI.TestResult, 'tg-test-result');
 
+global.Bind = Bind;

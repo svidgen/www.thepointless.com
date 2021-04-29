@@ -5,8 +5,9 @@
   "scripts": {
     "test": "jest",
     "build": "rimraf dist && webpack",
-    "not_build": "yarn ex-gratia && webpack",
-    "start": "webpack serve --hot --mode=development"
+    "build:watch": "rimraf dist && webpack --mode development --progress --watch",
+    "serve": "http-server ./dist -p 9999 -o",
+    "start": "concurrently -k -p \"[{name}]\" -n \"Build,Serve\" -c \"cyan.bold,green.bold\" \"npm run build:watch\" \"npm run serve\""
   },
   "repository": {
     "type": "git",
@@ -19,9 +20,11 @@
   },
   "homepage": "https://github.com/svidgen/www.thepointless.com#readme",
   "devDependencies": {
+    "concurrently": "^6.0.2",
     "copy-webpack-plugin": "^8.1.0",
     "css-loader": "^5.2.0",
     "file-loader": "^6.2.0",
+    "http-server": "^0.12.3",
     "jsdom": "^16.5.2",
     "marked": "^2.0.1",
     "raw-loader": "^4.0.2",

@@ -94,16 +94,15 @@ module.exports = (env, argv) => {
 		return files;
 	}, {});
 
-	// console.log('sources', sources);
-	// console.log('entrypoints', entry);
-
 	return {
 		devServer: {
-			contentBase: path.join(__dirname, 'dist'),
+			// contentBase: path.join(__dirname, 'dist'),
 			compress: true,
+			// open: true,
 			port: 9999,
 			watchContentBase: true,
-			liveReload: true
+			liveReload: true,
+			hot: true
 		},
 		entry,
 		output: {
@@ -142,6 +141,14 @@ module.exports = (env, argv) => {
 					},
 					{
 						from: './src/routes/**/*.json',
+						to: distPath({ subpathIn: 'src/routes' })
+					},
+					{
+						from: './src/routes/**/*.svg',
+						to: distPath({ subpathIn: 'src/routes' })
+					},
+					{
+						from: './src/routes/**/*.mp3',
 						to: distPath({ subpathIn: 'src/routes' })
 					},
 				],
