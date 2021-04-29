@@ -1,3 +1,6 @@
-// WIP. Testing. Etc..
 const GoogleAds = require('ex-gratia/google');
-export default 'index.js';
+
+// no ads at "home".
+if (!location.hostname.match(/^localhost|127\.0\.0\.1$/)) {
+	new GoogleAds().install();
+}

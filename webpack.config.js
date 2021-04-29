@@ -2,9 +2,6 @@ const path = require('path');
 const glob = require('glob');
 const CopyWebpackPlugin = require('copy-webpack-plugin'); 
 const marked = require('marked');
-const ExGratia = require('ex-gratia');
-
-const exgratia = new ExGratia();
 
 // TODO: Refactor these transforms out of here.
 // TODO: Create a separate package to manage all of this for easy reuse on
