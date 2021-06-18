@@ -1,0 +1,23 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-thepointlesscom-dev-214500-authRole",
+            "UnauthRoleArn": "arn:aws:iam::054297926286:role/amplify-thepointlesscom-dev-214500-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::054297926286:role/amplify-thepointlesscom-dev-214500-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "amplify-thepointlesscom-dev-214500-deployment",
+            "UnauthRoleName": "amplify-thepointlesscom-dev-214500-unauthRole",
+            "StackName": "amplify-thepointlesscom-dev-214500",
+            "StackId": "arn:aws:cloudformation:us-east-2:054297926286:stack/amplify-thepointlesscom-dev-214500/315a24e0-cfdf-11eb-9b6f-0609358c8770",
+            "AmplifyAppId": "dwjzqupzmdemr"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "dwjzqupzmdemr",
+                    "type": "cicd"
+                }
+            }
+        }
+    }
+}
