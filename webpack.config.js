@@ -81,12 +81,14 @@ module.exports = (env, argv) => {
 
 	const sources = ['./src/index.js']
 		.concat(glob.sync('./src/routes/**/*.js'))
+		.concat(glob.sync('./src/layouts/**/*.js'))
 	;
+
 	const entry = sources.reduce((files, path) => {
-		if (path.match(/routes/)) {
+		if (path.match(/src\/routes/)) {
 			files[path.toString().slice('./src/routes'.length)] = path;
-		} else {
-			files['index.js'] = path;
+		} else if (path.match(/src\/layouts/)) {
+			files[path.toString().slice('./src/'.length)] = path;
 		}
 		return files;
 	}, {});
@@ -112,6 +114,10 @@ module.exports = (env, argv) => {
 					{ from: 'static' },
 					{
 						from: './src/layouts/**/*.html',
+						to: distPath({
+							subpathIn: 'src/layouts',
+							subpathOut: 'layouts'
+						}),
 						transform: CollectLayouts
 					},
 					{
