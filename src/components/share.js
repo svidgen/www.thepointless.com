@@ -1,4 +1,5 @@
 const { DomClass } = require('wirejs-dom');
+require('./share.css');
 
 const template = `<tpdc:share>
 	<br />Make it happen, Cap'n.<br /><br />

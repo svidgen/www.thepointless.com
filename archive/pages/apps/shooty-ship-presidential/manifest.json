@@ -1,0 +1,18 @@
+{
+	"manifest_package": "com.thepointless.apps.shooty-ship-presidential",
+	"short_name": "Shooty Ship Presidential",
+	"name": "Shooty Ship - Presidential Edition",
+	"description": "Pew pew pew!\n",
+	"icons": [
+		{
+			"src": "img/icon.png",
+			"type": "image/png",
+			"sizes": "512x512"	
+		}
+	],
+	"start_url": "index.html",
+	"scope": "/apps/shooty-ship-presidential/",
+	"display": "fullscreen",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff"
+}
