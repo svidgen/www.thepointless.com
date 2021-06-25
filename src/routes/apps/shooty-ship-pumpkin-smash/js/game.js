@@ -1,8 +1,9 @@
-var SS = SS || {};
+const { DomClass, setType, isa } = require('wirejs-dom');
+const { on, onready } = require('../../../../lib/event');
 
-var HIGHSCORE_KEY = 'shooty-ship-pumpkin-smash.highscore';
+const HIGHSCORE_KEY = 'shooty-ship-pumpkin-smash.highscore';
 
-var trackEvent = function(action, o_label, o_value, o_noninteraction) {
+const trackEvent = function(action, o_label, o_value, o_noninteraction) {
 	gtag('event', action, {
 		'event_category': 'game',
 		'event_label': o_label,
@@ -11,8 +12,12 @@ var trackEvent = function(action, o_label, o_value, o_noninteraction) {
 	});
 };
 
+const boardTemplate = `<ss:board>
+	<ss:gameoversplash data-id='presplash' heading='Shooty Ship Pumpkin Smash' no-ad='1'></ss:gameoversplash>
+	<ss:ship data-id='ship' style='top: -100%; left: -100%;'></ss:ship>
+</ss:board>`;
 
-SS.Board = function() {
+const Board = DomClass(boardTemplate, function Board() {
 	var _t = this;
 
 	this.enabled = false;
@@ -98,7 +103,7 @@ SS.Board = function() {
 			var run = target.x - spawn.x;
 			var d = Math.atan2(rise, run);
 
-			var enemy = New(SS.Pumpkin, {
+			var enemy = new Pumpkin({
 				x: spawn.x, y: spawn.y, direction: d,
 				speed: 0.2 + (Math.random() * _t.maxRocks / 3.3),
 				game: _t
@@ -132,7 +137,7 @@ SS.Board = function() {
 	this.gameover = function() {
 		this.disable();
 		setTimeout(function() {
-			var splash = New(SS.GameOverSplash, {
+			var splash = new GameOverSplash({
 				board: _t,
 				score: _t.score,
 			});
@@ -229,14 +234,10 @@ SS.Board = function() {
 
 	setType(this, 'SS.Board');
 	onready(this).fire();
-}; // Board
-SS.Board.templateMarkup = "\
-	<ss:gameoversplash data-id='presplash' heading='Shooty Ship Pumpkin Smash' no-ad='1'></ss:gameoversplash>\
-	<ss:ship data-id='ship' style='top: -100%; left: -100%;'></ss:ship>";
-Bind(SS.Board, 'ss:board');
+});
 
 
-SS.Audio = {
+const AudioPool = {
 	audiocontext: null,
 	channels : {},
 	play : function(src) {
@@ -291,42 +292,40 @@ SS.Audio = {
 	}
 }; // Audio()
 
-SS.Audio.errors = [];
+AudioPool.errors = [];
 
 document.addEventListener('deviceready', function() {
 	if (window.plugins && window.plugins.LowLatencyAudio) {
 		var lla = window.plugins.LowLatencyAudio;
-		for (var k in SS.Audio.channels) {
+		for (var k in AudioPool.channels) {
 			(function(src) { 
 				lla.preloadFX(src, src);
 				var a = {
 					play: function() { lla.play(src); }
 				};
-				SS.Audio.channels[src] = a;
+				AudioPool.channels[src] = a;
 			})(k);
 		}
 	}
 }, false);
 
-SS.Button = function() {
+const Button = function() {
 	this.onclick = function() {
 		on(this, 'click').fire();
 		return false;
 	}; // onclick()
 	this.ontouchend = this.onclick;
 	setType(this, 'SS.Button');
-}; // Button
+};
 
 
-SS.StartButton = function() {
-	SS.Button.apply(this);
+const StartButton = DomClass("<ss:startbutton>Start</ss:startbutton>", function StartButton() {
+	Button.apply(this);
 	setType(this, 'SS.StartButton');
-}; // StartButton
-SS.StartButton.templateMarkup = "Start";
-Bind(SS.StartButton, 'ss:startbutton');
+});
 
 
-SS.MagicallySizedObject = function() {
+const MagicallySizedObject = function() {
 	var coords = new Bind.NodeBox(this);
 	var pCoords = new Bind.NodeBox(this.parentNode || document.body);
 
@@ -337,13 +336,13 @@ SS.MagicallySizedObject = function() {
 }; // MagicallySizedObject()
 
 
-SS.Ship = function() {
+const Ship = DomClass('<ss:ship></ss:ship>', function Ship() {
 	var _t = this;
 
 	this.x = this.x || 0;
 	this.y = this.y || 0;
 
-	SS.MagicallySizedObject.apply(this);
+	MagicallySizedObject.apply(this);
 
 	this.direction = this.direction || Math.PI/-2; 
 	this.target = {x: _t.x, y: _t.y, direction: _t.direction};
@@ -407,7 +406,7 @@ SS.Ship = function() {
 		for (var i = 0; i < 8; i++) {
 			setTimeout(function() {
 				pn.appendChild(
-					New(SS.Explosion, {
+					new Explosion({
 						x: x + (Math.random() * 10) - 5,
 						y: y + (Math.random() * 10) - 5,
 						duration: i * 100
@@ -440,7 +439,7 @@ SS.Ship = function() {
 	}; // pushTo()
 
 	this.shoot = function() {
-		var bullet = New(SS.Bullet, {
+		var bullet = new Bullet({
 			x: _t.x + this.width/2,
 			y: _t.y + this.height/2,
 			direction: _t.direction
@@ -459,12 +458,9 @@ SS.Ship = function() {
 	}; // init()
 
 	setType(this, 'SS.Ship');
-}; // Ship
-SS.Ship.templateMarkup = "";
-Bind(SS.Ship, 'ss:ship');
+});
 
-
-SS.Projectile = function() {
+const Projectile = function() {
 	var _t = this;
 
 	this.x = Number(this.x || 0);
@@ -532,11 +528,11 @@ SS.Projectile = function() {
 }; // Projectile
 
 
-SS.Bullet = function() {
+const Bullet = DomClass('<ss:bullet></ss:bullet>', function Bullet() {
 	var _t = this;
 
 	this.speed = this.speed || 2;
-	this.conflicts = [SS.Enemy, SS.Pumpkin, SS.Shrapnel];
+	this.conflicts = [Enemy, Pumpkin, Shrapnel];
 
 	on(this, 'collide', function(o) {
 		if (isa(o, 'SS.Enemy')) {
@@ -545,22 +541,20 @@ SS.Bullet = function() {
 	});
 
 	this.init = function() {
-		SS.Audio.play(SS.Bullet.sound);
+		AudioPool.play(Bullet.sound);
 		TPDC.MainLoop.addObject(this);
 		onready(this).fire();
 	}; // init()
 
-	SS.Projectile.apply(this);
+	Projectile.apply(this);
 	setType(this, 'SS.Bullet');
-}; // Bullet
-SS.Bullet.sound = "audio/pew-128.mp3";
-SS.Audio.prepare(SS.Bullet.sound);
-SS.Bullet.templateMarkup = " ";
-Bind(SS.Bullet, 'ss:bullet');
+}); // Bullet
+Bullet.sound = "audio/pew-128.mp3";
+AudioPool.prepare(Bullet.sound);
 
 
-SS.Enemy = function() {
-	SS.Projectile.apply(this);
+const Enemy = DomClass('<ss:enemy></ss:enemy>', function Enemy() {
+	Projectile.apply(this);
 	var _t = this;
 
 	this.speed = this.speed || 1;
@@ -570,7 +564,7 @@ SS.Enemy = function() {
 	this.visibleDirection = this.visibleDirection || 0;
 	this.rotationSpeed = Math.random() * 0.4 - 0.2;
 
-	this.conflicts = [SS.Ship];
+	this.conflicts = [Ship];
 
 	this._step = this.step;
 	this.step = function() {
@@ -590,7 +584,7 @@ SS.Enemy = function() {
 
 	this.explode = function(v, impact) {
 		on(_t, 'shot').fire();
-		_t.parentNode.appendChild(New(SS.Explosion, {
+		_t.parentNode.appendChild(new Explosion({
 			x: _t.x,
 			y: _t.y,
 			text: v === undefined ? _t.game.score : v
@@ -600,7 +594,7 @@ SS.Enemy = function() {
 
 	on(this, 'collide', function(o) {
 		if (isa(o, 'SS.Bullet')) {
-			_t.explode(_t.game.score + 1, New(SS.Momentum, {
+			_t.explode(_t.game.score + 1, new Momentum({
 				direction: o.direction, speed: o.speed, mass: 1
 			}));
 		}
@@ -612,14 +606,12 @@ SS.Enemy = function() {
 	}; // init()
 
 	setType(this, 'SS.Enemy');
-}; // Enemy
-SS.Enemy.templateMarkup = "";
-Bind(SS.Enemy, 'ss:enemy');
+}); // Enemy
 
 
-SS.Pumpkin = function() {
+const Pumpkin = DomClass('<ss:pumpkin></ss:pumpkin>', function Pumpkin() {
 	var _t = this;
-	SS.Enemy.apply(this);
+	Enemy.apply(this);
 
 	this.mass = 5;
 
@@ -633,7 +625,7 @@ SS.Pumpkin = function() {
 
 		// todo: make this math ... umm ... based on actual physics.
 
-		var combined_impact = New(SS.Momentum, {
+		var combined_impact = new Momentum({
 			direction: this.direction,
 			speed: this.speed,
 			mass: this.mass
@@ -662,7 +654,7 @@ SS.Pumpkin = function() {
 	}; // emitRandomShrapnel()
 
 	this.emitShrapnel = function(impact, subtype) {
-		var momentum = New(SS.Momentum, {
+		var momentum = new Momentum({
 			direction: (Math.random() * Math.PI * 2) - Math.PI,
 			speed: 0.25,
 			mass: 1.5
@@ -670,7 +662,7 @@ SS.Pumpkin = function() {
 
 		momentum.impactBy(impact);
 
-		var rv = New(SS.Shrapnel, {
+		var rv = new Shrapnel({
 			x: _t.x, y: _t.y, direction: momentum.direction,
 			speed: momentum.speed,
 			game: _t.game,
@@ -682,26 +674,25 @@ SS.Pumpkin = function() {
 
 
 	setType(this, 'SS.Pumpkin');
-}; // Pumpkin
-SS.Pumpkin.templateMarkup = SS.Enemy.templateMarkup;
-Bind(SS.Pumpkin, 'ss:pumpkin');
+}); // Pumpkin
 
 
-SS.Shrapnel = function() {
-	SS.Enemy.apply(this);
+const Shrapnel = DomClass('<ss:shrapnel></ss:shrapnel>', function Shrapnel() {
+	Enemy.apply(this);
 
 	if (this.subtype) {
 		addClassname(this, this.subtype);
 	}
 
 	setType(this, 'SS.Shrapnel');
-}; // Shrapnel
-SS.Shrapnel.templateMarkup = "";
-Bind(SS.Shrapnel, 'ss:shrapnel');
+}); // Shrapnel
 
 
-SS.Explosion = function() {
+const explosionTemplate = `<ss:explosion>
+	<table><tr><td data-id='text'></td></tr></table>
+</ss:explosion>`;
 
+const Explosion = DomClass(explosionTemplate, function Explosion() {
 	this.dead = false;
 	this.duration = this.duration || 500;
 	this.radius = this.radius || 15;
@@ -738,20 +729,17 @@ SS.Explosion = function() {
 
 	this.init = function() {
 		TPDC.MainLoop.addObject(this);
-		SS.Audio.play(SS.Explosion.sound);
+		AudioPool.play(Explosion.sound);
 		onready(this).fire();
 	}; // init()
 
 	setType(this, 'SS.Explosion');
-}; // Explosion
-SS.Explosion.sound = 'audio/pkewh.mp3';
-SS.Audio.prepare(SS.Explosion.sound);
-SS.Explosion.templateMarkup =
-	"<table><tr><td data-id='text'></td></tr></table>";
-Bind(SS.Explosion, 'ss:explosion');
+}); // Explosion
+Explosion.sound = 'audio/pkewh.mp3';
+AudioPool.prepare(Explosion.sound);
 
 
-SS.Momentum = function() {
+const Momentum = function() {
 
 	this.direction = this.direction || 0;
 	this.speed = this.speed || 0;
@@ -775,8 +763,21 @@ SS.Momentum = function() {
 	setType(this, 'SS.Momentum');	
 }; // SS.Momentum()
 
+const gameOverSplashTemplate = `<ss:gameoversplash>
+	<div class='background'></div>
+	<div class='foreground'>
+		<h1 data-id='heading'>Game Over</h1>
+		<div class='scoreline'>Your score: <span data-id='score' class='score'>...?</span></div>
+		<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>
+		<ss:bannerad data-id='bannerad'></ss:bannerad>
+		<ss:startbutton data-id='restart'>Restart</ss:startbutton>
+		<tpdc:share data-id='share'></tpdc:share>
+		<ss:installlink icon='img/icon.png'></ss:installlink>
+		<div class='copyright'><a target='_blank' href='https://www.thepointless.com'>www.thepointless.com</a></div>
+	</div>
+</ss:gameoversplash>`;
 
-SS.GameOverSplash = function() {
+const GameOverSplash = DomClass(gameOverSplashTemplate, function GameOverSplash() {
 	var _t = this;
 
 	this.delay = this.delay || 1000;
@@ -818,24 +819,20 @@ SS.GameOverSplash = function() {
 	}; // init()
 
 	setType(this, 'SS.GameOverSplash');
-}; // GameOverSplash()
-SS.GameOverSplash.templateMarkup = "\
-	<div class='background'></div>\
-	<div class='foreground'>\
-	<h1 data-id='heading'>Game Over</h1>\
-	<div class='scoreline'>Your score: <span data-id='score' class='score'>...?</span></div>\
-	<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>\
-	<ss:bannerad data-id='bannerad'></ss:bannerad>\
-	<ss:startbutton data-id='restart'>Restart</ss:startbutton>\
-	<tpdc:share data-id='share'></tpdc:share>\
-	<ss:installlink icon='img/icon.png'></ss:installlink>\
-	<div class='copyright'><a target='_blank' href='https://www.thepointless.com'>www.thepointless.com</a></div>\
-	</div>\
-";
-Bind(SS.GameOverSplash, 'ss:gameoversplash');
+}); // GameOverSplash()
 
+const bannerAdTemplate = `<ss:bannerad>
+	<!-- Shooty Ship Pumpkin Smash -->
+	<ins class="adsbygoogle"
+		style="display:block"
+		data-ad-client="ca-pub-6115341109827821"
+		data-ad-slot="9599170847"
+		data-ad-format="auto"
+		data-full-width-responsive="true">
+	</ins>
+</ss:bannerad>`;
 
-SS.BannerAd = function() {
+const BannerAd = DomClass(bannerAdTemplate, function BannerAd() {
 	this.show = function() {
 		try {
 			setTimeout(function() {
@@ -856,31 +853,28 @@ SS.BannerAd = function() {
 	this.show();
 
 	setType(this, 'SS.BannerAd');
-}; // BannerAd
-SS.BannerAd.templateMarkup = '\
-	<!-- Shooty Ship Pumpkin Smash --> \
-	<ins class="adsbygoogle" \
-		style="display:block" \
-		data-ad-client="ca-pub-6115341109827821" \
-		data-ad-slot="9599170847" \
-		data-ad-format="auto" \
-		data-full-width-responsive="true"> \
-	</ins>\
-';
-Bind(SS.BannerAd, 'ss:bannerad');
+}); // BannerAd
 
 
-SS.InstallLink = function() {
+const installLinkTemplate = `<ss:installlink>
+	<hr />
+	<div data-id='button' class='button'>
+	<img data-id='icon_img' />
+	Install
+	</div>
+</ss:installlink>`;
+
+const InstallLink = DomClass(installLinkTemplate, function InstallLink() {
 	var _t = this;
 	this.icon_img.src = this.icon;
 
-	if (SS.InstallLink.evt) {
+	if (InstallLink.evt) {
 		_t.classList.add('show');
 	}
 
 	this.button.onclick = function(e) {
-		SS.InstallLink.evt.prompt();
-		SS.InstallLink.evt.userChoice.then((choiceResult) => {
+		InstallLink.evt.prompt();
+		InstallLink.evt.userChoice.then((choiceResult) => {
 			if (choiceResult.outcome === 'accepted') {
 				_t.classList.remove('show');
 				console.log('User accepted the A2HS prompt');
@@ -889,21 +883,13 @@ SS.InstallLink = function() {
 				console.log('User dismissed the A2HS prompt');
 				trackEvent('cancelled-install');
 			}
-			SS.InstallLink.evt = null;
+			InstallLink.evt = null;
 		});
 	};
-};
-SS.InstallLink.templateMarkup = "\
-	<hr />\
-	<div data-id='button' class='button'>\
-	<img data-id='icon_img' />\
-Install\
-	</div>\
-";
-Bind(SS.InstallLink, 'ss:installlink');
+});
 
 
 window.addEventListener('beforeinstallprompt', (e) => {
 	e.preventDefault();
-	SS.InstallLink.evt = e;
+	InstallLink.evt = e;
 });
