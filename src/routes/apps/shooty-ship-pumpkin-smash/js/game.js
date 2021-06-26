@@ -238,8 +238,6 @@ const Board = DomClass(boardTemplate, function Board() {
 
 	setType(this, 'SS.Board');
 	onready(this).fire();
-
-	console.log('ok');
 });
 
 
@@ -534,7 +532,7 @@ const Projectile = function() {
 }; // Projectile
 
 
-const Bullet = DomClass('<ss:bullet></ss:bullet>', function Bullet() {
+const Bullet = DomClass('<ss:bullet></ss:bullet>', function _Bullet() {
 	var _t = this;
 
 	this.speed = this.speed || 2;
@@ -698,7 +696,7 @@ const explosionTemplate = `<ss:explosion>
 	<table><tr><td data-id='text'></td></tr></table>
 </ss:explosion>`;
 
-const Explosion = DomClass(explosionTemplate, function Explosion() {
+const Explosion = DomClass(explosionTemplate, function _Explosion() {
 	this.dead = false;
 	this.duration = this.duration || 500;
 	this.radius = this.radius || 15;
