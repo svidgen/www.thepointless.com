@@ -3870,9 +3870,9 @@ wildcard@^2.0.0:
   integrity sha512-JcKqAHLPxcdb9KM49dufGXn2x3ssnfjbcaQdLlfZsL9rH9wgDQjUtDxbo8NE0F6SFvydeu1VhZe7hZuHsB2/pw==
 
 wirejs-dom@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/wirejs-dom/-/wirejs-dom-1.0.0.tgz#77ebedb197b6b326e2d0b81f165ed069dbc04298"
-  integrity sha512-/9bEXo3lF5PWsp+TnN8XiJwMZ6p3lm8pPAxeaaCr/wRO2GZ8dAZ6CJRrK+wA9vnPe0Yh+ADz/fG+H7ZijJ0NcQ==
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/wirejs-dom/-/wirejs-dom-1.0.2.tgz#9daa5e13414ea360453516d90a0bc209bb9820e0"
+  integrity sha512-2Ayo33p3n6IeOe6X4DnIrRruw/3q6vSZVuBZ2e6+r92sNJTliyRGzg2y2GS3jemuuyVtIeXFMwgE1CO5VoFTIg==
 
 word-wrap@~1.2.3:
   version "1.2.3"

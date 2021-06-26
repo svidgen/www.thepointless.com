@@ -1,5 +1,9 @@
-const { DomClass, setType, isa } = require('wirejs-dom');
+const { DomClass, setType, isa, getNodes } = require('wirejs-dom');
+const { MouseCoords, NodeBox } = require('../../../../lib/coords');
+const { MainLoop } = require('../../../../lib/loop');
 const { on, onready } = require('../../../../lib/event');
+
+global.MainLoop = MainLoop;
 
 const HIGHSCORE_KEY = 'shooty-ship-pumpkin-smash.highscore';
 
@@ -33,7 +37,7 @@ const Board = DomClass(boardTemplate, function Board() {
 		if (!this.enabled) {
 			this.register_event_proxies();
 			this.enabled = true;
-			TPDC.MainLoop.addObject(_t);
+			MainLoop.addObject(_t);
 		}
 	}; // enable();
 
@@ -52,7 +56,7 @@ const Board = DomClass(boardTemplate, function Board() {
 		this.minY = 0;
 		this.maxY = 100;
 
-		var box = new Bind.NodeBox(this);
+		var box = new NodeBox(this);
 
 		// make square
 		var max = Math.max(box.width, box.height);
@@ -164,8 +168,8 @@ const Board = DomClass(boardTemplate, function Board() {
 	this.interact = function(e) {
 		if (!this.enabled) { return; }
 
-		var mc = new TG.MouseCoords(e);
-		var tc = new Bind.NodeBox(this);
+		var mc = new MouseCoords(e);
+		var tc = new NodeBox(this);
 		var destination = {
 			x: 100 * (mc.x - tc.x)/tc.width,
 			y: 100 * (mc.y - tc.y)/tc.height
@@ -234,6 +238,8 @@ const Board = DomClass(boardTemplate, function Board() {
 
 	setType(this, 'SS.Board');
 	onready(this).fire();
+
+	console.log('ok');
 });
 
 
@@ -326,8 +332,8 @@ const StartButton = DomClass("<ss:startbutton>Start</ss:startbutton>", function 
 
 
 const MagicallySizedObject = function() {
-	var coords = new Bind.NodeBox(this);
-	var pCoords = new Bind.NodeBox(this.parentNode || document.body);
+	var coords = new NodeBox(this);
+	var pCoords = new NodeBox(this.parentNode || document.body);
 
 	this.width = 100 * coords.width / pCoords.width;
 	this.height = 100 * coords.height / pCoords.height;
@@ -351,14 +357,14 @@ const Ship = DomClass('<ss:ship></ss:ship>', function Ship() {
 
 	this.enable = function() {
 		if (!this.enabled) {
-			TPDC.MainLoop.addObject(this);
+			MainLoop.addObject(this);
 			this.enabled = true;
 		}
 	}; // enable()
 
 	this.disable = function() {
 		if (this.enabled) {
-			TPDC.MainLoop.removeObject(this);
+			MainLoop.removeObject(this);
 			this.enabled = false;
 		}
 	}; // disable();
@@ -513,11 +519,11 @@ const Projectile = function() {
 			return;
 		}
 
-		var box = new Bind.NodeBox(this);
+		var box = new NodeBox(this);
 		var nodes = getNodes(document, search);
 		for (var i = 0; i < nodes.length; i++) {
 			var target = nodes[i];
-			if (!target.dead && box.overlaps(new Bind.NodeBox(target))) {
+			if (!target.dead && box.overlaps(new NodeBox(target))) {
 				on(this, 'collide').fire(nodes[i]);
 				on(nodes[i], 'collide').fire(this);
 			}
@@ -542,7 +548,7 @@ const Bullet = DomClass('<ss:bullet></ss:bullet>', function Bullet() {
 
 	this.init = function() {
 		AudioPool.play(Bullet.sound);
-		TPDC.MainLoop.addObject(this);
+		MainLoop.addObject(this);
 		onready(this).fire();
 	}; // init()
 
@@ -601,7 +607,7 @@ const Enemy = DomClass('<ss:enemy></ss:enemy>', function Enemy() {
 	});
 
 	this.init = function() {
-		TPDC.MainLoop.addObject(this);
+		MainLoop.addObject(this);
 		onready(this).fire();
 	}; // init()
 
@@ -681,7 +687,7 @@ const Shrapnel = DomClass('<ss:shrapnel></ss:shrapnel>', function Shrapnel() {
 	Enemy.apply(this);
 
 	if (this.subtype) {
-		addClassname(this, this.subtype);
+		this.classList.add(this.subtype);
 	}
 
 	setType(this, 'SS.Shrapnel');
@@ -728,7 +734,7 @@ const Explosion = DomClass(explosionTemplate, function Explosion() {
 	}; // draw()
 
 	this.init = function() {
-		TPDC.MainLoop.addObject(this);
+		MainLoop.addObject(this);
 		AudioPool.play(Explosion.sound);
 		onready(this).fire();
 	}; // init()
@@ -739,11 +745,11 @@ Explosion.sound = 'audio/pkewh.mp3';
 AudioPool.prepare(Explosion.sound);
 
 
-const Momentum = function() {
+const Momentum = function({direction, speed, mass}) {
 
-	this.direction = this.direction || 0;
-	this.speed = this.speed || 0;
-	this.mass = this.mass || 1;
+	this.direction = direction || 0;
+	this.speed = speed || 0;
+	this.mass = mass || 1;
 
 	this.impactBy = function(impactVector) {
 		var x = this.getXMomentum() + impactVector.getXMomentum();
@@ -813,7 +819,7 @@ const GameOverSplash = DomClass(gameOverSplashTemplate, function GameOverSplash(
 
 	this.init = function() {
 		setTimeout(function() {
-			addClassname(_t, 'visible');
+			_t.classList.add('visible');
 		}, this.delay);
 		onready(this).fire();
 	}; // init()
