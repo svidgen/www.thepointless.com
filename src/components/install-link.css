@@ -1,0 +1,26 @@
+ss\:installlink {
+	display: none;
+}
+
+ss\:installlink.show {
+	display: block;
+	text-align: center;
+}
+
+ss\:installlink .button {
+	display: inline-block;
+	padding: 0.1em 1.5em;
+	margin: 0.5em;
+	border: 0.15em solid green;
+	border-radius: 0.5em 0.5em;
+	color: darkgreen;
+	font-size: x-large;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+ss\:installlink .button [data-id='icon_img'] {
+	height: 1em;
+	vertical-align: middle;
+	margin-right: 0.25em;
+}

@@ -3869,7 +3869,7 @@ wildcard@^2.0.0:
   resolved "https://registry.yarnpkg.com/wildcard/-/wildcard-2.0.0.tgz#a77d20e5200c6faaac979e4b3aadc7b3dd7f8fec"
   integrity sha512-JcKqAHLPxcdb9KM49dufGXn2x3ssnfjbcaQdLlfZsL9rH9wgDQjUtDxbo8NE0F6SFvydeu1VhZe7hZuHsB2/pw==
 
-wirejs-dom@^1.0.0:
+wirejs-dom@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wirejs-dom/-/wirejs-dom-1.0.2.tgz#9daa5e13414ea360453516d90a0bc209bb9820e0"
   integrity sha512-2Ayo33p3n6IeOe6X4DnIrRruw/3q6vSZVuBZ2e6+r92sNJTliyRGzg2y2GS3jemuuyVtIeXFMwgE1CO5VoFTIg==

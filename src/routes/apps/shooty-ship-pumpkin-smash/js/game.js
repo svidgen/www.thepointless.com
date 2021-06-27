@@ -2,19 +2,12 @@ const { DomClass, setType, isa, getNodes } = require('wirejs-dom');
 const { MouseCoords, NodeBox } = require('../../../../lib/coords');
 const { MainLoop } = require('../../../../lib/loop');
 const { on, onready } = require('../../../../lib/event');
+const { trackEvent } = require('../../../../lib/tracking');
+require('../../../../components/install-link');
 
 global.MainLoop = MainLoop;
 
 const HIGHSCORE_KEY = 'shooty-ship-pumpkin-smash.highscore';
-
-const trackEvent = function(action, o_label, o_value, o_noninteraction) {
-	gtag('event', action, {
-		'event_category': 'game',
-		'event_label': o_label,
-		'value': o_value,
-		'non_interaction': o_noninteraction
-	});
-};
 
 const boardTemplate = `<ss:board>
 	<ss:gameoversplash data-id='presplash' heading='Shooty Ship Pumpkin Smash' no-ad='1'></ss:gameoversplash>
@@ -858,42 +851,3 @@ const BannerAd = DomClass(bannerAdTemplate, function BannerAd() {
 
 	setType(this, 'SS.BannerAd');
 }); // BannerAd
-
-
-const installLinkTemplate = `<ss:installlink>
-	<hr />
-	<div data-id='button' class='button'>
-	<img data-id='icon_img' />
-	Install
-	</div>
-</ss:installlink>`;
-
-const InstallLink = DomClass(installLinkTemplate, function InstallLink() {
-	var _t = this;
-	this.icon_img.src = this.icon;
-
-	if (InstallLink.evt) {
-		_t.classList.add('show');
-	}
-
-	this.button.onclick = function(e) {
-		InstallLink.evt.prompt();
-		InstallLink.evt.userChoice.then((choiceResult) => {
-			if (choiceResult.outcome === 'accepted') {
-				_t.classList.remove('show');
-				console.log('User accepted the A2HS prompt');
-				trackEvent('install');
-			} else {
-				console.log('User dismissed the A2HS prompt');
-				trackEvent('cancelled-install');
-			}
-			InstallLink.evt = null;
-		});
-	};
-});
-
-
-window.addEventListener('beforeinstallprompt', (e) => {
-	e.preventDefault();
-	InstallLink.evt = e;
-});
