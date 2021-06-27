@@ -774,12 +774,12 @@ const gameOverSplashTemplate = `<ss:gameoversplash>
 	</div>
 </ss:gameoversplash>`;
 
-const GameOverSplash = DomClass(gameOverSplashTemplate, function GameOverSplash() {
+const GameOverSplash = DomClass(gameOverSplashTemplate, function _GameOverSplash() {
 	var _t = this;
 
 	this.delay = this.delay || 1000;
 
-	var score = parseInt(this.score.innerHTML) || 0;
+	const score = parseInt(this.score) || 0;
 
 	if (score == 0) {
 		this.share.parentNode.removeChild(this.share);
@@ -791,16 +791,16 @@ const GameOverSplash = DomClass(gameOverSplashTemplate, function GameOverSplash(
 		};
 	}
 
-	var max = 0;
+	let max = 0;
 	if (localStorage) {
-		max = parseInt(localStorage.getItem(HIGHSCORE_KEY));
-		if (!max || max === Math.NaN || max < score) {
-			max = score;
-			localStorage.setItem(HIGHSCORE_KEY, max);
-		}
-		this.maxScore.innerHTML = max;
+		max = Math.max(
+			parseInt(localStorage.getItem(HIGHSCORE_KEY)) || 0,
+			score
+		);
+		localStorage.setItem(HIGHSCORE_KEY, max);
+		_t.maxScore = max;
 	} else {
-		this.maxScoreLine.parentNode.removeChild(this.maxScoreLine);
+		_t.maxScoreLine.parentNode.removeChild(this.maxScoreLine);
 	}
 
 	on(_t.restart, 'click', function() {
