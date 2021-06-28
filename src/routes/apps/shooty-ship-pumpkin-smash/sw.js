@@ -1,10 +1,9 @@
-var CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v11';
+const CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v12';
 
-var urlsToCache = [
+const urlsToCache = [
 	'index.html',
+	'manifest.json',
 	'css/sheet.css',
-	'js/tg-all.js',
-	'js/tpdc.js',
 	'js/game.js',
 	'audio/pew-128.mp3',
 	'audio/pkewh.mp3',
@@ -28,7 +27,10 @@ self.addEventListener('install', function(event) {
 			console.log('Opened cache');
 			// return cache.addAll(urlsToCache);
 			return Promise.all(urlsToCache.map(function(url) {
-				return fetch(url, {cache: 'no-cache'}).then(function(response) {
+				return fetch(url, {
+					cache: 'no-cache',
+					credentials: 'include'
+				}).then(function(response) {
 					return cache.put(url, response);
 				});
 			}));
