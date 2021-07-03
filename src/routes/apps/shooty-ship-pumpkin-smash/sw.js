@@ -1,4 +1,6 @@
-const CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-v12';
+const BUILD_ID = require('/src/build_id.json');
+
+const CACHE_NAME = 'shooty-ship-pumpkin-smash-cache-' + BUILD_ID;
 
 const urlsToCache = [
 	'index.html',

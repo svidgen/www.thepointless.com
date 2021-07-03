@@ -1,3 +1,6 @@
+${meta({
+	layout: "bare"
+})}
 <!doctype html>
 <html xmlns:tpdc="http://www.thepointless.com/ns/tpdc">
 <head>
@@ -12,21 +15,23 @@
 	<meta name='og:url' content='https://www.thepointless.com/apps/shooty-ship-pumpkin-smash/index.html' />
 	<link rel='manifest' href='manifest.json' crossorigin="use-credentials" />
 	<link rel="icon" type="image/png" href="img/icon.png" />
+
 </head>
 <body id="thebody">
 
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-920576-1"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-		gtag('config', 'UA-920576-1');
-	</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-920576-1"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'UA-920576-1');
+</script>
 
-	<div id='notifications' class='notifications'></div>
-	<div id="content">
-		
+<div id='notifications' class='notifications'></div>
+
+<div id="content">
+
 <style type='text/css'>
 	@import url(css/sheet.css);
 
@@ -40,12 +45,12 @@
 
 </style>
 
-<ss:game></ss:game>
+<div><ss:game></ss:game></div>
 
 <script type='text/javascript' src='js/game.js'></script>
 <script type='text/javascript'>
 if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register('sw.js');
+	navigator.serviceWorker.register('sw.js?v=${BUILD_ID}');
 };
 </script>
 

@@ -1,7 +1,13 @@
+const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 const CopyWebpackPlugin = require('copy-webpack-plugin'); 
 const marked = require('marked');
+
+const BUILD_ID = (new Date()).getTime();
+
+fs.writeFileSync('./src/build_id.json', JSON.stringify(BUILD_ID.toString()));
+
 
 // TODO: Refactor these transforms out of here.
 // TODO: Create a separate package to manage all of this for easy reuse on
@@ -55,7 +61,7 @@ const SSG = {
 			content = content.replace(/"/g, '&quot;');
 			return `<meta name="${tag}" content="${content}" />`;
 		}).join('\n');
-		title = _meta.title;
+		let title = _meta.title;
 
 		const layoutPath = path.join(
 			'src',
