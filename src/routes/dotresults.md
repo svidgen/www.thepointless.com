@@ -1,5 +1,10 @@
-<?php
+${meta({
+	title: "for the love of the dot!"
+})}
+<div><tpdc:simpleresult></tpdc:simpleresult></div>
 
+<!-- 
+<?php
 	// NOTE: {subject} is replaced in the resultcard client-side.
 
 	require_once('includes/sitemap.inc');
@@ -47,3 +52,5 @@
 	);
 
 ?>
+
+-->

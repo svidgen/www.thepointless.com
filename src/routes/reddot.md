@@ -2,8 +2,7 @@
 	$meta_title = "the red dot";
 ?>
 
-<script language="JavaScript">
-
+<script>
 var lines = [
 	"This is my red dot. It doesn't do anything if you click on it.",
 	"Really, you can click on my red dot all you want. It won't do a thing.",
@@ -119,24 +118,23 @@ function dotClick() {
 	document.mainForm.clicks.value = clicks;
 	document.getElementById('message').innerHTML = lines[line];
 } // dotClick()
-
 </script>
 
 
-	<p align="center">
-		<img src="images/reddot.jpg" onClick="dotClick();" />
-	</p>
+<p align="center">
+	<img src="images/reddot.jpg" onClick="dotClick();" />
+</p>
 
-	<div id="message" style="text-align: center; margin: 5px; font-size: big;">
-		This is my red dot. It doesn't do anything when you click on it.
-	</div>
+<div id="message" style="text-align: center; margin: 5px; font-size: big;">
+	This is my red dot. It doesn't do anything when you click on it.
+</div>
 
-	<form style="text-align: center;" name="mainForm" method="post" action="dotresults">
-		<input type="hidden" name="clicks" value="0" />
-		<input type="hidden" name="dot" value="red" />
-		<input type="submit" value="I'm done harassing the dot." />
-	</form>
+<form style="text-align: center;" name="mainForm" method="get" action="dotresults">
+	<input type="hidden" name="clicks" value="0" />
+	<input type="hidden" name="dot" value="red" />
+	<input type="submit" value="I'm done harassing the dot." />
+</form>
 
-	<div style='display: none; margin-top: 40px; text-align: center;'>
-		Wait! <a href='/dots'>This isn't the dot I want to harass!</a>
-	</div>
+<div style='display: none; margin-top: 40px; text-align: center;'>
+	Wait! <a href='/dots'>This isn't the dot I want to harass!</a>
+</div>

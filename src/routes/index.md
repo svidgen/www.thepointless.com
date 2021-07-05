@@ -1,5 +1,4 @@
 ${meta({
-	layout: "default",
 	title: "Home",
 	author: "svidgen",
 	description: "This is a site about things and stuff."
@@ -11,7 +10,7 @@ It's spooky out there. We're already seeing **lots of spooky masks** out there. 
 **Shooty Ship** has taken flight against *spooooky pumkins*. Take the control and join the **fight against fear!**
 
 <p style='text-align: center; font-size: x-large; font-weight: bold;'>
-	<a href='/apps/shooty-ship-pumpkin-smash/index.html' target='_blank'>
+	<a href='/apps/shooty-ship-pumpkin-smash' target='_blank'>
 		<img width='256' height='256' src='/apps/shooty-ship-pumpkin-smash/img/icon.png' />
 		<br />Click to Play!
 	</a>
@@ -23,6 +22,7 @@ Support **us** in supporting **you** fight spooky things this year and **Play Sh
 
 Don't forget to **install** the app after your first round of play for **so you're never stuck without it**.
 
+<!-- TODO: Configure or extend marked.js to not mangle bare custom tags. -->
 <div><tpdc:share
 	text="I support thepointless.com in this vErY SpoOkY HalLoWeeN."
 ></tpdc:share></div>
