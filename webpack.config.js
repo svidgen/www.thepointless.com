@@ -4,6 +4,15 @@ const glob = require('glob');
 const CopyWebpackPlugin = require('copy-webpack-plugin'); 
 const marked = require('marked');
 
+// https://marked.js.org/using_advanced
+marked.setOptions({
+	highlight: function(code, lang) {
+		const highlighter = require('highlight.js');
+		const language = highlighter.getLanguage(lang) ? lang : 'plaintext';
+		return highlighter.highlight(code, { language }).value;
+	}
+});
+
 const BUILD_ID = (new Date()).getTime();
 
 fs.writeFileSync('./src/build_id.json', JSON.stringify(BUILD_ID.toString()));
@@ -49,7 +58,10 @@ const SSG = {
 
 		let body;
 		try {
-			const bodyMarkdown = eval('`' + content.toString() + '`')
+			const escapedMarkdown = content.toString().replace(/`/g, '\\`');
+			// _path.endsWith('about.md') && console.log(escapedMarkdown);
+			const bodyMarkdown = eval('`' + escapedMarkdown + '`');
+			// _path.endsWith('about.md') && console.log(bodyMarkdown);
 			body = marked(bodyMarkdown);
 		} catch (err) {
 			console.error(`Could not parse page ${_path}`, err);

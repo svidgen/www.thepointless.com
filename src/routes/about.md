@@ -1,8 +1,6 @@
-<?php
-
-	$meta_title = "about us";
-
-?>
+${meta({
+	title: "about us"
+})}
 
 <div class='content'>
 	<div class='padded navbar float-right' style='width: 90px;'>
@@ -38,5 +36,4 @@
 	<b>You're welcome.</b>
 </div>
 
-<tpdc:share></tpdc:share>
-
+<div><tpdc:share></tpdc:share></div>
