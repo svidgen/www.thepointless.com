@@ -1,6 +1,6 @@
-<?php
-	$meta_title = "it's y2k! ahhhhhhh!";
-?>
+${meta({
+	title: "it's y2k! ahhhhhhh!"
+})}
 <div class='p'>
 We have admittedly fallen a little behind. The y2k bug is still <i>prevalent</i> in our systems, and it's causing a lot of havoc as you can see by the following year:
 	<img src='http://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Hourglass_drawing.svg/200px-Hourglass_drawing.svg.png' style='float: right; border: 1px solid silver; margin: 1em; padding: 1em; display: none;' alt='hourglass of doom' title='our time is running out' />
@@ -28,4 +28,4 @@ As you can see, our images are <b><i>clearly</i></b> showing the past state of t
 
 <div class='p'>The <b>number one</b> thing you can do to help is <b>raise awareness:</b></div>
 
-<tpdc:share></tpdc:share>
+<div><tpdc:share></tpdc:share></div>

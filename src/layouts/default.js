@@ -2,7 +2,7 @@ require('./default.css');
 const GoogleAds = require('ex-gratia/google');
 
 require('../components/share.js');
-require('../components/simple-score.js');
+require('../components/copyright.js');
 require('../components/var.js');
 
 // no ads at "home".
