@@ -119,6 +119,10 @@ hr {
 	margin: 0.25rem;
 }
 
+#footer > #sub-footer tpdc\:pagebuildtime {
+	font-weight: bold;
+}
+
 @media (max-width: 50rem) {
 	.navbar, .navbar.float-right, .sidebar, .sidebar.float-right {
 		float: none;
