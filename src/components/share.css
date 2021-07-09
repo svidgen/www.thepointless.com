@@ -1,7 +1,35 @@
 tpdc\:share {
-	display: inline-block;
+	display: block;
+	margin: 1em;
+	margin-bottom: 0;
+	text-align: center;
+	color: gray;
+	font-size: 18px;
 }
 
-tpdc\:share a {
+tpdc\:share > div.header {
+	margin-bottom: 0.5em;
+}
+
+.social-link {
 	cursor: pointer;
+	margin: 0px 0.05em;
+}
+
+.social-icon {
+	height: 22px;
+	padding: 0.1em;
+	vertical-align: middle;
+	filter: opacity(75%);
+	border: 3px solid transparent;
+}
+
+.social-link:hover > .social-icon {
+	filter: opacity(100%);
+	border-color: darkred;
+}
+
+.social-link:active > .social-icon {
+	filter: opacity(100%);
+	border-color: red;
 }

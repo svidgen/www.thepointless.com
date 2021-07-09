@@ -2,16 +2,19 @@ const { DomClass } = require('wirejs-dom');
 require('./share.css');
 
 const template = `<tpdc:share>
-	<br />Make it happen, Cap'n.<br /><br />
-		<a data-id='fb_link' class='social-link'>
-			<img class='social-icon' src='/images/fb_icon_22px.png' />
-		</a>
-		<a data-id='twitter_link' class='social-link'>
-			<img class='social-icon' src='/images/twitter_logo_22px.png' />
-		</a>
-		<a data-id='email_link' class='social-link'>
-			<img class='social-icon' src='/images/email_logo_22px_h.png' />
-		</a>
+		<div class='header'>Make it happen, Cap'n.</div>
+		<a data-id='fb_link' class='social-link'><img
+			class='social-icon'
+			src='/images/fb_icon_22px.png'
+		/></a>
+		<a data-id='twitter_link' class='social-link'><img
+			class='social-icon'
+			src='/images/twitter_logo_22px.png'
+		/></a>
+		<a data-id='email_link' class='social-link'><img
+			class='social-icon'
+			src='/images/email_logo_22px_h.png'
+		/></a>
 </tpdc:share>`;
 
 module.exports = DomClass(template, function Share() {

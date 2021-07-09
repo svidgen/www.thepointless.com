@@ -179,7 +179,13 @@ module.exports = (env, argv) => {
 			rules: [
 				{
 					test: /\.css$/,
-					use: ["style-loader", "css-loader"]
+					use: [
+						"style-loader",
+						{ loader: "css-loader", options: {
+							// don't try to require() url assets
+							url: false
+						} }
+					]
 				},
 				{
 					test: /\.html$/,
