@@ -9,7 +9,6 @@ const PageBuildTime = DomClass(template, function _PageBuildTime() {
 	if (window.performance) {
 		const loop = setInterval(() => {
 			const perfData = window.performance.timing;
-			console.log('perfdata', perfData);
 			const time = perfData.loadEventEnd - perfData.navigationStart;
 			if (time > 0) {
 				_t.time = `${time} ms`;
