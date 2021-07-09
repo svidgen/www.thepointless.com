@@ -10,7 +10,7 @@ body {
 	font-family: Arial, sans-serif;
 	font-size: 12pt;
 	line-height: 1.2;
-	/* background: url(/static/images/shiny.jpg); */
+	background: url('/images/shiny.jpg');
 	color: #333333;
 }
 
@@ -56,6 +56,7 @@ hr {
 	padding: 0.5rem;
 	background-color: white;
 	border: 1px solid #cccccc;
+	border-radius: 0.25em;
 	overflow: hidden;	/* float containment */
 }
 
