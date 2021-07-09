@@ -9,22 +9,24 @@
 		${metatags}
 	</head>
 	<body>
-		<div class='header'>
-			<h2>${title || "thepointless.com"}</h2>
-		</div>
-		<div class='content'>
-			${body}
-		</div>
-		<div class='footer'>
-			<div class='sub-footer'>
-				<p>This page was hand-knit in <tpdc:pagebuildtime></tpdc:pagebuildtime> by enslaved children.</p>
-				<p>
-					<tpdc:copyright></tpdc:copyright>
-					| <a href='/terms'>terms</a>
-					| <a href='/careers'>careers</a>
-					| <a href='/all-the-things'>the boring path</a>
-					| <a href='/about'>about</a>
-				</p>
+		<div id='container'>
+			<div id='header'>
+				<h2>${title || "thepointless.com"}</h2>
+			</div>
+			<div id='content'>
+				${body}
+			</div>
+			<div id='footer'>
+				<div id='sub-footer'>
+					<p>This page was hand-knit in <tpdc:pagebuildtime></tpdc:pagebuildtime> by enslaved children.</p>
+					<p>
+						<tpdc:copyright></tpdc:copyright>
+						| <a href='/terms'>terms</a>
+						| <a href='/careers'>careers</a>
+						| <a href='/all-the-things'>the boring path</a>
+						| <a href='/about'>about</a>
+					</p>
+				</div>
 			</div>
 		</div>
 		<script src='layouts/default.js'></script>

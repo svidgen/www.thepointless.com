@@ -1,5 +1,156 @@
 @import url('core.css');
 
+/*****************
+    BASIC TAGS
+*****************/
+
 body {
-	background-color: beige;
+	margin: 0px;
+	padding: 0px;
+	font-family: Arial, sans-serif;
+	font-size: 12pt;
+	line-height: 1.2;
+	/* background: url(/static/images/shiny.jpg); */
+	color: #333333;
+}
+
+@media (max-width: 50rem) {
+}
+
+img {
+	border: 0px;
+}
+
+a, tpdc\:start {
+	color: #0044aa;
+	text-decoration: none;
+}
+
+a:hover, tpdc\:start:hover {
+	color: #660000;
+	text-decoration: underline;
+}
+
+a.nohoverdecoration, tpcd\:start.nohoverdecoration {
+	text-decoration: none;
+}
+
+hr {
+	margin: 2rem auto;
+	width: 65%;
+	height: 1px;
+	border: 0px;
+	background-color: silver;
+}
+
+
+/******************
+  TEMPLATE PARTS
+******************/
+
+#container {
+	position: relative;
+	width: 90%;
+	max-width: 60rem;
+	margin: 2rem auto;
+	padding: 0.5rem;
+	background-color: white;
+	border: 1px solid #cccccc;
+	overflow: hidden;	/* float containment */
+}
+
+#content {
+	overflow: hidden;
+	padding: 0.85rem;
+	padding-top: 0px;
+	line-height: 1.3rem;
+	text-align: justify;
+}
+
+#footer {
+	clear: both;
+	text-align: center;
+}
+
+#sub-footer {
+	margin-top: 2rem;
+	font-size: smaller;
+	color: #555555;
+}
+
+.footer-plug {
+	margin-top: 2.5rem;
+	padding-top: 1.75rem;
+	text-align: right;
+	color: gray;
+	border-top: 1px dashed silver;
+}
+
+.footer-plug a {
+	font-size: 1.2rem;
+}
+
+.navbar, .sidebar {
+	/* display: inline-block; */
+	float: left;
+	width: 12rem;
+	border-width: 0;
+	border-color: #cccccc;
+	border-style: solid;
+	border-right-width: 1px;
+	margin-right: 1rem;
+}
+
+.navbar.float-right, .sidebar.float-right {
+	float: right;
+	border-width: 0;
+	border-left-width: 1px;
+}
+
+.navbar > .navbar {
+	display: block;
+	border-bottom-width: 1px;
+	margin-bottom: 0.75rem;
+}
+
+.navbar a {
+	display: block;
+	margin: 0.25rem;
+}
+
+@media (max-width: 50rem) {
+	.navbar, .navbar.float-right, .sidebar, .sidebar.float-right {
+		float: none;
+		width: 100%;
+		display: block;
+		border-width: 0;
+		border-bottom-width: 1px;
+		margin: 0;
+		margin-bottom: 1rem;
+	}
+
+	.navbar > .navbar {
+		display: block;
+		border-width: 0;
+		border-right-width: 1px;
+		margin: 0;
+		margin-right: 0.75rem;
+	}
+
+	.navbar a {
+		font-size: 1.25rem;
+		display: inline-block;
+	}
+
+	.navbar a:before {
+		content: "● ";
+	}
+
+	.navbar a:after {
+		content: "";
+	}
+
+	.navbar #logo {
+		display: none;
+	}
 }
