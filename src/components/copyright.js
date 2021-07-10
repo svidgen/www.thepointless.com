@@ -1,7 +1,7 @@
 const { DomClass } = require('wirejs-dom');
 
 const template = `<tpdc:copyright>
-	<a href='/y2k'>&copy;<span data-id='year'>10k AD</span></a>
+	<a href='/y2k.html'>&copy;<span data-id='year'>10k AD</span></a>
 </tpdc:copyright>`;
 
 const Copyright = DomClass(template, function _Copyright() {

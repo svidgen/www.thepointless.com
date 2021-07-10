@@ -1,8 +1,6 @@
-<?php
-
-	$meta_title = "career opportunities";
-
-?>
+${meta({
+	title: "career opportunities"
+})}
 <div id='top' style='margin-bottom: 2rem;'>
 	We may or may not have the following positions open:
 </div>
@@ -11,11 +9,11 @@
 	<li><a href='#Button_Pusher'>Button Pusher</a></li>
 	<li><a href='#Word_Maker'>Word Maker</a></li>
 	<li><a href='#Dungeon_Master'>Dungeon Master</a></li>
-	<?php /*
+	<!--
 		<li><a href='#page_scroller'>Page Scroller</a></li>
 		<li><a href='#badge_giver'>Badge Giver</a></li>
 		<li><a href='#monster_slayer'>Monster Slayer</a></li>
-	*/ ?>
+	-->
 </ul>
 
 <div class='not-job_container'>
