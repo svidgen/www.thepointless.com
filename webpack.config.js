@@ -59,8 +59,9 @@ const SSG = {
 
 		let body;
 		try {
-			const escapedMarkdown = content.toString()
-				.replace(/^[\s\t]+/g, '')
+			const escapedMarkdown = content.toString().split(/\n/)
+				.map(l => l.trim())
+				.join('\n')
 				.replace(/(``+)/g, m => Array(m.length).fill('\\`').join(''))
 			;
 			if (_path.endsWith('about.md')) {
