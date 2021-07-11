@@ -1,6 +1,6 @@
-<?php
-	$meta_title = "the red dot";
-?>
+${meta({
+	title: "the red dot"
+})}
 
 <script>
 var lines = [

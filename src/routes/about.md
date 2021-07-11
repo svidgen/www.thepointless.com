@@ -36,8 +36,4 @@ ${meta({
 	<b>You're welcome.</b>
 </div>
 
-```js
-const x = do(123);
-```
-
 <div><tpdc:share></tpdc:share></div>
