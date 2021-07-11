@@ -59,18 +59,23 @@ const SSG = {
 
 		let body;
 		try {
+			let isInCodeBlock = false;
 			const escapedMarkdown = content.toString().split(/\n/)
-				.map(l => l.trim())
-				.join('\n')
+				.reduce((lines, line) => {
+					if (isInCodeBlock) {
+						lines[lines.length-1] += "\n" + line;
+					} else {
+						lines.push(line);
+					}
+					if (line.startsWith('```')) {
+						isInCodeBlock = !isInCodeBlock;
+					}
+					return lines;
+				}, [])
+				.map(l => l.trim()).join('\n')
 				.replace(/(``+)/g, m => Array(m.length).fill('\\`').join(''))
 			;
-			if (_path.endsWith('about.md')) {
-				console.log(escapedMarkdown);
-			}
 			const bodyMarkdown = eval('`' + escapedMarkdown + '`');
-			if (_path.endsWith('about.md')) {
-				console.log(bodyMarkdown);
-			}
 			body = marked(bodyMarkdown);
 		} catch (err) {
 			console.error(`Could not parse page ${_path}`, err);
