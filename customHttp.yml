@@ -1,9 +1,9 @@
 customHeaders:
-  - pattern: 'images/*'
+  - pattern: '/images/*'
     headers:
     - key: 'Cache-Control'
-      value: 'public, max-age=600'
+      value: 'private, max-age=600'
   - pattern: '*.js'
     headers:
     - key: 'Cache-Control'
-      value: 'public, max-age=600'
+      value: 'private, max-age=600'
