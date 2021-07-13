@@ -3,7 +3,7 @@ customHeaders:
     headers:
     - key: 'Cache-Control'
       value: 'private, max-age=600'
-  - pattern: '*.js'
+  - pattern: '/layouts/*.js'
     headers:
     - key: 'Cache-Control'
       value: 'private, max-age=600'
