@@ -1,8 +1,8 @@
 const { DomClass } = require('wirejs-dom');
 
-const template = `<tpdc:pagebuildtime>
-	<span data-id='time'>record time</span>
-</tpdc:pagebuildtime>`;
+const template = `<tpdc:pagebuildtime><span data-id='time'
+	>record time</
+span></tpdc:pagebuildtime>`;
 
 const PageBuildTime = DomClass(template, function _PageBuildTime() {
 	const _t = this;
@@ -11,7 +11,7 @@ const PageBuildTime = DomClass(template, function _PageBuildTime() {
 			const perfData = window.performance.timing;
 			const time = perfData.loadEventEnd - perfData.navigationStart;
 			if (time > 0) {
-				_t.time = `${time} ms`;
+				_t.time = `${(time/1000).toFixed(1)} seconds`;
 				clearInterval(loop);
 			}
 		}, 100);

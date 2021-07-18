@@ -1,0 +1,32 @@
+${meta({
+	title: "falling candy corn"
+})}
+
+<style type='text/css'>
+
+tpdc\\:space {
+	display: block;
+	position: relative;
+	width: 90%;
+	height: 80vh;
+	border: 0.5rem solid orange;
+	background-color: black;
+	overflow: hidden;
+}
+
+tpdc\\:candycorn {
+	position: absolute;
+	display: block;
+	width: 1.35rem;
+	height: 2.00rem;
+	z-index: 10;
+	background-color: transparent;
+	background-image: url(/images/candy-corn-medium.png);
+	background-size: 100% 100%;
+}
+
+</style>
+
+<div><tpdc:space></tpdc:space></div>
+
+<script src='falling-candy-corn.js?v=${BUILD_ID}'></script>

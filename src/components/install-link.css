@@ -14,9 +14,14 @@ ss\:installlink .button {
 	border: 0.15em solid green;
 	border-radius: 0.5em 0.5em;
 	color: darkgreen;
+	background-color: #f5fff5;
 	font-size: x-large;
 	font-weight: bold;
 	cursor: pointer;
+}
+
+ss\:installlink .button:hover {
+	background-color: #efe;
 }
 
 ss\:installlink .button [data-id='icon_img'] {

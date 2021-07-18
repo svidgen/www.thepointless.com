@@ -21,7 +21,7 @@ const sitemap = {
 	},
 
 	'features': {
-		'/shooty-ship/presidential-edition': 'Shooty Ship Presidential Edition',
+		// '/shooty-ship/presidential-edition': 'Shooty Ship Presidential Edition',
 		'/features/halloweeny-2015': 'halloweeny (2015)',
 		'/falling-candy-corn': 'falling candy corn',
 		'/big-dinosaur-problem-lately': 'big dinosaur problem lately',

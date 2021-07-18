@@ -161,6 +161,7 @@ ss\:gameoversplash .foreground {
 	margin: 1em auto;
 	background-color: white;
 	border: 10px solid #884444;
+	border-radius: 2px;
 	z-index: 1001;
 	text-align: center;
 }
