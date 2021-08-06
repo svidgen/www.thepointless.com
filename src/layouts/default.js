@@ -21,5 +21,11 @@ Object.assign(window, wirejs);
 // doesn't currently handle this, we need to bless() the document async (after the DOM is built).
 // we may even want to do this repeatedly over the course of a few seconds to
 // allow for "settling". (it should be safe to call "bless" repeatedly.)
-setTimeout(() => wirejs.bless(document), 1);
 
+function init() {
+	document.readyState === 'complete' ?
+		wirejs.bless(document) :
+		setTimeout(init, 1);
+}
+
+setTimeout(init, 1);
