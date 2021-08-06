@@ -25,8 +25,8 @@ const sitemap = {
 		'/features/halloweeny-2015': 'halloweeny (2015)',
 		'/falling-candy-corn': 'falling candy corn',
 		'/big-dinosaur-problem-lately': 'big dinosaur problem lately',
-		'/features/meme?name=cleaning-with-kittens': 'a kitten meme',
-		'/features/meme?name=toilet-paper-not-a-turle': 'a toilet paper meme',
+		// '/features/meme?name=cleaning-with-kittens': 'a kitten meme',
+		// '/features/meme?name=toilet-paper-not-a-turle': 'a toilet paper meme',
 		'/dinosaur-people': 'dinosaur people',
 		'/shooty-ship/': 'Shooty Ship (new!)',
 
