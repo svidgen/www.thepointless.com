@@ -48,6 +48,23 @@ Username: dev
 Password: devpassword
 ```
 
+## Package Structure 
+
+| Folder | Purpose |
+|---|---|
+| /amplify | files used by the aws amplify framework for back-end services and hosting |
+| /archive | files from the pre-aws migration, php version of site. pull requests to migrate this content will generally be welcome and appreciated. |
+| /dist | built files. not to be added to the repository. |
+| /node_modules | node modules, managed by npm. not to be added. |
+| /scripts | CLI scripts that may be used during development, building, etc.. |
+| /src | content and script that must be "built" for deployment |
+| /src/components | [wirejs-dom](https://www.npmjs.com/package/wirejs-dom) web components intended to be used across pages |
+| /src/layouts | top-level layouts into which route content (.md and .html files) are embedded. |
+| /src/lib | common javascript modules that are *not* `wirejs-dom` components |
+| /src/routes | routable paths. `.md` and `.html` files herein produce human-navigable URLs. |
+| /static | content that will be deployed as-is. |
+| /static/images | images that are deployed statically, as-is. |
+
 ## A Note on Code Quality
 
 We don't have any documented rules just yet. Just try to follow the patterns from the non-archived content, components, and service wrappers. Be receptive to feedback during PR's. We will try not to be terrible, but we reserve the right to steal ideas from your PR's and publish them as our own if you're unable to *reasonably* closely conform our patterns, etc..

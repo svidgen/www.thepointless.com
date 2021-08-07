@@ -22,20 +22,20 @@ const sitemap = {
 
 	'features': {
 		// '/shooty-ship/presidential-edition': 'Shooty Ship Presidential Edition',
-		'/features/halloweeny-2015': 'halloweeny (2015)',
+		'/w/halloweeny-2015': 'halloweeny (2015)',
 		'/falling-candy-corn': 'falling candy corn',
-		'/big-dinosaur-problem-lately': 'big dinosaur problem lately',
+		'/w/big-dinosaur-problem-lately': 'big dinosaur problem lately',
 		// '/features/meme?name=cleaning-with-kittens': 'a kitten meme',
 		// '/features/meme?name=toilet-paper-not-a-turle': 'a toilet paper meme',
-		'/dinosaur-people': 'dinosaur people',
+		'/w/dinosaur-people': 'dinosaur people',
 		'/shooty-ship/': 'Shooty Ship (new!)',
 
 		// including the 'id' to satisfy getPlug()
 		'/place': 'a place!',
 
 		// '/fart-counter' => 'fart counter',
-		'/awkward-moment': "that awkward moment when ...",
-		'/small-potatoes': 'the book of small potatoes',
+		// '/awkward-moment': "that awkward moment when ...",
+		// '/small-potatoes': 'the book of small potatoes',
 		'/ascii-monsters': 'ascii monsters',
 		'/preggertest': 'online pregnancy test',
 		'/something': 'something',
