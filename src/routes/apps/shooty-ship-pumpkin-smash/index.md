@@ -45,7 +45,15 @@ ${meta({
 
 </style>
 
-<div><ss:game></ss:game></div>
+<div><ss:game
+	name="Shooty Ship Frumpkin Smarsh"
+	shrapnel="
+		round-red-candy,
+		mummy,
+		candle,
+		square-candy,
+	"
+></ss:game></div>
 
 <script type='text/javascript' src='js/game.js'></script>
 <script type='text/javascript'>

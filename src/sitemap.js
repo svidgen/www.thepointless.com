@@ -21,6 +21,7 @@ const sitemap = {
 	},
 
 	'features': {
+		'/apps/shooty-ship-pumpkin-smash': 'Shooty Ship Pumpkin Smash',
 		// '/shooty-ship/presidential-edition': 'Shooty Ship Presidential Edition',
 		'/w/halloweeny-2015': 'halloweeny (2015)',
 		'/falling-candy-corn': 'falling candy corn',
@@ -28,7 +29,7 @@ const sitemap = {
 		// '/features/meme?name=cleaning-with-kittens': 'a kitten meme',
 		// '/features/meme?name=toilet-paper-not-a-turle': 'a toilet paper meme',
 		'/w/dinosaur-people': 'dinosaur people',
-		'/shooty-ship/': 'Shooty Ship (new!)',
+		'/apps/shooty-ship/': 'Shooty Ship (Original!)',
 
 		// including the 'id' to satisfy getPlug()
 		'/place': 'a place!',

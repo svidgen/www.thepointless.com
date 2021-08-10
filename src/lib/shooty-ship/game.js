@@ -7,10 +7,11 @@ const { InstallLink } = require('/src/components/install-link');
 
 global.MainLoop = MainLoop;
 
-const HIGHSCORE_KEY = 'shooty-ship-pumpkin-smash.highscore';
+let HIGHSCORE_KEY = 'shooty-ship-beta.highscore';
+let SHRAPNEL_TYPES;
 
 const gameTemplate = `<ss:game>
-	<ss:gameoversplash data-id='presplash' heading='Shooty Ship Pumpkin Smash' no-ad='1'></ss:gameoversplash>
+	<ss:gameoversplash data-id='presplash' no-ad='1'></ss:gameoversplash>
 	<ss:ship data-id='ship' style='top: -100%; left: -100%;'></ss:ship>
 </ss:game>`;
 
@@ -25,6 +26,16 @@ const Game = DomClass(gameTemplate, function _Board() {
 	this.maxY = 100;
 
 	this.enemies = [];
+
+	this.presplash.heading = this.name || 'Shooty Ship - BETA';
+	HIGHSCORE_KEY = this.presplash.heading.replace(/\s+/g, '-') + '.highscore';
+
+	SHRAPNEL_TYPES = (this.shrapnel || '').replace('/\s+/g', '')
+		.split(',')
+		.map(s => s.trim())
+		.filter(s => s.length > 0)
+	;
+	console.log('shrapnel types registered', SHRAPNEL_TYPES);
 
 	this.enable = function() {
 		if (!this.enabled) {
@@ -638,16 +649,11 @@ const Pumpkin = DomClass('<ss:pumpkin></ss:pumpkin>', function Pumpkin() {
 	}; // explode()
 
 	this.emitRandomShrapnel = function(impact) {
-		var subtypes = [
-			'round-red-candy',
-			'mummy',
-			'candle',
-			'square-candy'
-		];
-
-		var subtype = subtypes[Math.floor(Math.random() * subtypes.length)];
-
-		this.emitShrapnel(impact, subtype);
+		const subtypes = SHRAPNEL_TYPES || [];
+		if (subtypes.length > 0) {
+			var subtype = subtypes[Math.floor(Math.random() * subtypes.length)];
+			this.emitShrapnel(impact, subtype);
+		}
 	}; // emitRandomShrapnel()
 
 	this.emitShrapnel = function(impact, subtype) {
@@ -676,9 +682,18 @@ const Pumpkin = DomClass('<ss:pumpkin></ss:pumpkin>', function Pumpkin() {
 
 const Shrapnel = DomClass('<ss:shrapnel></ss:shrapnel>', function Shrapnel() {
 	Enemy.apply(this);
+	var _t = this;
+
+	this.scale = 0.05;
 
 	if (this.subtype) {
-		this.classList.add(this.subtype);
+		var img = new Image();
+		img.onload = function() {
+			_t.style.width = img.width * _t.scale + 'vmin';
+			_t.style.height = img.height * _t.scale + 'vmin';
+		};
+		img.src = 'img/' + this.subtype + ".png";
+		this.style.backgroundImage = "url('" + img.src + "')";
 	}
 
 	setType(this, 'SS.Shrapnel');
@@ -819,7 +834,7 @@ const GameOverSplash = DomClass(gameOverSplashTemplate, function _GameOverSplash
 }); // GameOverSplash()
 
 const bannerAdTemplate = `<ss:bannerad>
-	<!-- Shooty Ship Pumpkin Smash -->
+	<!-- Shooty Ship -->
 	<ins class="adsbygoogle"
 		style="display:block"
 		data-ad-client="ca-pub-6115341109827821"
