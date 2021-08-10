@@ -1,0 +1,18 @@
+{
+	"manifest_package": "com.thepointless.apps.shooty-ship",
+	"short_name": "Shooty Ship",
+	"name": "Shooty Ship",
+	"description": "Pew pew pew!",
+	"icons": [
+		{
+			"src": "/apps/shooty-ship/img/shooty-ship-icon-512.png",
+			"type": "image/png",
+			"sizes": "512x512"	
+		}
+	],
+	"start_url": "index.html",
+	"scope": "/apps/shooty-ship/",
+	"display": "fullscreen",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff"
+}
