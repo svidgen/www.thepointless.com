@@ -4,11 +4,13 @@ const { MainLoop } = require('/src/lib/loop');
 const { on, onready } = require('/src/lib/event');
 const { trackEvent } = require('/src/lib/tracking');
 const { InstallLink } = require('/src/components/install-link');
+require('./game.css');
 
 global.MainLoop = MainLoop;
 
 let HIGHSCORE_KEY = 'shooty-ship-beta.highscore';
 let SHRAPNEL_TYPES;
+let ENEMY_TYPES;
 
 const gameTemplate = `<ss:game>
 	<ss:gameoversplash data-id='presplash' no-ad='1'></ss:gameoversplash>
@@ -25,7 +27,7 @@ const Game = DomClass(gameTemplate, function _Board() {
 	this.minY = 0;
 	this.maxY = 100;
 
-	this.enemies = [];
+	this._enemies = [];
 
 	this.presplash.heading = this.name || 'Shooty Ship - BETA';
 	HIGHSCORE_KEY = this.presplash.heading.replace(/\s+/g, '-') + '.highscore';
@@ -36,6 +38,19 @@ const Game = DomClass(gameTemplate, function _Board() {
 		.filter(s => s.length > 0)
 	;
 	console.log('shrapnel types registered', SHRAPNEL_TYPES);
+
+	ENEMY_TYPES = (this.enemies || '').replace('/\s+/g', '')
+		.split(',')
+		.map(s => s.trim())
+		.filter(s => s.length > 0)
+	;
+	console.log('enemy types registered', ENEMY_TYPES);
+
+	// hack.
+	// require()'d CSS rewrites url()'s to be relative to the CSS file.
+	// normally, that's what you'd want. but, it's not what we want, especially
+	// with a common sheet across PWA's.
+	this.style.backgroundImage = "url('./img/shiny.jpg')";
 
 	this.enable = function() {
 		if (!this.enabled) {
@@ -99,7 +114,7 @@ const Game = DomClass(gameTemplate, function _Board() {
 	this.step = function() {
 		if (!this.enabled) { return; }
 
-		if (this.enemies.length < this.maxRocks) {
+		if (this._enemies.length < this.maxRocks) {
 			var spawn = this.getSpawnPoint();
 			var target = {
 				x: this.ship.x + (Math.random() * 20 - 10),
@@ -111,10 +126,18 @@ const Game = DomClass(gameTemplate, function _Board() {
 			var run = target.x - spawn.x;
 			var d = Math.atan2(rise, run);
 
-			var enemy = new Pumpkin({
+			// enemy type
+			const subtypes = ENEMY_TYPES || [];
+			if (subtypes.length < 0) {
+				throw new Error("No enemy types registered!");
+				
+			}
+
+			var enemy = new BigEnemy({
 				x: spawn.x, y: spawn.y, direction: d,
 				speed: 0.2 + (Math.random() * _t.maxRocks / 3.3),
-				game: _t
+				game: _t,
+				subtype: subtypes[Math.floor(Math.random() * subtypes.length)]
 			});
 
 			this.addEnemy(enemy);
@@ -128,7 +151,7 @@ const Game = DomClass(gameTemplate, function _Board() {
 		});
 
 		on(enemy, 'destroy', function() {
-			_t.enemies.splice(_t.enemies.indexOf(enemy), 1);
+			_t._enemies.splice(_t._enemies.indexOf(enemy), 1);
 		});
 
 		on(enemy, 'shatter', function(newEnemy) {
@@ -136,7 +159,7 @@ const Game = DomClass(gameTemplate, function _Board() {
 		});
 
 		this.appendChild(enemy);
-		this.enemies.push(enemy);
+		this._enemies.push(enemy);
 	}; // addEnemy()
 
 	this.draw = function() {
@@ -155,7 +178,7 @@ const Game = DomClass(gameTemplate, function _Board() {
 	}; // gameover()
 
 	this.start = function() {
-		this.enemies.forEach(function(enemy) {
+		this._enemies.forEach(function(enemy) {
 			enemy.destroy();
 		});
 
@@ -350,6 +373,8 @@ const Ship = DomClass('<ss:ship></ss:ship>', function Ship() {
 	this.x = this.x || 0;
 	this.y = this.y || 0;
 
+	this.style.backgroundImage = "url(./img/shooty-ship.png)";
+
 	MagicallySizedObject.apply(this);
 
 	this.direction = this.direction || Math.PI/-2; 
@@ -540,7 +565,7 @@ const Bullet = DomClass('<ss:bullet></ss:bullet>', function _Bullet() {
 	var _t = this;
 
 	this.speed = this.speed || 2;
-	this.conflicts = [Enemy, Pumpkin, Shrapnel];
+	this.conflicts = [Enemy, BigEnemy, Shrapnel];
 
 	on(this, 'collide', function(o) {
 		if (isa(o, 'SS.Enemy')) {
@@ -617,11 +642,22 @@ const Enemy = DomClass('<ss:enemy></ss:enemy>', function Enemy() {
 }); // Enemy
 
 
-const Pumpkin = DomClass('<ss:pumpkin></ss:pumpkin>', function Pumpkin() {
+const BigEnemy = DomClass('<ss:bigenemy></ss:bigenemy>', function _BigEnemy() {
 	var _t = this;
 	Enemy.apply(this);
 
 	this.mass = 5;
+
+	this.scale = 0.09;
+	if (this.subtype) {
+		var img = new Image();
+		img.onload = function() {
+			_t.style.width = img.width * _t.scale + 'vmin';
+			_t.style.height = img.height * _t.scale + 'vmin';
+		};
+		img.src = 'img/' + this.subtype + ".png";
+		this.style.backgroundImage = "url('" + img.src + "')";
+	}
 
 	var baseExplode = this.explode;
 	this.explode = function(v, impact) {
@@ -631,8 +667,6 @@ const Pumpkin = DomClass('<ss:pumpkin></ss:pumpkin>', function Pumpkin() {
 			return;
 		}
 
-		// todo: make this math ... umm ... based on actual physics.
-
 		var combined_impact = new Momentum({
 			direction: this.direction,
 			speed: this.speed,
@@ -641,7 +675,8 @@ const Pumpkin = DomClass('<ss:pumpkin></ss:pumpkin>', function Pumpkin() {
 
 		combined_impact.impactBy(impact);
 
-		var shrapnel_count = 3; // Math.floor(Math.random() * 4);
+		// var shrapnel_count = 3; Math.floor(Math.random() * 4);
+		const shrapnel_count = Math.floor(Math.random() * 5);
 		combined_impact.speed = (combined_impact.speed*0.75)/shrapnel_count;
 		for (var i = 0; i < shrapnel_count; i++) {
 			this.emitRandomShrapnel(combined_impact);

@@ -22,7 +22,12 @@ const sitemap = {
 
 	'features': {
 		'/apps/shooty-ship-pumpkin-smash': 'Shooty Ship Pumpkin Smash',
+
+		// not yet updated for latest president.
+		// need to get art for Biden and offer selection screen
+		// for which president's face you'd like to shoot:
 		// '/shooty-ship/presidential-edition': 'Shooty Ship Presidential Edition',
+
 		'/w/halloweeny-2015': 'halloweeny (2015)',
 		'/falling-candy-corn': 'falling candy corn',
 		'/w/big-dinosaur-problem-lately': 'big dinosaur problem lately',

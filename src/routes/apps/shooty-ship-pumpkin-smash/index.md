@@ -46,7 +46,8 @@ ${meta({
 </style>
 
 <div><ss:game
-	name="Shooty Ship Frumpkin Smarsh"
+	name="Shooty Ship Pumpkin Smash"
+	enemies="shooty-ship-pumpkin-150x150"
 	shrapnel="
 		round-red-candy,
 		mummy,

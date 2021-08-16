@@ -5,7 +5,6 @@ const CACHE_NAME = 'shooty-ship-cache-' + BUILD_ID;
 const urlsToCache = [
 	'index.html',
 	'manifest.json',
-	'css/sheet.css',
 	'js/game.js',
 	'audio/pew-128.mp3',
 	'audio/pkewh.mp3',

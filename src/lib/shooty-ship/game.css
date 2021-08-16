@@ -14,6 +14,7 @@ ss\:game {
 	margin: 0px;
 	padding: 0px;
 	border: 0px solid black;
+	/* background-image: url('../img/shiny.jpg'); */
 	overflow: hidden;	
 }
 
@@ -35,6 +36,7 @@ ss\:ship {
 	width: 6.7%;
 	height: 3.8%;
 	text-align: center;
+	/* background-image: url('../img/shooty-ship.png'); */
 	background-size: 100% 100%;
 }
 

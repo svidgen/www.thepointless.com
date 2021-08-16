@@ -32,20 +32,11 @@ ${meta({
 
 <div id="content">
 
-<style type='text/css'>
-	@import url(css/sheet.css);
-
-	html, body, #content {
-		width: 100%;
-		height: 100%;
-		margin: 0px;
-		padding: 0px;
-		position: relative;
-	}
-
-</style>
-
-<div><ss:game></ss:game></div>
+<div><ss:game
+	name="Shooty Ship"
+	enemies="shooty-ship-rock-150x150"
+	shrapnel=""
+></ss:game></div>
 
 <script type='text/javascript' src='js/game.js'></script>
 <script type='text/javascript'>
@@ -58,7 +49,7 @@ if ('serviceWorker' in navigator) {
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-	</div>
+</div>
 
 </body>
 </html>
