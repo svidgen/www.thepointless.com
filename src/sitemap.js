@@ -36,15 +36,15 @@ const sitemap = {
 		'/w/dinosaur-people': 'dinosaur people',
 		'/apps/shooty-ship/': 'Shooty Ship (Original!)',
 
-		// including the 'id' to satisfy getPlug()
-		'/place': 'a place!',
-
-		// '/fart-counter' => 'fart counter',
+		// disabled until server-side modeling and whatnot can be re-done
+		// on AWS Amplify and/or lambda and/or *
+		// '/place': 'a place!',
 		// '/awkward-moment': "that awkward moment when ...",
 		// '/small-potatoes': 'the book of small potatoes',
+		// '/something': 'something',
+
 		'/ascii-monsters': 'ascii monsters',
 		'/preggertest': 'online pregnancy test',
-		'/something': 'something',
 		'/zebratest': 'zebra awareness test',
 		'/clickometer': 'a clickometer',
 		'/dots': 'some dots',
