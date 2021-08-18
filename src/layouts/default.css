@@ -123,6 +123,22 @@ hr {
 	font-weight: bold;
 }
 
+@media (max-width:420px)  {
+	#footer a {
+		font-size: larger;
+		display: inline-block;
+		margin: 0.25em;
+	}
+
+	.link-list li {
+		height: 2em;
+	}
+
+	.link-list li a {
+		font-size: larger;
+	}
+}
+
 @media (max-width: 50rem) {
 	.navbar, .navbar.float-right, .sidebar, .sidebar.float-right {
 		float: none;

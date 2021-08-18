@@ -3,7 +3,7 @@ ${meta({
 })}
 This is all the stuff.
 
-<ul>
+<ul class='link-list'>
 ${Object.entries(sitemap.features).map(([url, title]) => {
 	return `<li><a href="${url}" title="${title}">${title}</a></li>`;
 }).join('')}

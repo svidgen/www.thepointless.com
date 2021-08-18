@@ -5,7 +5,7 @@ ${meta({
 	We may or may not have the following positions open:
 </div>
 
-<ul class='job_jumplist'>
+<ul class='job_jumplist link-list'>
 	<li><a href='#Button_Pusher'>Button Pusher</a></li>
 	<li><a href='#Word_Maker'>Word Maker</a></li>
 	<li><a href='#Dungeon_Master'>Dungeon Master</a></li>
