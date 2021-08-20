@@ -1,6 +1,10 @@
 function MainLoop() {
 	// for computing "utilization"
-	var _S = new Date();
+	const now = new Date();
+	const elapsed_ms = MainLoop.__lastTime ? (now - MainLoop.__lastTime) : 0;
+	const elapsed = elapsed_ms / 1000;
+	MainLoop.__lastTime = now;
+
 	var _o = MainLoop.objects;
 	var f = MainLoop.functions;
 
@@ -16,7 +20,7 @@ function MainLoop() {
 
 	// step loop
 	for (var i = 0; i < o.length; i++) {
-		o[i].step();
+		o[i].step({now, elapsed, elapsed_ms});
 	}
 	
 	// draw loop
@@ -32,46 +36,13 @@ function MainLoop() {
 		}
 	}
 
-
-	//
-	// benchmarking / utilization guesstimating.
-	// this is highly inaccurate at the moment. may have to introduce
-	// a multiplier to estimate CPU time used outside MainLoop ... or
-	// just find a way to track CPU time outside MainLoop.
-	//
-
-	var stats = document.getElementById('__stats');
-	if (stats) {
-		var ml = MainLoop;
-		var _E1 = ml.__endLastRun;
-		var _E1_t = _E1.getTime();
-		var _E2 = new Date();
-		var _E2_t = _E2.getTime();
-
-		var _period = ml.__period + _E2_t - _E1_t;
-		if (_S.getTime() - ml.__startLastRun.getTime() > 1000 / ml.__fps) {
-			var _runtime = ml.__runtime + (_E2_t - _E1_t)/2;
-		} else {
-			var _runtime = ml.__runtime + (_E2_t - _S.getTime());
-		}
-
-		if (_period >= 1000) {
-			var _util = _runtime / Math.max(1, _period);
-			stats.innerHTML = _runtime + "/" + _period + " = " + String(Math.round(_util * 100)) + "%";
-			_runtime = 0;
-			_period = 0;
-		}
-
-		ml.__period = _period;
-		ml.__runtime = _runtime;
-		ml.__endLastRun = _E2;
-		ml.__startLastRun = _S;
+	if (MainLoop.__interval) {
+		requestAnimationFrame(() => MainLoop());
 	}
 }
 
 MainLoop.__fps = 30;
 MainLoop.__interval = null;
-MainLoop.__startLastRun = new Date();
 MainLoop.__endLastRun = new Date();
 MainLoop.__period = 0;
 MainLoop.__runtime = 0;
@@ -141,13 +112,13 @@ MainLoop.removeObject = function(o) {
 
 MainLoop.start = function(fps) {
 	if (!MainLoop.__interval) {
-		MainLoop.__fps = fps || MainLoop.__fps;
-		MainLoop.__interval = setInterval(function() { MainLoop(); }, 1000 / MainLoop.__fps);
+		MainLoop.__interval = true;
+		requestAnimationFrame(() => MainLoop());
 	}
 } // TPDC.MainLoop.start()
 
 MainLoop.stop = function() {
-	MainLoop.__interval = clearInterval(MainLoop.__interval);
+	MainLoop.__interval = null;
 } // TPDC.MainLoop.stop()
 
 MainLoop.pause = function() {

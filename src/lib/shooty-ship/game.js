@@ -135,7 +135,7 @@ const Game = DomClass(gameTemplate, function _Board() {
 
 			var enemy = new BigEnemy({
 				x: spawn.x, y: spawn.y, direction: d,
-				speed: 0.2 + (Math.random() * _t.maxRocks / 3.3),
+				speed: 6.0 + (10 * Math.random() * _t.maxRocks),
 				game: _t,
 				subtype: subtypes[Math.floor(Math.random() * subtypes.length)]
 			});
@@ -403,16 +403,21 @@ const Ship = DomClass('<ss:ship></ss:ship>', function Ship() {
 		this.target = {x: _t.x, y: _t.y, direction: _t.direction};
 	}; // leapTo()
 
-	this.step = function() {
+	this.step = function({elapsed}) {
+		if (!elapsed) return;
+
 		var t = this.target.direction;
 		var c = this.direction;
-		this.direction = this.direction + Math.atan2(
+		this.direction = this.direction + 30 * elapsed * Math.atan2(
 			Math.sin(this.target.direction - this.direction),
 			Math.cos(this.target.direction - this.direction)
 		) / 4;
 
-		this.x = this.x + (this.target.x - this.x) / 12;
-		this.y = this.y + (this.target.y - this.y) / 12;
+		const xSpeed = 30 * (this.target.x - this.x) / 12;
+		const ySpeed = 30 * (this.target.y - this.y) / 12;
+
+		this.x += xSpeed * elapsed;
+		this.y += ySpeed * elapsed;
 	}; // step()
 
 	this.draw = function() {
@@ -505,7 +510,7 @@ const Projectile = function() {
 	this.iy = this.y;
 
 	this.direction = this.direction || 0;
-	this.speed = this.speed || 2.5;
+	this.speed = this.speed || 75;
 	this.range = this.range || 130;
 	this.dead = false;
 
@@ -517,15 +522,16 @@ const Projectile = function() {
 		this.parentNode ? this.parentNode.removeChild(this) : 1;
 	}; // destroy()
 
-	this.step = function() {
+	this.step = function({elapsed}) {
 		var dx = this.x - this.ix;
 		var dy = this.y - this.iy;
 		var travelled = Math.sqrt(dx * dx + dy * dy);
 		if (travelled >= this.range) {
 			this.destroy();
 		} else {
-			this.x += Math.cos(this.direction) * this.speed;
-			this.y += Math.sin(this.direction) * this.speed;
+			const stepSize = this.speed * elapsed;
+			this.x += Math.cos(this.direction) * stepSize;
+			this.y += Math.sin(this.direction) * stepSize;
 			this.findCollisions();
 		}
 	}; // step()
@@ -564,7 +570,7 @@ const Projectile = function() {
 const Bullet = DomClass('<ss:bullet></ss:bullet>', function _Bullet() {
 	var _t = this;
 
-	this.speed = this.speed || 2;
+	this.speed = this.speed || 60;
 	this.conflicts = [Enemy, BigEnemy, Shrapnel];
 
 	on(this, 'collide', function(o) {
@@ -590,19 +596,20 @@ const Enemy = DomClass('<ss:enemy></ss:enemy>', function Enemy() {
 	Projectile.apply(this);
 	var _t = this;
 
-	this.speed = this.speed || 1;
+	this.speed = this.speed || 30;
 	this.width = 11.7;
 	this.height = 11.7;
 
 	this.visibleDirection = this.visibleDirection || 0;
-	this.rotationSpeed = Math.random() * 0.4 - 0.2;
+	this.rotationSpeed = 30 * (Math.random() * 0.4 - 0.2);
 
 	this.conflicts = [Ship];
 
 	this._step = this.step;
-	this.step = function() {
-		this.visibleDirection = this.visibleDirection + this.rotationSpeed;
-		this._step();
+	this.step = function({now, elapsed, elapsed_ms}) {
+		const rotationStep = elapsed * this.rotationSpeed;
+		this.visibleDirection = this.visibleDirection + rotationStep;
+		this._step({now, elapsed, elapsed_ms});
 	}; // step()
 
 	var innerDraw = this.draw;
@@ -694,7 +701,7 @@ const BigEnemy = DomClass('<ss:bigenemy></ss:bigenemy>', function _BigEnemy() {
 	this.emitShrapnel = function(impact, subtype) {
 		var momentum = new Momentum({
 			direction: (Math.random() * Math.PI * 2) - Math.PI,
-			speed: 0.25,
+			speed: 7.5,
 			mass: 1.5
 		});
 
@@ -755,8 +762,7 @@ const Explosion = DomClass(explosionTemplate, function _Explosion() {
 		on(this, 'destroy').fire();
 	}; // destroy()
 
-	this.step = function() {
-		var now = new Date();
+	this.step = function({now}) {
 		this.pct = Math.min(1, (now.getTime() - this.startTime.getTime())/this.duration);
 		if (this.pct > 0.98) {
 			this.destroy();
