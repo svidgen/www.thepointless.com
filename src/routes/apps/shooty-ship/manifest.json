@@ -12,7 +12,7 @@
 	],
 	"start_url": "index.html",
 	"scope": "/apps/shooty-ship/",
-	"display": "fullscreen",
+	"display": "standalone",
 	"background_color": "#ffffff",
 	"theme_color": "#ffffff"
 }

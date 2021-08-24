@@ -13,7 +13,7 @@ const urlsToCache = [
 	'img/shooty-ship-pumpkin-150x150.png',
 	'img/candle.png',
 	'img/mummy.png',
-	'img/square-candy-colored.png',
+	'img/square-candy.png',
 	'img/round-red-candy.png',
 	'img/icon.png',
 	'img/fb_icon_22px.png',
