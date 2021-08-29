@@ -1,17 +1,29 @@
+/*
+ * copied from src/lib/shooty-ship/game.js for the purpose of trimming down
+ * for the purpose of entry into the js13k contest.
+ *
+ * removing:
+ *   * event tracking
+ *   * install link
+ *   * google ads
+ *   * images (maybe)
+ */
+
 const { DomClass, setType, isa, getNodes } = require('wirejs-dom');
 const { MouseCoords, NodeBox } = require('/src/lib/coords');
 const { MainLoop } = require('/src/lib/loop');
 const { on, onready } = require('/src/lib/event');
-const { trackEvent } = require('/src/lib/tracking');
-const { InstallLink } = require('/src/components/install-link');
-require('./game.css');
+require('../css/game.css');
 
 global.MainLoop = MainLoop;
 
-let HIGHSCORE_KEY = 'shooty-ship-beta.highscore';
-let SHRAPNEL_TYPES;
-let ENEMY_TYPES;
-let GAME_NAME;
+
+// for the purpose of minification, maybe these keys become non-parametrized
+// and we just set them statically.
+let HIGHSCORE_KEY = 'shooty-ship-tiny.highscore';
+let SHRAPNEL_TYPES = ['enemy'];
+let ENEMY_TYPES = ['enemy'];
+let GAME_NAME = "Shooty Ship 13k";
 
 const gameTemplate = `<ss:game>
 	<ss:gameoversplash data-id='presplash' no-ad='1'></ss:gameoversplash>
@@ -30,29 +42,13 @@ const Game = DomClass(gameTemplate, function _Board() {
 
 	this._enemies = [];
 
-	GAME_NAME = this.name || 'Shooty Ship - BETA';
 	this.presplash.heading = GAME_NAME;
-	HIGHSCORE_KEY = this.presplash.heading.replace(/\s+/g, '-') + '.highscore';
-
-	SHRAPNEL_TYPES = (this.shrapnel || '').replace('/\s+/g', '')
-		.split(',')
-		.map(s => s.trim())
-		.filter(s => s.length > 0)
-	;
-	console.log('shrapnel types registered', SHRAPNEL_TYPES);
-
-	ENEMY_TYPES = (this.enemies || '').replace('/\s+/g', '')
-		.split(',')
-		.map(s => s.trim())
-		.filter(s => s.length > 0)
-	;
-	console.log('enemy types registered', ENEMY_TYPES);
 
 	// hack.
 	// require()'d CSS rewrites url()'s to be relative to the CSS file.
 	// normally, that's what you'd want. but, it's not what we want, especially
 	// with a common sheet across PWA's.
-	this.style.backgroundImage = "url('./img/shiny.jpg')";
+	this.style.backgroundImage = "url('./img/space.svg')";
 
 	this.enable = function() {
 		if (!this.enabled) {
@@ -190,8 +186,6 @@ const Game = DomClass(gameTemplate, function _Board() {
 		this.enable();
 		this.ship.respawn();
 		this.ship.leapTo(50 - _t.ship.width/2, 50 - _t.ship.height/2);
-
-		trackEvent('play');
 	}; // restart()
 
 	this.interact = function(e) {
@@ -327,21 +321,6 @@ const AudioPool = {
 
 AudioPool.errors = [];
 
-document.addEventListener('deviceready', function() {
-	if (window.plugins && window.plugins.LowLatencyAudio) {
-		var lla = window.plugins.LowLatencyAudio;
-		for (var k in AudioPool.channels) {
-			(function(src) { 
-				lla.preloadFX(src, src);
-				var a = {
-					play: function() { lla.play(src); }
-				};
-				AudioPool.channels[src] = a;
-			})(k);
-		}
-	}
-}, false);
-
 const Button = function() {
 	this.onclick = function() {
 		on(this, 'click').fire();
@@ -375,7 +354,7 @@ const Ship = DomClass('<ss:ship></ss:ship>', function Ship() {
 	this.x = this.x || 0;
 	this.y = this.y || 0;
 
-	this.style.backgroundImage = "url(./img/shooty-ship.png)";
+	this.style.backgroundImage = "url(./img/shooty-ship.svg)";
 
 	MagicallySizedObject.apply(this);
 
@@ -664,7 +643,7 @@ const BigEnemy = DomClass('<ss:bigenemy></ss:bigenemy>', function _BigEnemy() {
 			_t.style.width = img.width * _t.scale + 'vmin';
 			_t.style.height = img.height * _t.scale + 'vmin';
 		};
-		img.src = 'img/' + this.subtype + ".png";
+		img.src = 'img/' + this.subtype + ".svg";
 		this.style.backgroundImage = "url('" + img.src + "')";
 	}
 
@@ -736,7 +715,7 @@ const Shrapnel = DomClass('<ss:shrapnel></ss:shrapnel>', function Shrapnel() {
 			_t.style.width = img.width * _t.scale + 'vmin';
 			_t.style.height = img.height * _t.scale + 'vmin';
 		};
-		img.src = 'img/' + this.subtype + ".png";
+		img.src = 'img/' + this.subtype + ".svg";
 		this.style.backgroundImage = "url('" + img.src + "')";
 	}
 
@@ -824,10 +803,9 @@ const gameOverSplashTemplate = `<ss:gameoversplash>
 		<h1 data-id='heading'>Game Over</h1>
 		<div class='scoreline'>Your score: <span data-id='score' class='score'>...?</span></div>
 		<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>
-		<ss:bannerad data-id='bannerad'></ss:bannerad>
+		<div>Insert static sponsorship ad here.</div>
 		<ss:startbutton data-id='restart'>Restart</ss:startbutton>
 		<tpdc:share data-id='share'></tpdc:share>
-		<ss:installlink icon='img/icon.png'></ss:installlink>
 		<div class='copyright'><a target='_blank' href='https://www.thepointless.com'>www.thepointless.com</a></div>
 	</div>
 </ss:gameoversplash>`;
@@ -874,47 +852,3 @@ const GameOverSplash = DomClass(gameOverSplashTemplate, function _GameOverSplash
 
 	setType(this, 'SS.GameOverSplash');
 }); // GameOverSplash()
-
-const bannerAdTemplate = `<ss:bannerad>
-	<!-- Shooty Ship -->
-	<ins class="adsbygoogle"
-		style="display:block"
-		data-ad-client="ca-pub-6115341109827821"
-		data-ad-slot="9599170847"
-		data-ad-format="auto"
-		data-full-width-responsive="true">
-	</ins>
-</ss:bannerad>`;
-
-const BannerAd = DomClass(bannerAdTemplate, function BannerAd() {
-	this.show = function() {
-		try {
-			setTimeout(function() {
-				(window.adsbygoogle = window.adsbygoogle || []).push({});
-			}, 250);
-		} catch {
-			// nothing
-		}
-	}; // show()
-
-	this.hide = function() {
-	}; // destroy()
-
-	this.init = function() {
-		onready(this).fire();
-	}; // init()
-
-	this.show();
-
-	setType(this, 'SS.BannerAd');
-}); // BannerAd
-
-
-module.exports = {
-	DomClass, setType, isa, getNodes,
-	MouseCoords, NodeBox,
-	MainLoop,
-	on, onready,
-	trackEvent,
-	InstallLink
-};

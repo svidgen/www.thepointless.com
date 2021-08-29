@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" still="none" stroke="none">
+<style>
+  .w { fill: #333; font: 25px bold sans-serif; }
+</style>
+<rect width="100%" height="100%" fill="black" />
+<path id="a" d="M10,85 85,10" />
+<path id="b" d="M-5,3 44,52" />
+<path id="c" d="M62,69 99,105" />
+<path id="d" d="M95,3 105,13" />
+<path id="e" d="M-5,103 5,113" />
+<text class="w">
+  <textPath href='#a'>Space...</textPath>
+</text>
+<text class="w">
+  <textPath href='#b'>ace</textPath>
+</text>
+<text class="w">
+  <textPath href='#c'>...Sp</textPath>
+</text>
+<text class="w">
+  <textPath href='#d'>a</textPath>
+</text>
+<text class="w">
+  <textPath href='#e'>a</textPath>
+</text>
+</svg>
