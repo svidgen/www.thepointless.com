@@ -9,21 +9,11 @@ ${meta({
 	<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 	<meta name='viewport' content='width=device-width, initial-scale=1' />
 	<link rel="icon" type="image/png" href="img/icon.png" />
-
 </head>
 <body id="thebody">
-
 <div id="content">
-
-<div><ss:game
-	name="Shooty Ship 13k"
-	enemies="shooty-ship-rock-150x150"
-	shrapnel=""
-></ss:game></div>
-
+<div><ss:game name="Shooty Ship 13k"></ss:game></div>
 <script type='text/javascript' src='js/game.js'></script>
-
 </div>
-
 </body>
 </html>

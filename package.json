@@ -7,7 +7,9 @@
     "build": "rimraf dist && yarn ex-gratia && webpack",
     "build:watch": "rimraf dist && webpack --mode development --progress --watch",
     "serve": "http-server ./dist -p 9999 -o",
-    "start": "concurrently -k -p \"[{name}]\" -n \"Build,Serve\" -c \"cyan.bold,green.bold\" \"npm run build:watch\" \"npm run serve\""
+    "start": "concurrently -k -p \"[{name}]\" -n \"Build,Serve\" -c \"cyan.bold,green.bold\" \"npm run build:watch\" \"npm run serve\"",
+	"zip:ss-tiny": "rimraf dist/apps/shooty-ship-tiny/js/game.js.map && rimraf shooty-ship-tiny.zip && zip -9 -r shooty-ship-tiny.zip dist/apps/shooty-ship-tiny/*",
+	"js13k": "yarn build && yarn zip:ss-tiny"
   },
   "repository": {
     "type": "git",

@@ -5,36 +5,24 @@ function MainLoop() {
 	const elapsed = elapsed_ms / 1000;
 	MainLoop.__lastTime = now;
 
-	var _o = MainLoop.objects;
-	var f = MainLoop.functions;
-
-
 	// remove "dead" objects
-	var o = [];
-	for (var i = 0; i < _o.length; i++) {
-		if (!_o[i].dead) {
-			o.push(_o[i]);
-		}
-	}
+	var objects = MainLoop.objects.filter(item => !item.dead);
 	MainLoop.objects = o;
 
 	// step loop
-	for (var i = 0; i < o.length; i++) {
-		o[i].step({now, elapsed, elapsed_ms});
+	for (var i = 0; i < objects.length; i++) {
+		objects[i].step({now, elapsed, elapsed_ms});
 	}
 	
 	// draw loop
-	for (var i = 0; i < o.length; i++) {
-		o[i].draw();
+	for (var i = 0; i < objects.length; i++) {
+		objects[i].draw();
 	}
 
-	
-	// run plugins
-	for (var i = 0; i < f.length; i++) {
-		if (typeof(f[i]) == 'function') {
-			f[i]();
-		}
-	}
+	// not that we used to run "plugin" functions here,
+	// added with MainLoop.addFunction(f).
+	// this was removed because we could not find any uses thereof.
+	// but ... if something breaks, we obviously need to add it back in.
 
 	if (MainLoop.__interval) {
 		requestAnimationFrame(() => MainLoop());
@@ -43,9 +31,6 @@ function MainLoop() {
 
 MainLoop.__fps = 30;
 MainLoop.__interval = null;
-MainLoop.__endLastRun = new Date();
-MainLoop.__period = 0;
-MainLoop.__runtime = 0;
 MainLoop.objects = [];
 MainLoop.functions = [];
 
@@ -53,55 +38,27 @@ MainLoop.running = function() {
 	return MainLoop.__interval;
 } // TPDC.MainLoop.running()
 
-MainLoop.addFunction = function(f) {
-	if (typeof(f) == 'function') {
-		var m = MainLoop;
-		var mf = m.functions;
-		for (var i = 0; i < mf.length; i++) {
-			if (f == mf[i]) {
-				return true;
-			}
-		}
-		mf.push(f);
-		m.start();
-		return true;
-	} else {
-		return false;
-	}
-} // TPDC.MainLoop.addFunction()
-
 MainLoop.addObject = function(o) {
 	if (typeof(o) == 'object'
 		&& o.step && typeof(o.step) == 'function'
 		&& o.draw && typeof(o.draw) == 'function'
 	) {
-		var m = MainLoop;
-		var mo = m.objects;
+		var mo = MainLoop.objects;
 		for (var i = 0; i < mo.length; i++) {
 			if (o === mo[i]) {
 				return true;
 			}
 		}
 		mo.push(o);
-		m.start();
+		MainLoop.start();
 		return true;
 	} else {
 		return false;
 	}
 } // TPDC.MainLoop.addObject()
 
-MainLoop.removeFunction = function(f) {
-	var mf = MainLoop.functions;
-	for (var i = 0; i < mf.length; i++) {
-		if (mf[i] === f) {
-			mf.splice(i, 1);
-			return;
-		}
-	}
-} // TPDC.MainLoop.removeFunction()
-
 MainLoop.removeObject = function(o) {
-	var mo = MainLoop.objects;
+	const mo = MainLoop.objects;
 	for (var i = 0; i < mo.length; i++) {
 		if (mo[i] === o) {
 			mo.splice(i, 1);

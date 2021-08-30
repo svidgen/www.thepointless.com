@@ -14,7 +14,6 @@ ss\:game {
 	margin: 0px;
 	padding: 0px;
 	border: 0px solid black;
-	/* background-image: url('../img/shiny.jpg'); */
 	background-size: 200px 200px;
 	overflow: hidden;	
 }
@@ -33,11 +32,9 @@ ss\:startbutton, ss\:sharebutton {
 ss\:ship {
 	position: absolute;
 	display: block;
-	/* 128x73 */
 	width: 6.7%;
 	height: 3.8%;
 	text-align: center;
-	/* background-image: url('../img/shooty-ship.png'); */
 	background-size: 100% 100%;
 }
 
@@ -89,10 +86,6 @@ ss\:explosion table td {
 }
 
 ss\:gameoversplash {
-	/*
-	transition: opacity 3s, filter 3s;
-	-webkit-transition: opacity 3s, filter 3s;
-	*/
 	opacity: 0;
 	filter: alpha(opacity=0);
 }
@@ -150,19 +143,4 @@ ss\:gameoversplash .foreground h1 {
 ss\:gameoversplash .score {
 	font-weight: bold;
 	color: #dd4444;
-}
-
-ss\:bannerad {
-	display: block;
-	margin: 0.5em auto;
-	width: 66%;
-}
-
-.social-link {
-	cursor: pointer;
-}
-
-.social-icon {
-	height: 2em;
-	margin: 0.1em 0.5em;
 }

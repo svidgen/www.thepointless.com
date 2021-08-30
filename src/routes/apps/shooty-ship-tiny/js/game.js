@@ -260,7 +260,6 @@ const Game = DomClass(gameTemplate, function _Board() {
 	}; // window.onresize()
 
 	setType(this, 'SS.Board');
-	onready(this).fire();
 });
 
 
@@ -276,7 +275,8 @@ const AudioPool = {
 		}
 	},
 	prepare : function(src) {
-		var AudioContext = window.AudioContext || window.webkitAudioContext;
+		// var AudioContext = window.AudioContext || window.webkitAudioContext;
+		var AudioConext = null;
 		if (AudioContext) {
 			var _t = this;
 			_t.context = _t.context || new AudioContext();
@@ -472,10 +472,6 @@ const Ship = DomClass('<ss:ship></ss:ship>', function Ship() {
 		}
 	});
 
-	this.init = function() {
-		onready(this).fire();
-	}; // init()
-
 	setType(this, 'SS.Ship');
 });
 
@@ -563,13 +559,12 @@ const Bullet = DomClass('<ss:bullet></ss:bullet>', function _Bullet() {
 	this.init = function() {
 		AudioPool.play(Bullet.sound);
 		MainLoop.addObject(this);
-		onready(this).fire();
 	}; // init()
 
 	Projectile.apply(this);
 	setType(this, 'SS.Bullet');
 }); // Bullet
-Bullet.sound = "audio/pew-128.mp3";
+Bullet.sound = "audio/pew-tiny.mp3";
 AudioPool.prepare(Bullet.sound);
 
 
@@ -623,7 +618,6 @@ const Enemy = DomClass('<ss:enemy></ss:enemy>', function Enemy() {
 
 	this.init = function() {
 		MainLoop.addObject(this);
-		onready(this).fire();
 	}; // init()
 
 	setType(this, 'SS.Enemy');
@@ -672,7 +666,7 @@ const BigEnemy = DomClass('<ss:bigenemy></ss:bigenemy>', function _BigEnemy() {
 	}; // explode()
 
 	this.emitRandomShrapnel = function(impact) {
-		const subtypes = SHRAPNEL_TYPES || [];
+		const subtypes = SHRAPNEL_TYPES;
 		if (subtypes.length > 0) {
 			var subtype = subtypes[Math.floor(Math.random() * subtypes.length)];
 			this.emitShrapnel(impact, subtype);
@@ -764,12 +758,11 @@ const Explosion = DomClass(explosionTemplate, function _Explosion() {
 	this.init = function() {
 		MainLoop.addObject(this);
 		AudioPool.play(Explosion.sound);
-		onready(this).fire();
 	}; // init()
 
 	setType(this, 'SS.Explosion');
 }); // Explosion
-Explosion.sound = 'audio/pkewh.mp3';
+Explosion.sound = 'audio/pkewh-tiny.mp3';
 AudioPool.prepare(Explosion.sound);
 
 
@@ -847,7 +840,6 @@ const GameOverSplash = DomClass(gameOverSplashTemplate, function _GameOverSplash
 		setTimeout(function() {
 			_t.classList.add('visible');
 		}, this.delay);
-		onready(this).fire();
 	}; // init()
 
 	setType(this, 'SS.GameOverSplash');
