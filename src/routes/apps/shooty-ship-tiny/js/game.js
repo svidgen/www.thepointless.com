@@ -25,6 +25,9 @@ let SHRAPNEL_TYPES = ['enemy'];
 let ENEMY_TYPES = ['enemy'];
 let GAME_NAME = "Shooty Ship 13k";
 
+function rotateCss(node, deg) {
+};
+
 const gameTemplate = `<ss:game>
 	<ss:gameoversplash data-id='presplash' no-ad='1'></ss:gameoversplash>
 	<ss:ship data-id='ship' style='top: -100%; left: -100%;'></ss:ship>
@@ -260,6 +263,7 @@ const Game = DomClass(gameTemplate, function _Board() {
 	}; // window.onresize()
 
 	setType(this, 'SS.Board');
+	onready(this).fire();
 });
 
 
@@ -276,7 +280,7 @@ const AudioPool = {
 	},
 	prepare : function(src) {
 		// var AudioContext = window.AudioContext || window.webkitAudioContext;
-		var AudioConext = null;
+		var AudioContext = null;
 		if (AudioContext) {
 			var _t = this;
 			_t.context = _t.context || new AudioContext();
@@ -420,8 +424,6 @@ const Ship = DomClass('<ss:ship></ss:ship>', function Ship() {
 		var pn = this.parentNode;
 		var x = this.x;
 		var y = this.y;
-		var w = this.width;
-		var h = this.height;
 		for (var i = 0; i < 8; i++) {
 			setTimeout(function() {
 				pn.appendChild(
@@ -471,6 +473,10 @@ const Ship = DomClass('<ss:ship></ss:ship>', function Ship() {
 			_t.destroy();
 		}
 	});
+
+	this.init = function() {
+		onready(this).fire();
+	};
 
 	setType(this, 'SS.Ship');
 });
@@ -559,6 +565,7 @@ const Bullet = DomClass('<ss:bullet></ss:bullet>', function _Bullet() {
 	this.init = function() {
 		AudioPool.play(Bullet.sound);
 		MainLoop.addObject(this);
+		onready(this).fire();
 	}; // init()
 
 	Projectile.apply(this);

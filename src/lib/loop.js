@@ -1,5 +1,4 @@
 function MainLoop() {
-	// for computing "utilization"
 	const now = new Date();
 	const elapsed_ms = MainLoop.__lastTime ? (now - MainLoop.__lastTime) : 0;
 	const elapsed = elapsed_ms / 1000;
@@ -7,7 +6,7 @@ function MainLoop() {
 
 	// remove "dead" objects
 	var objects = MainLoop.objects.filter(item => !item.dead);
-	MainLoop.objects = o;
+	MainLoop.objects = objects;
 
 	// step loop
 	for (var i = 0; i < objects.length; i++) {
