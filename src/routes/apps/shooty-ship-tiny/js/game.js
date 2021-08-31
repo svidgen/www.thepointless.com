@@ -12,7 +12,7 @@
 const { DomClass, setType, isa, getNodes } = require('wirejs-dom');
 const { MouseCoords, NodeBox } = require('/src/lib/coords');
 const { MainLoop } = require('/src/lib/loop');
-const { on, onready } = require('/src/lib/event');
+const { on } = require('/src/lib/event');
 require('../css/game.css');
 
 global.MainLoop = MainLoop;
@@ -26,6 +26,10 @@ let ENEMY_TYPES = ['enemy'];
 let GAME_NAME = "Shooty Ship 13k";
 
 function rotateCss(node, deg) {
+	node.style.transform = `rotate(${deg}rad)`;
+	node.style.webkitTransform = `rotate(${deg}rad)`;
+	node.style.mozTransform = `rotate(${deg}rad)`;
+	node.style.msTransform = `rotate(${deg}rad)`;
 };
 
 const gameTemplate = `<ss:game>
@@ -262,68 +266,48 @@ const Game = DomClass(gameTemplate, function _Board() {
 		_t.resize();
 	}; // window.onresize()
 
-	setType(this, 'SS.Board');
-	onready(this).fire();
+	// setType(this, 'SS.Board');
+	// onready(this).fire();
 });
 
 
 const AudioPool = {
-	audiocontext: null,
+	/* audiocontext: null, */
 	channels : {},
 	play : function(src) {
-		var c = this.channels;
-		if (typeof(c[src]) == 'undefined') {
+		if (typeof(this.channels[src]) == 'undefined') {
 			this.prepare(src);
 		} else {
-			c[src].play();
+			this.channels[src].play();
 		}
 	},
 	prepare : function(src) {
-		// var AudioContext = window.AudioContext || window.webkitAudioContext;
-		var AudioContext = null;
-		if (AudioContext) {
-			var _t = this;
-			_t.context = _t.context || new AudioContext();
-			var player = {
-				buffer: null,
-				play: function() {
-					if (this.buffer) {
-						var source = _t.context.createBufferSource();
-						source.buffer = this.buffer;
-						source.connect(_t.context.destination);
-						source.start ? source.start(0) : source.noteOn(0);
-					}
-				} // play
-			};
-			var r = new XMLHttpRequest();
-			r.open('GET', src, true);
-			r.responseType = 'arraybuffer';
-			r.onload = function() {
-				_t.context.decodeAudioData(r.response, function(buffer) {
-					player.buffer = buffer;
-				});
-			};
-			r.send();
-			this.channels[src] = player;
-		} else {
-			var a = new Audio();
-			a.autoplay = false;
-			a.repeat = false;
-			a.preload = true;
-			a.src = src;
-			a.load();
-			this.channels[src] = {
-				play: function() {
-					a.pause();
-					a.currentTime = 0;
-					a.play();
+		var AudioContext = window.AudioContext || window.webkitAudioContext;
+		var _t = this;
+		_t.context = _t.context || new AudioContext();
+		var player = {
+			buffer: null,
+			play: function() {
+				if (this.buffer) {
+					var source = _t.context.createBufferSource();
+					source.buffer = this.buffer;
+					source.connect(_t.context.destination);
+					source.start ? source.start(0) : source.noteOn(0);
 				}
-			};
-		}
+			} // play
+		};
+		var r = new XMLHttpRequest();
+		r.open('GET', src, true);
+		r.responseType = 'arraybuffer';
+		r.onload = function() {
+			_t.context.decodeAudioData(r.response, function(buffer) {
+				player.buffer = buffer;
+			});
+		};
+		r.send();
+		this.channels[src] = player;
 	}
 }; // Audio()
-
-AudioPool.errors = [];
 
 const Button = function() {
 	this.onclick = function() {
@@ -331,13 +315,13 @@ const Button = function() {
 		return false;
 	}; // onclick()
 	this.ontouchend = this.onclick;
-	setType(this, 'SS.Button');
+	// setType(this, 'SS.Button');
 };
 
 
 const StartButton = DomClass("<ss:startbutton>Start</ss:startbutton>", function StartButton() {
 	Button.apply(this);
-	setType(this, 'SS.StartButton');
+	// setType(this, 'SS.StartButton');
 });
 
 
@@ -348,7 +332,7 @@ const MagicallySizedObject = function() {
 	this.width = 100 * coords.width / pCoords.width;
 	this.height = 100 * coords.height / pCoords.height;
 
-	setType(this, 'SS.MagicallySizedObject');
+	// setType(this, 'SS.MagicallySizedObject');
 }; // MagicallySizedObject()
 
 
@@ -407,10 +391,7 @@ const Ship = DomClass('<ss:ship></ss:ship>', function Ship() {
 
 	this.draw = function() {
 		var d = Number(this.direction) + (Math.PI/2);
-		this.style.transform = 'rotate(' + d + 'rad)';
-		this.style.webkitTransform = 'rotate(' + d + 'rad)';
-		this.style.mozTransform = 'rotate(' + d + 'rad)';
-		this.style.msTransform = 'rotate(' + d + 'rad)';
+		rotateCss(this, d);
 		this.style.left = this.x + '%';
 		this.style.top = this.y + '%';
 	}; // draw();
@@ -474,9 +455,11 @@ const Ship = DomClass('<ss:ship></ss:ship>', function Ship() {
 		}
 	});
 
+	/*
 	this.init = function() {
 		onready(this).fire();
 	};
+	*/
 
 	setType(this, 'SS.Ship');
 });
@@ -546,7 +529,7 @@ const Projectile = function() {
 		}
 	}; // findCollisionsWith()
 
-	setType(this, 'SS.Projectile');
+	// setType(this, 'SS.Projectile');
 }; // Projectile
 
 
@@ -565,13 +548,13 @@ const Bullet = DomClass('<ss:bullet></ss:bullet>', function _Bullet() {
 	this.init = function() {
 		AudioPool.play(Bullet.sound);
 		MainLoop.addObject(this);
-		onready(this).fire();
+		// onready(this).fire();
 	}; // init()
 
 	Projectile.apply(this);
 	setType(this, 'SS.Bullet');
 }); // Bullet
-Bullet.sound = "audio/pew-tiny.mp3";
+Bullet.sound = "audio/pew.mp3";
 AudioPool.prepare(Bullet.sound);
 
 
@@ -598,10 +581,7 @@ const Enemy = DomClass('<ss:enemy></ss:enemy>', function Enemy() {
 	var innerDraw = this.draw;
 	this.draw = function() {
 		var d = Number(this.visibleDirection) + (Math.PI/2);
-		this.style.transform = 'rotate(' + d + 'rad)';
-		this.style.webkitTransform = 'rotate(' + d + 'rad)';
-		this.style.mozTransform = 'rotate(' + d + 'rad)';
-		this.style.msTransform = 'rotate(' + d + 'rad)';
+		rotateCss(this, d);
 		innerDraw.call(this);
 	}; // draw()
 
@@ -700,7 +680,7 @@ const BigEnemy = DomClass('<ss:bigenemy></ss:bigenemy>', function _BigEnemy() {
 	}; // emitShrapnel()
 
 
-	setType(this, 'SS.Pumpkin');
+	setType(this, 'SS.BigEnemy');
 }); // Pumpkin
 
 
@@ -767,9 +747,9 @@ const Explosion = DomClass(explosionTemplate, function _Explosion() {
 		AudioPool.play(Explosion.sound);
 	}; // init()
 
-	setType(this, 'SS.Explosion');
+	// setType(this, 'SS.Explosion');
 }); // Explosion
-Explosion.sound = 'audio/pkewh-tiny.mp3';
+Explosion.sound = 'audio/pkewh.mp3';
 AudioPool.prepare(Explosion.sound);
 
 
@@ -794,7 +774,7 @@ const Momentum = function({direction, speed, mass}) {
 		return Math.sin(this.direction) * this.speed * this.mass;
 	}; // getY()
 
-	setType(this, 'SS.Momentum');	
+	// setType(this, 'SS.Momentum');	
 }; // SS.Momentum()
 
 const gameOverSplashTemplate = `<ss:gameoversplash>
@@ -849,5 +829,5 @@ const GameOverSplash = DomClass(gameOverSplashTemplate, function _GameOverSplash
 		}, this.delay);
 	}; // init()
 
-	setType(this, 'SS.GameOverSplash');
+	// setType(this, 'SS.GameOverSplash');
 }); // GameOverSplash()
