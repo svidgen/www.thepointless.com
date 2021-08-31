@@ -7,7 +7,7 @@
 </style>
 <defs>
 	<pattern patternTransform="rotate(45)" id="a" width="35%" height="35%" x="0" y="0">
-		<text x="20" y='20' class='c'>SPACE!</text>
+		<text x="25" y='25' class='c'>SPACE!</text>
 	</pattern>
 	<pattern patternTransform="rotate(-45)" id="b" width="30%" height="30%" x="0" y="0">
 		<text x="20" y='20' class='m'>Space...</text>
