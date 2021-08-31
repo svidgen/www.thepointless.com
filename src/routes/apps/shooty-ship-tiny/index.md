@@ -6,6 +6,7 @@ ${meta({
 <head>
 	<title>shooty ship 13k</title>
 	<meta name='viewport' content='width=device-width, initial-scale=1' />
+	<link rel='stylesheet' href='css/game.css' />
 </head>
 <body id="thebody">
 <div id="content">

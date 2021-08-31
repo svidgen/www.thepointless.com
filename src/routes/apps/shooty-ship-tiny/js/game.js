@@ -13,7 +13,7 @@ const { DomClass, setType, isa, getNodes } = require('wirejs-dom');
 const { MouseCoords, NodeBox } = require('/src/lib/coords');
 const { MainLoop } = require('/src/lib/loop');
 const { on } = require('/src/lib/event');
-require('../css/game.css');
+// require('../css/game.css');
 
 global.MainLoop = MainLoop;
 
