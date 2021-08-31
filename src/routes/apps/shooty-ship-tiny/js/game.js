@@ -33,7 +33,7 @@ function rotateCss(node, deg) {
 };
 
 const gameTemplate = `<ss:game>
-	<ss:gameoversplash data-id='presplash' no-ad='1'></ss:gameoversplash>
+	<ss:gameoversplash data-id='presplash'></ss:gameoversplash>
 	<ss:ship data-id='ship' style='top: -100%; left: -100%;'></ss:ship>
 </ss:game>`;
 
@@ -55,7 +55,7 @@ const Game = DomClass(gameTemplate, function _Board() {
 	// require()'d CSS rewrites url()'s to be relative to the CSS file.
 	// normally, that's what you'd want. but, it's not what we want, especially
 	// with a common sheet across PWA's.
-	this.style.backgroundImage = "url('./img/space.svg')";
+	// this.style.backgroundImage = "url('./img/space.svg')";
 
 	this.enable = function() {
 		if (!this.enabled) {

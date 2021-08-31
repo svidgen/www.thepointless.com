@@ -15,7 +15,8 @@ ss\:game {
 	margin: 0px;
 	padding: 0px;
 	border: 0px solid black;
-	background-size: 200px 200px;
+	background-size: 100% 100%;
+	background-image: url('../img/space.svg');
 	overflow: hidden;	
 }
 
