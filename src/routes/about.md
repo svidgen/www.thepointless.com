@@ -18,7 +18,7 @@ ${meta({
 	</div>
 	<div class='content'>
 		<b>We work hard and with gears.</b>
-		Lots and lots of gears. And that's hard stuff to beat. Gears. Yes, gears are what make it happen. If you ain't got gears, you ain't got gears.
+		Lots and lots of gears. We type things on keyboards that make the computers turn the gears. Those gears turn other gears, which ultimately turn the most important gears. Lots of important gears.
 	</div>
 </div>
 
@@ -27,8 +27,8 @@ ${meta({
 		<img alt='people' title='professionals. image stolen from http://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Icon_of_three_people_in_different_shades_of_grey.svg/75px-Icon_of_three_people_in_different_shades_of_grey.svg.png' src="images/75px_ThreeGrayPeople.png" style='width: 75px; display: inline;' />
 	</div>
 	<div class='content'>
-		<b>Lean, Synergetic, Agile Efficiency.</b>
-		That's what our awesome people do with the gears. And then they do <b>Analytics</b> and <b>ROI</b> and stuff. And then more working with gears. And boy, do we ever.
+		<b>Lean. Synergetic. Performant. Agile.</b>
+		That's what our awesome people eventually do with all the gears. And then they do <b>Analytics</b> and <b>ROI</b> and <b>TLA</b>'s. And then more working with gears. And boy, do we ever.
 	</div>
 </div>
 
