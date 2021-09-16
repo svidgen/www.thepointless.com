@@ -6,8 +6,8 @@ const Space = DomClass("<tpdc:space></tpdc:space>", function() {
 
 	var actives = 0;
 
-	this.step = function() {
-		if (this.actives == 0 || Math.random() > 0.0015) {
+	this.step = function({elapsed}) {
+		if (this.actives == 0 || elapsed > (Math.random() * 0.1)) {
 			this.active++;
 			var cc = new CandyCorn();
 			on(cc, 'die', function() {
@@ -29,19 +29,19 @@ const CandyCorn = DomClass("<tpdc:candycorn></tpdc:candycorn>", function() {
 
 	this.x = Math.random() * 100;
 	this.y = -15;
-	this.speed = 0.5 + Math.random() * 1.5;
+	this.speed = 15 + Math.random() * 15;
 
-	this.style.width = this.speed * 1.35 + "rem";
-	this.style.height = this.speed * 2.00 + "rem";
+	this.style.width = this.speed * 0.135 + "rem";
+	this.style.height = this.speed * 0.200 + "rem";
 
-	this.step = function() {
+	this.step = function({elapsed}) {
 		if (this.y > 110) {
 			this.dead = true;
 			on(this, 'die').fire();
 			return;
 		}
 
-		this.y += this.speed;
+		this.y += (this.speed * elapsed);
 	}; // step()
 
 	this.draw = function() {
