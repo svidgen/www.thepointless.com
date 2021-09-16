@@ -119,6 +119,14 @@ hr {
 	margin: 0.25rem;
 }
 
+.content {
+	overflow: hidden;
+	padding: 0.85rem;
+	padding-top: 0px;
+	line-height: 1.3rem;
+	text-align: justify;
+}
+
 #footer > #sub-footer tpdc\:pagebuildtime {
 	font-weight: bold;
 }
