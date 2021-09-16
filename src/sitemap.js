@@ -43,7 +43,10 @@ const sitemap = {
 		// '/small-potatoes': 'the book of small potatoes',
 		// '/something': 'something',
 
-		'/ascii-monsters': 'ascii monsters',
+		// not necessarily dependent on server-side stuff, but might not be
+		// worth the effort to migrate right now ... 
+		// '/ascii-monsters': 'ascii monsters',
+		
 		'/preggertest': 'online pregnancy test',
 		'/zebratest': 'zebra awareness test',
 		'/clickometer': 'a clickometer',
