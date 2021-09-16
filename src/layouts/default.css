@@ -114,6 +114,18 @@ hr {
 	margin-bottom: 0.75rem;
 }
 
+.padded {
+    padding: 10px 20px;
+}
+
+#footer > #sub-footer tpdc\:pagebuildtime {
+	font-weight: bold;
+}
+
+/******
+Legacy: Components used in the about page ... not sure where to put these.
+*******/
+
 .navbar a {
 	display: block;
 	margin: 0.25rem;
@@ -127,9 +139,8 @@ hr {
 	text-align: justify;
 }
 
-#footer > #sub-footer tpdc\:pagebuildtime {
-	font-weight: bold;
-}
+/******
+******/
 
 @media (max-width:420px)  {
 	#footer a {
