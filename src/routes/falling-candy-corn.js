@@ -4,11 +4,8 @@ const { on } = require('/src/lib/event.js');
 const Space = DomClass("<tpdc:space></tpdc:space>", function() {
 	var _t = this;
 
-	var actives = 0;
-
 	this.step = function({elapsed}) {
-		if (this.actives == 0 || elapsed > (Math.random() * 0.1)) {
-			this.active++;
+		if (elapsed > (Math.random() * 0.05)) {
 			var cc = new CandyCorn();
 			on(cc, 'die', function() {
 				_t.removeChild(cc);

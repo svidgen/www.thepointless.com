@@ -48,7 +48,7 @@ const sitemap = {
 		// '/ascii-monsters': 'ascii monsters',
 		
 		'/preggertest': 'online pregnancy test',
-		'/zebratest': 'zebra awareness test',
+		'/zebra-awareness': 'zebra awareness',
 		'/clickometer': 'a clickometer',
 		'/dots': 'some dots',
 	},

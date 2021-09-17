@@ -122,6 +122,23 @@ hr {
 	font-weight: bold;
 }
 
+.modal {
+	position: fixed;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	overflow: hidden;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 1em 0 0 0 ;
+	background-color: #ffffff;
+	opacity: 0.8;
+	filter: alpha(opacity=80);
+}
+
 /******
 Legacy: Components used in the about page ... not sure where to put these.
 *******/
@@ -138,6 +155,7 @@ Legacy: Components used in the about page ... not sure where to put these.
 	line-height: 1.3rem;
 	text-align: justify;
 }
+
 
 /******
 ******/
