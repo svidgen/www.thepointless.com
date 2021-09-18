@@ -160,6 +160,49 @@ Legacy: Components used in the about page ... not sure where to put these.
 /******
 ******/
 
+tpdc\:resultcard {
+	display: block;
+	border: 15px solid #fce890;
+	padding: 15px;
+	margin: 15px;
+}
+
+.result-title {
+	text-align: center;
+	margin: 0px;
+	color: #aa3939;
+}
+
+.result-result {
+	text-align: center;
+	color: #3399cc;
+	border: 2px dashed #99ccee;
+	border-radius: 10px;
+	padding: 1em;
+}
+
+.result-description {
+	text-align: left;
+}
+
+.result-follow {
+	text-align: center;
+	margin-top: 2em;
+	padding-top: 1em;
+	border-top: 1px dotted silver;
+	vertical-align: bottom;
+}
+
+.result-follow span {
+	color: #bb3333;
+	font-weight: bold;
+}
+
+.result-buttons {
+	padding-top: 1em;
+}
+
+
 @media (max-width:420px)  {
 	#footer a {
 		font-size: larger;
