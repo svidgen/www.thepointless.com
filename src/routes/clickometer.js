@@ -113,8 +113,9 @@ function finishEvent() {
 		if (tval > 99) {
 			tval = 100;
 		}
-		
+
 		event_finished = true;
+		document.getElementById('clickpower').value = tval.toFixed(2);
 		document.getElementById('timer').innerHTML = 'STOP!';
 		document.getElementById('meter_bar').style.width = tval + '%';
 

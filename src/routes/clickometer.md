@@ -63,16 +63,18 @@ ${meta({
 		<div id='meter_bar'>
 		</div>
 		<div id='click-target' class='click-overlay'
-			onclick="clickometer_pump(1);" ondblclick="clickometer_pump(2);"
+			onclick="clickometer_pump(1);"
+			ondblclick="clickometer_pump(2);"
 		></div>
 	</div>
 	<form
 		style='text-align: center;'
 		id='clickometer_form'
 		name='clickometer'
-		action='/clickometer_r'
-		method='POST'
+		action='/clickometer-result'
+		method='GET'
 	>
+		<input type='hidden' id='clickpower' name='p' />
 		<input id='submit_button' type='submit' class='toggleable_button'
 			value='Get Your Results' disabled='disabled' />
 	</form>
