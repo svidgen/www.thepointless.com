@@ -7,6 +7,7 @@ require('../components/copyright');
 require('../components/page-build-time');
 require('../components/var');
 require('../components/result-card');
+require('../components/teaser');
 
 const GoogleAds = require('ex-gratia/google');
 
