@@ -135,6 +135,9 @@ module.exports = (env, argv) => {
 		// 	liveReload: true,
 		// 	hot: true
 		// },
+		node: {
+			__filename: true
+		},
 		entry,
 		output: {
 			filename: "[name]"
