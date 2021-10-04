@@ -139,6 +139,13 @@ hr {
 	filter: alpha(opacity=80);
 }
 
+tpdc\:teaser {
+	display: block;
+	margin-top: 2em;
+	border-top: 1px dashed silver;
+	text-align: right;
+}
+
 /******
 Legacy: Components used in the about page ... not sure where to put these.
 *******/
