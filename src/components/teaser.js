@@ -32,10 +32,10 @@ const Teaser = DomClass(template, function _Teaser() {
 		const currentPage = document.location.pathname;
 
 		let index = lastId || 0;
-		let newCount = count ? count + 1 : 0;
+		let newCount = typeof count === 'undefined' ? 1 : count + 1;
 		let featureToTease = features[index];
 
-		if (currentPage == featureToTease[0] || count > 3) {
+		if (currentPage == featureToTease[0] || count >= 3) {
 			index = (index + 1) % features.length;
 			featureToTease = features[index];
 			newCount = 1;
