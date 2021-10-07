@@ -1,0 +1,37 @@
+<!doctype html>
+<html xmlns:tpdc="https://www.thepointless.com/ns/tpdc">
+	<head>
+		<title>${title + " - thepointless.com"}</title>
+		<link rel="shortcut icon" type="image/ico" href="/images/favicon.ico"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="google-site-verification" content="zYKsu_Prv58mFQyRGJA3j1sDsQzAytFhE2SjFMaQk14" />
+		${metatags}
+		<script src='/layouts/default.js?v=${BUILD_ID}'></script>
+	</head>
+	<body>
+		<div id='container'>
+			<div id='header'>
+				<h1><a href='/'>thepointless.com</a> / ${title || "thepointless.com"}</h1>
+			</div>
+			<div id='content'>
+				${body}
+			</div>
+			<tpdc:teaser></tpdc:teaser>
+		</div>
+		<div id='footer'>
+			<div id='sub-footer'>
+				<p>This page was constructed in <tpdc:pagebuildtime></tpdc:pagebuildtime>.</p>
+				<p>(Made possible by <i>The Patriarchy</i><sup>&trade;</sup>.)</p>
+				<p>
+					<tpdc:copyright></tpdc:copyright>
+					| <a href='/terms.html'>terms</a>
+					| <a href='/careers.html'>careers</a>
+					| <a href='/all-the-things.html'>the boring path</a>
+					| <a href='/contribute.html'>contribute code</a>
+					| <a href='/about.html'>about</a>
+				</p>
+			</div>
+		</div>
+	</body>
+</html>

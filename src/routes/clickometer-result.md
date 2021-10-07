@@ -1,0 +1,43 @@
+${meta({
+	title: "Click Power!"
+})}
+<div><tpdc:resultcard id='resultcard'></tpdc:resultcard></div>
+<div><a href='./clickometer'>Try again</a></div>
+
+<script>
+
+	function init() {
+		const power = parseInt(new URL(document.location).searchParams.get('p'));
+		const color = colorFor(power);
+		const card = document.getElementById('resultcard');
+		card.header = 'Your Click Analysis';
+		card.result = 'You have <span style="color:' + color + '">' + power + '</span> click power!';
+		card.description = summary(power);
+		document.title = power + " click power!"
+	}
+
+	function colorFor(power) {
+		const green = Math.round( ((100 - power) / 100) * 255.0);
+		const red = 255 - green;
+		return 'rgb(' + red + ',' + green + ',0)';
+	}
+
+	function summary(power) {
+		if (power < 35) {
+			return "Your click power is a clear indication that you spend too much time online. Though this is not due to an internet addiction or any other geekly tendencies. You just spend considerable time looking for the mouse buttons -- a problem for most elderly people, and nothing to be ashamed of.";
+		} else if (power < 50) {
+			return "You're definitely on the lower end of the click power spectrum. You can probably out-click most girl scouts, even if you can't sell as many cookies. And it's clear that you're not a geek or internet addict, unless you're just a really slow one ... ";
+		} else if (power < 65) {
+			return "Being on the lower end of normal click power isn't bad, I guess. Chances are you're a pretty normal person. You're familiar with the internet, but not to the extent that you're a threat to 1337 h4x0rz. Which is good, because you wouldn't know what to do if you were h4x3d.";
+		} else if (power < 80) {
+			return "You're on the upper end of normal click power. You spend a little too much time online, and you're beginning to lose touch with reality. So, you should occassionally spend some time away from anything you can click on, such as dots, worlds of warcraft, and clickometers.";
+		} else if (power < 98) {
+			return "You're a geek. Fueling yourself with red bull for 36 to 72 hours of coding after 3 hours of sleep results in the bodily oscillation necessary for this kind of click power. Though, coupled with your social anxiety and endless hours of near-motionless MMORPGing, you're overdue for a heart attack or an aneurysm. Find something without mouse buttons to interact with for a few days.";
+		} else {
+			return "Seriously, you broke it. You broke the clickometer. It's clear the only way to to get an accurate read on your click power is with the s00p3r cLiCkOmEtEr. <i>(Coming again soon?)</i>";
+		}
+	}
+
+	init();
+
+</script>

@@ -1,0 +1,264 @@
+@import url('core.css');
+
+/*****************
+    BASIC TAGS
+*****************/
+
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: Arial, sans-serif;
+	font-size: 12pt;
+	line-height: 1.2;
+	background: url('/images/shiny.jpg');
+	color: #333333;
+}
+
+@media (max-width: 50rem) {
+}
+
+img {
+	border: 0px;
+}
+
+a, tpdc\:start {
+	color: #0044aa;
+	text-decoration: none;
+}
+
+a:hover, tpdc\:start:hover {
+	color: #660000;
+	text-decoration: underline;
+}
+
+a.nohoverdecoration, tpcd\:start.nohoverdecoration {
+	text-decoration: none;
+}
+
+hr {
+	margin: 2rem auto;
+	width: 65%;
+	height: 1px;
+	border: 0px;
+	background-color: silver;
+}
+
+
+/******************
+  TEMPLATE PARTS
+******************/
+
+#container {
+	position: relative;
+	width: 90%;
+	max-width: 60rem;
+	margin: 2rem auto;
+	padding: 0.5rem;
+	background-color: white;
+	border: 1px solid #cccccc;
+	border-radius: 0.25em;
+	overflow: hidden;	/* float containment */
+}
+
+#content {
+	overflow: hidden;
+	padding: 0.85rem;
+	padding-top: 0px;
+	line-height: 1.3rem;
+	text-align: justify;
+}
+
+#footer {
+	clear: both;
+	text-align: center;
+}
+
+#sub-footer {
+	margin-top: 2rem;
+	font-size: smaller;
+	color: #555555;
+}
+
+.footer-plug {
+	margin-top: 2.5rem;
+	padding-top: 1.75rem;
+	text-align: right;
+	color: gray;
+	border-top: 1px dashed silver;
+}
+
+.footer-plug a {
+	font-size: 1.2rem;
+}
+
+.navbar, .sidebar {
+	/* display: inline-block; */
+	float: left;
+	width: 12rem;
+	border-width: 0;
+	border-color: #cccccc;
+	border-style: solid;
+	border-right-width: 1px;
+	margin-right: 1rem;
+}
+
+.navbar.float-right, .sidebar.float-right {
+	float: right;
+	border-width: 0;
+	border-left-width: 1px;
+}
+
+.navbar > .navbar {
+	display: block;
+	border-bottom-width: 1px;
+	margin-bottom: 0.75rem;
+}
+
+.padded {
+    padding: 10px 20px;
+}
+
+#footer > #sub-footer tpdc\:pagebuildtime {
+	font-weight: bold;
+}
+
+.modal {
+	position: fixed;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	overflow: hidden;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 1em 0 0 0 ;
+	background-color: #ffffff;
+	opacity: 0.8;
+	filter: alpha(opacity=80);
+}
+
+tpdc\:teaser {
+	display: block;
+	margin-top: 2em;
+	border-top: 1px dashed silver;
+	text-align: right;
+}
+
+/******
+Legacy: Components used in the about page ... not sure where to put these.
+*******/
+
+.navbar a {
+	display: block;
+	margin: 0.25rem;
+}
+
+.content {
+	overflow: hidden;
+	padding: 0.85rem;
+	padding-top: 0px;
+	line-height: 1.3rem;
+	text-align: justify;
+}
+
+
+/******
+******/
+
+tpdc\:resultcard {
+	display: block;
+	border: 15px solid #fce890;
+	padding: 15px;
+	margin: 15px;
+}
+
+.result-title {
+	text-align: center;
+	margin: 0px;
+	color: #aa3939;
+}
+
+.result-result {
+	text-align: center;
+	color: #3399cc;
+	border: 2px dashed #99ccee;
+	border-radius: 10px;
+	padding: 1em;
+}
+
+.result-description {
+	text-align: left;
+}
+
+.result-follow {
+	text-align: center;
+	margin-top: 2em;
+	padding-top: 1em;
+	border-top: 1px dotted silver;
+	vertical-align: bottom;
+}
+
+.result-follow span {
+	color: #bb3333;
+	font-weight: bold;
+}
+
+.result-buttons {
+	padding-top: 1em;
+}
+
+
+@media (max-width:420px)  {
+	#footer a {
+		font-size: larger;
+		display: inline-block;
+		margin: 0.25em;
+	}
+
+	.link-list li {
+		height: 2em;
+	}
+
+	.link-list li a {
+		font-size: larger;
+	}
+}
+
+@media (max-width: 50rem) {
+	.navbar, .navbar.float-right, .sidebar, .sidebar.float-right {
+		float: none;
+		width: 100%;
+		display: block;
+		border-width: 0;
+		border-bottom-width: 1px;
+		margin: 0;
+		margin-bottom: 1rem;
+	}
+
+	.navbar > .navbar {
+		display: block;
+		border-width: 0;
+		border-right-width: 1px;
+		margin: 0;
+		margin-right: 0.75rem;
+	}
+
+	.navbar a {
+		font-size: 1.25rem;
+		display: inline-block;
+	}
+
+	.navbar a:before {
+		content: "● ";
+	}
+
+	.navbar a:after {
+		content: "";
+	}
+
+	.navbar #logo {
+		display: none;
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"manifest_package": "com.thepointless.apps.shooty-ship-pumpkin-smash",
+	"short_name": "Pumpkin Smash",
+	"name": "Shooty Ship - Pumpkin Smash",
+	"description": "Pew pew pew!\nHalloween horrors approach! Shoot as many as you can!\nPew pew pew!",
+	"icons": [
+		{
+			"src": "img/icon.png",
+			"type": "image/png",
+			"sizes": "512x512"	
+		}
+	],
+	"start_url": "index.html",
+	"scope": "/apps/shooty-ship-pumpkin-smash/",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff"
+}
