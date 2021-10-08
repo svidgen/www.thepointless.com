@@ -1,4 +1,4 @@
-Source code for thepointless.com.
+Source code for [thepointless.com](https://www.thepointless.com).
 
 # Contributing
 
