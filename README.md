@@ -6,9 +6,14 @@ Yes. Please do.
 
 We're deployed and hosted with [AWS Amplify](https://docs.amplify.aws/), and built on [wirejs-dom](https://www.npmjs.com/package/wirejs-dom). We use [yarn](https://www.npmjs.com/package/yarn) to get things done. And [webpack](https://www.npmjs.com/package/webpack) for builds.
 
-We don't offer tutorials for those toolsets. Refer to the respective documentation for each as you need to.
-
 Pull the package down. Forgive the cruft. We have a lot of "archived" content left to upgrade. We encourage you to help migrate old content before creating new content.
+
+You can also contribute by [submitting and commenting on issues](https://github.com/svidgen/www.thepointless.com/issues).
+
+* Ideas for new pages / features
+* Bug reports
+* Asking for help with the development process
+* Saying "Hi."
 
 ## Basics
 
@@ -37,11 +42,19 @@ This should start the site on [localhost:9999](http://localhost:9999) and automa
 
 When you're satisfied with your work, commit it, push it, and submit a PR.
 
+### Backend development
+
+We don't have any of Amplify's wonderful backend integrations enabled yet. But, the plan *is* to do so. We'll get there when we get there.
+
+If you have an idea that depends on some backend stuff and can explain what resources you need, [submit an issue](https://github.com/svidgen/www.thepointless.com/issues). If your idea isn't *terrible*, we'll try to make time to get your resources set up.
+
 ## Viewing Your Work
 
-Submit pull requests (PR's) against the `amplify` branch (for now &mdash; this will change soon). The `amplify` branch is published to [dev.thepointless.com](https://dev.thepointless.com), and can be accessed with `dev:devpassword`.
+You're welcome to submit small or isolated changes against `master`.
 
-To be clear, that's:
+Large, complex, or "risky" pull requests can be submitted against the `amplify` branch. The `amplify` branch is published to [dev.thepointless.com](https://dev.thepointless.com). This allows for some testing extended QA prior to promotion to production.
+
+You can log into [dev.thepointless.com](https://dev.thepointless.com) with:
 
 ```yaml
 Username: dev
