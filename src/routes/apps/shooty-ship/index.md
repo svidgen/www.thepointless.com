@@ -36,6 +36,7 @@ ${meta({
 	name="Shooty Ship"
 	enemies="shooty-ship-rock-150x150"
 	shrapnel=""
+	path="/apps/shooty-ship"
 ></ss:game></div>
 
 <script type='text/javascript' src='js/game.js'></script>

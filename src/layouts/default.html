@@ -7,6 +7,20 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="google-site-verification" content="zYKsu_Prv58mFQyRGJA3j1sDsQzAytFhE2SjFMaQk14" />
 		${metatags}
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-920576-1"></script>
+		<script>
+			if (location.host === 'www.thepointless.com') {
+				window.dataLayer = window.dataLayer || [];
+				window.gtag = function(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+				gtag('config', 'UA-920576-1');
+			} else {
+				window.gtag = function(...args) {
+					console.log('gtag()', args);
+				};
+			}
+		</script>
 		<script src='/layouts/default.js?v=${BUILD_ID}'></script>
 	</head>
 	<body>

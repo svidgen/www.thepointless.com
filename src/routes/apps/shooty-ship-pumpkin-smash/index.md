@@ -54,6 +54,7 @@ ${meta({
 		candle,
 		square-candy,
 	"
+	path="/apps/shooty-ship-pumpkin-smash"
 ></ss:game></div>
 
 <script type='text/javascript' src='js/game.js'></script>

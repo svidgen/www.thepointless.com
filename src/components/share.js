@@ -2,19 +2,11 @@ const { DomClass } = require('wirejs-dom');
 require('./share.css');
 
 const template = `<tpdc:share>
-		<div class='header'>Make it happen, Cap'n.</div>
-		<a data-id='fb_link' class='social-link'><img
-			class='social-icon'
-			src='/images/fb_icon_22px.png'
-		/></a>
-		<a data-id='twitter_link' class='social-link'><img
-			class='social-icon'
-			src='/images/twitter_logo_22px.png'
-		/></a>
-		<a data-id='email_link' class='social-link'><img
-			class='social-icon'
-			src='/images/email_logo_22px_h.png'
-		/></a>
+	<div class='header'>Make it happen, Cap'n.</div>
+	<a data-id='fb_link' class='social-link'><img class='social-icon' /></a>
+	<a data-id='twitter_link' class='social-link'><img class='social-icon' /></a>
+	<a data-id='email_link' class='social-link'><img class='social-icon' /></a>
+	<a data-id='native_link' class='social-link'><img class='social-icon' /></a>
 </tpdc:share>`;
 
 module.exports = DomClass(template, function Share() {
@@ -40,6 +32,10 @@ module.exports = DomClass(template, function Share() {
 			rv.url = document.origin + rv.url;
 		}
 
+		if (!rv.category) {
+			rv.category = 'page';
+		}
+
 		if (!rv.title) {
 			rv.title = document.title;
 		}
@@ -62,16 +58,17 @@ module.exports = DomClass(template, function Share() {
 		inner_object = rv;
 
 		return rv;
-	}; // getObject()
+	};
 
 	this.track = function(channel) {
 		var o = _t.getObject();
-		window._gaq = window._gaq || [];
-		_gaq.push(['_trackEvent', 'Share', channel, o['url'], null])
-	}; // track()
+		gtag('event', 'share', {
+			'event_category': o.category
+		});
+	};
 
 	this.fb_link.onclick = function() {
-		_t.track('Facebook');
+		_t.track('facebook');
 		var o = _t.getObject();
 
 		var url = "https://www.facebook.com/sharer.php?u=";
@@ -91,10 +88,10 @@ module.exports = DomClass(template, function Share() {
 
 		window.open(url, 'facebook_share');
 		return false;
-	}; // fb_link.onclick()
+	};
 
 	this.twitter_link.onclick = function() {
-		_t.track('Twitter');
+		_t.track('twitter');
 		var o = _t.getObject();
 		var title = "#" + (o['title'] || 'thepointlessdotcom')
 			.toLowerCase()
@@ -109,10 +106,10 @@ module.exports = DomClass(template, function Share() {
 		;
 		window.open(url, 'twitter_share');
 		return false;
-	}; // twitter_link.onclick()
+	};
 
 	this.email_link.onclick = function() {
-		_t.track('Email');
+		_t.track('email');
 		var o = _t.getObject();
 		var url = "mailto:?to=&"
 			+ "subject=" + encodeURIComponent(o['title'] || 'thepointless.com')
@@ -122,6 +119,38 @@ module.exports = DomClass(template, function Share() {
 		;
 		window.open(url, 'email_share');
 		return false;
-	}; // email_link.onclick()
+	};
+
+	this.native_link.onclick = function() {
+		_t.track('native');
+		var o = _t.getObject();
+		navigator.share({
+			title: o.title,
+			text: o.text,
+			url: o.url,
+		}).then(
+			() => console.log('shared')
+		).catch(
+			() => console.log('not shared')
+		);
+	};
+
+	if (navigator.share) {
+		this.fb_link.style.display = 'none';
+		this.twitter_link.style.display = 'none';
+		this.email_link.style.display = 'none';
+	} else {
+		this.native_link.style.display = 'none';
+	}
+
+	// hmm ... i don't like this.
+	// but, it let's us share the share code between the main site
+	// and our individual PWA's.
+	const imagePath = this.imagePath || '/images';
+	console.log('imagePath', imagePath);
+	this.fb_link.firstChild.src = `${imagePath}/fb_icon_22px.png`;
+	this.twitter_link.firstChild.src = `${imagePath}/twitter_logo_22px.png`;
+	this.email_link.firstChild.src = `${imagePath}/email_logo_22px_h.png`;
+	this.native_link.firstChild.src = `${imagePath}/native-share.svg`;
 
 });

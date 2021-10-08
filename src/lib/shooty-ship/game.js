@@ -4,6 +4,7 @@ const { MainLoop } = require('/src/lib/loop');
 const { on, onready } = require('/src/lib/event');
 const { trackEvent } = require('/src/lib/tracking');
 const { InstallLink } = require('/src/components/install-link');
+const ShareLink = require('/src//components/share');
 require('./game.css');
 
 global.MainLoop = MainLoop;
@@ -12,6 +13,7 @@ let HIGHSCORE_KEY = 'shooty-ship-beta.highscore';
 let SHRAPNEL_TYPES;
 let ENEMY_TYPES;
 let GAME_NAME;
+let PATH_NAME;
 
 const gameTemplate = `<ss:game>
 	<ss:gameoversplash data-id='presplash' no-ad='1'></ss:gameoversplash>
@@ -30,6 +32,8 @@ const Game = DomClass(gameTemplate, function _Board() {
 
 	this._enemies = [];
 
+	PATH_NAME = this.path || '/';
+	console.log('PATH_NAME', PATH_NAME);
 	GAME_NAME = this.name || 'Shooty Ship - BETA';
 	this.presplash.heading = GAME_NAME;
 	HIGHSCORE_KEY = this.presplash.heading.replace(/\s+/g, '-') + '.highscore';
@@ -826,7 +830,7 @@ const gameOverSplashTemplate = `<ss:gameoversplash>
 		<div data-id='maxScoreLine' class='max-scoreline'>Your best: <span data-id='maxScore' class='score'>...?</span></div>
 		<ss:bannerad data-id='bannerad'></ss:bannerad>
 		<ss:startbutton data-id='restart'>Restart</ss:startbutton>
-		<tpdc:share data-id='share'></tpdc:share>
+		<div data-id='share'></div>
 		<ss:installlink icon='img/icon.png'></ss:installlink>
 		<div class='copyright'><a target='_blank' href='https://www.thepointless.com'>www.thepointless.com</a></div>
 	</div>
@@ -838,6 +842,10 @@ const GameOverSplash = DomClass(gameOverSplashTemplate, function _GameOverSplash
 	this.delay = this.delay || 1000;
 
 	const score = parseInt(this.score) || 0;
+
+	this.share = new ShareLink({
+		imagePath: PATH_NAME + '/img'
+	});
 
 	if (score == 0) {
 		this.share.parentNode.removeChild(this.share);
