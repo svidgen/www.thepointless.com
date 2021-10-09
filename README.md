@@ -25,20 +25,19 @@ You're lookin' at it. Just [fork](https://github.com/svidgen/www.thepointless.co
 
 If you don't have `node`, (including `npm`), you'll need to [install it](https://nodejs.org/en/).
 
-If you don't have `yarn`, install that too:
+To install deps and start your local dev server:
 
 ```
-npm i -g yarn
+npm i && npm run start
 ```
 
-And finally, install dependencies and run it:
+*Or*, if you have `yarn` installed:
 
 ```
 yarn && yarn start
 ```
 
-This should start the site on [localhost:9999](http://localhost:9999) and automatically open it in your default browser. Changes you make to the source (in `src`) will automatically trigger a rebuild, which should be immediately visible in your browser.
-
+This should start the site on [localhost:9999](http://localhost:9999) and automatically open it in your default browser. Changes you make to the source (in `src`) will automatically trigger a rebuild. There's no auto-refresh in the browser. (Click the refresh button to see your changes.)
 
 When you're satisfied with your work, commit it, push it, and submit a PR.
 
