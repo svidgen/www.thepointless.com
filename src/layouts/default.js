@@ -17,7 +17,7 @@ if (!location.hostname.match(/^localhost|127\.0\.0\.\d+|192\.168\.\d+\.\d+$/)) {
 	// other components.
 	setTimeout(() => {
 		new GoogleAds().install();
-	}, 50);
+	}, 250);
 }
 
 // expose DomClass to later scripts.
