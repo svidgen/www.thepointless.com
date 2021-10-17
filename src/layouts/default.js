@@ -13,7 +13,11 @@ const GoogleAds = require('ex-gratia/google');
 
 // no ads at "home".
 if (!location.hostname.match(/^localhost|127\.0\.0\.\d+|192\.168\.\d+\.\d+$/)) {
-	new GoogleAds().install();
+	// delayed in an attempt to prevent ads from block rendering of
+	// other components.
+	setTimeout(() => {
+		new GoogleAds().install();
+	}, 50);
 }
 
 // expose DomClass to later scripts.
