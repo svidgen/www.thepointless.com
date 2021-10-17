@@ -1,13 +1,17 @@
 const wirejs = require('wirejs-dom');
 require('highlight.js/styles/github.css');
 
+// sheet(s) first
 require('./default.css');
-require('../components/share');
+
+// components in alphabetical order, please!
 require('../components/copyright');
+require('../components/fork');
 require('../components/page-build-time');
-require('../components/var');
 require('../components/result-card');
+require('../components/share');
 require('../components/teaser');
+require('../components/var');
 
 const GoogleAds = require('ex-gratia/google');
 

@@ -146,6 +146,34 @@ tpdc\:teaser {
 	text-align: right;
 }
 
+tpdc\:fork {
+	display: block;
+	position: absolute;
+	background-color: transparent;
+	top: 0;
+	right: 0;
+	width: 7em;
+}
+
+tpdc\:fork > .banner {
+	-webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+	width: 150%;
+    text-align: center;
+    position: absolute;
+    top: 1.5em;
+    left: -0.5em;
+	font-weight: bold;
+	background-color: green;
+}
+
+tpdc\:fork > .banner > a {
+	color: white;
+}
+
 /******
 Legacy: Components used in the about page ... not sure where to put these.
 *******/
