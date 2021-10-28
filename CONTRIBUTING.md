@@ -12,7 +12,8 @@ Pull the package down. Forgive the cruft. Make awesome new things!
 1. A pyramid scheme!
 1. A site forum.
 1. Upgraded old content (from the `archive` folder)
-1. Almost literally anything you can think of.
+1. **Things you just want to try, but don't have any other good place to try them!**
+1. ***And almost literally anything you can think of.***
 
 ## Basics
 
