@@ -53,7 +53,7 @@ If you have an idea that depends on some backend stuff and can explain what reso
 
 You're welcome to submit small or isolated changes against `master`.
 
-Large, complex, or "risky" pull requests can be submitted against the `amplify` branch. The `amplify` branch is published to [dev.thepointless.com](https://dev.thepointless.com). This allows for some testing extended QA prior to promotion to production.
+Large, complex, or "risky" pull requests can be submitted against the `dev` branch. The `dev` branch is published to [dev.thepointless.com](https://dev.thepointless.com). This allows for some testing extended QA prior to promotion to production.
 
 You can log into [dev.thepointless.com](https://dev.thepointless.com) with:
 
