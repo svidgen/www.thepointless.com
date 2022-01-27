@@ -21,3 +21,5 @@ const SimpleResult = DomClass(template, function _SimpleResult() {
 		this.__dom.unit.style.display = 'none';
 	}
 });
+
+module.exports = SimpleResult;

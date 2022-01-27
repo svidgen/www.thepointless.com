@@ -33,3 +33,5 @@ const GetVariable = DomClass(template, function _GetVariable() {
 		this.__dom.unit.style.display = 'none';
 	}
 });
+
+module.exports = GetVariable;

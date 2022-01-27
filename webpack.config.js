@@ -59,24 +59,28 @@ const SSG = {
 
 		let body;
 		try {
-			let isInCodeBlock = false;
-			const escapedMarkdown = content.toString().split(/\n/)
-				.reduce((lines, line) => {
-					if (isInCodeBlock) {
-						lines[lines.length-1] += "\n" + line;
-					} else {
-						lines.push(line);
-					}
-					if (line.startsWith('```')) {
-						isInCodeBlock = !isInCodeBlock;
-					}
-					return lines;
-				}, [])
-				.map(l => l.trim()).join('\n')
-				.replace(/(``+)/g, m => Array(m.length).fill('\\`').join(''))
-			;
-			const bodyMarkdown = eval('`' + escapedMarkdown + '`');
-			body = marked(bodyMarkdown);
+			if (_path.endsWith('.md')) {
+				let isInCodeBlock = false;
+				const escapedMarkdown = content.toString().split(/\n/)
+					.reduce((lines, line) => {
+						if (isInCodeBlock) {
+							lines[lines.length-1] += "\n" + line;
+						} else {
+							lines.push(line);
+						}
+						if (line.startsWith('```')) {
+							isInCodeBlock = !isInCodeBlock;
+						}
+						return lines;
+					}, [])
+					.map(l => l.trim()).join('\n')
+					.replace(/(``+)/g, m => Array(m.length).fill('\\`').join(''))
+				;
+				const bodyMarkdown = eval('`' + escapedMarkdown + '`');
+				body = marked(bodyMarkdown);
+			} else {
+				body = eval('`' + content + '`');
+			}
 		} catch (err) {
 			console.error(`Could not parse page ${_path}`, err);
 			throw err;
@@ -88,6 +92,15 @@ const SSG = {
 			return `<meta name="${tag}" content="${content}" />`;
 		}).join('\n');
 		let title = _meta.title;
+
+		// apply no layout if the document has already provided the
+		// overarching html structure.
+		if (!_meta.layout && body && (
+			String(body).startsWith('<!doctype html>')
+			|| String(body).startsWith('<html'))
+		) {
+			return body;
+		}
 
 		const layoutPath = path.join(
 			'src',
@@ -162,7 +175,8 @@ module.exports = (env, argv) => {
 					},
 					{
 						from: './src/routes/**/*.html',
-						to: distPath({ subpathIn: 'src/routes' })
+						to: distPath({ subpathIn: 'src/routes' }),
+						transform: SSG
 					},
 					{
 						from: './src/routes/**/*.css',

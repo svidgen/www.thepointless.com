@@ -23,10 +23,8 @@ const InstallLink = DomClass(template, function _InstallLink() {
 		InstallLink.evt.userChoice.then((choiceResult) => {
 			if (choiceResult.outcome === 'accepted') {
 				_t.classList.remove('show');
-				console.log('User accepted the A2HS prompt');
 				trackEvent('install');
 			} else {
-				console.log('User dismissed the A2HS prompt');
 				trackEvent('cancelled-install');
 			}
 			InstallLink.evt = null;
@@ -42,7 +40,6 @@ const InstallLink = DomClass(template, function _InstallLink() {
 });
 
 window.addEventListener('beforeinstallprompt', (e) => {
-	console.log('beforeinstall prompt');
 	e.preventDefault();
 	InstallLink.evt = e;
 	InstallLink.links.forEach(l => l.show());
