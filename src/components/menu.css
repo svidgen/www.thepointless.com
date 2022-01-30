@@ -3,7 +3,7 @@ tpdc\:menu {
 	border-bottom: 1px dashed silver;
 	padding-bottom: 1em;
 	margin-bottom: 1em;
-	font-family: "Comic Sans MS", cursive, monospace;
+	font-family: monospace;
 }
 
 tpdc\:menu a {
