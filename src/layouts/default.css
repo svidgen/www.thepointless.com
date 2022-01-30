@@ -7,8 +7,8 @@
 body {
 	margin: 0px;
 	padding: 0px;
-	font-family: Arial, sans-serif;
-	font-size: 12pt;
+	font-family: "Comic Sans MS", monospace;
+	font-size: 11pt;
 	line-height: 1.2;
 	background: url('/images/shiny.jpg');
 	color: #333333;
@@ -22,12 +22,10 @@ img {
 }
 
 a, tpdc\:start {
-	color: #0044aa;
 	text-decoration: none;
 }
 
 a:hover, tpdc\:start:hover {
-	color: #660000;
 	text-decoration: underline;
 }
 
@@ -43,6 +41,9 @@ hr {
 	background-color: silver;
 }
 
+#header h1 {
+	font-size: 1.6em;
+}
 
 /******************
   TEMPLATE PARTS
@@ -89,29 +90,6 @@ hr {
 
 .footer-plug a {
 	font-size: 1.2rem;
-}
-
-.navbar, .sidebar {
-	/* display: inline-block; */
-	float: left;
-	width: 12rem;
-	border-width: 0;
-	border-color: #cccccc;
-	border-style: solid;
-	border-right-width: 1px;
-	margin-right: 1rem;
-}
-
-.navbar.float-right, .sidebar.float-right {
-	float: right;
-	border-width: 0;
-	border-left-width: 1px;
-}
-
-.navbar > .navbar {
-	display: block;
-	border-bottom-width: 1px;
-	margin-bottom: 0.75rem;
 }
 
 .padded {
@@ -174,27 +152,6 @@ tpdc\:fork > .banner > a {
 	color: white;
 }
 
-/******
-Legacy: Components used in the about page ... not sure where to put these.
-*******/
-
-.navbar a {
-	display: block;
-	margin: 0.25rem;
-}
-
-.content {
-	overflow: hidden;
-	padding: 0.85rem;
-	padding-top: 0px;
-	line-height: 1.3rem;
-	text-align: justify;
-}
-
-
-/******
-******/
-
 tpdc\:resultcard {
 	display: block;
 	border: 15px solid #fce890;
@@ -251,42 +208,5 @@ tpdc\:resultcard {
 
 	.link-list li a {
 		font-size: larger;
-	}
-}
-
-@media (max-width: 50rem) {
-	.navbar, .navbar.float-right, .sidebar, .sidebar.float-right {
-		float: none;
-		width: 100%;
-		display: block;
-		border-width: 0;
-		border-bottom-width: 1px;
-		margin: 0;
-		margin-bottom: 1rem;
-	}
-
-	.navbar > .navbar {
-		display: block;
-		border-width: 0;
-		border-right-width: 1px;
-		margin: 0;
-		margin-right: 0.75rem;
-	}
-
-	.navbar a {
-		font-size: 1.25rem;
-		display: inline-block;
-	}
-
-	.navbar a:before {
-		content: "● ";
-	}
-
-	.navbar a:after {
-		content: "";
-	}
-
-	.navbar #logo {
-		display: none;
 	}
 }

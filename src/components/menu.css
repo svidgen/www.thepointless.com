@@ -1,14 +1,19 @@
 tpdc\:menu {
-	display: block;
+	display: inline-table;
 	border-bottom: 1px dashed silver;
 	padding-bottom: 1em;
 	margin-bottom: 1em;
+	font-family: "Comic Sans MS", cursive, monospace;
 }
 
 tpdc\:menu a {
 	display: inline-block;
-	border: 0.1em dashed lightblue;
+	border: 1px solid blue;
+	background-color: #eee;
 	padding: 0.15em;
-	margin: 0.25em 0;
 	font-weight: bold;
+}
+
+tpdc\:menu a:hover, tpdc\:menu a:active {
+	border-color: red;
 }
