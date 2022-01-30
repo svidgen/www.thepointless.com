@@ -7,6 +7,7 @@ require('./default.css');
 // components in alphabetical order, please!
 require('../components/copyright');
 require('../components/fork');
+require('../components/menu');
 require('../components/page-build-time');
 require('../components/result-card');
 require('../components/share');

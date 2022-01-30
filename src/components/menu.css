@@ -1,0 +1,14 @@
+tpdc\:menu {
+	display: block;
+	border-bottom: 1px dashed silver;
+	padding-bottom: 1em;
+	margin-bottom: 1em;
+}
+
+tpdc\:menu a {
+	display: inline-block;
+	border: 0.1em dashed lightblue;
+	padding: 0.15em;
+	margin: 0.25em 0;
+	font-weight: bold;
+}

@@ -4,7 +4,7 @@ const { MainLoop } = require('/src/lib/loop');
 const { on, onready } = require('/src/lib/event');
 const { trackEvent } = require('/src/lib/tracking');
 const { InstallLink } = require('/src/components/install-link');
-const ShareLink = require('/src//components/share');
+const ShareLink = require('/src/components/share');
 require('./game.css');
 
 global.MainLoop = MainLoop;

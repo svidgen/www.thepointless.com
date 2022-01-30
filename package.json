@@ -6,7 +6,7 @@
     "test": "jest",
     "build": "rimraf dist && yarn ex-gratia && webpack",
     "build:watch": "rimraf dist && webpack --mode development --progress --watch",
-    "serve": "http-server ./dist -p 9999 -o",
+    "serve": "http-server ./dist -o",
     "start": "concurrently -k -p \"[{name}]\" -n \"Build,Serve\" -c \"cyan.bold,green.bold\" \"npm run build:watch\" \"npm run serve\""
   },
   "repository": {
