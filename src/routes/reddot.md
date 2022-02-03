@@ -134,7 +134,3 @@ function dotClick() {
 	<input type="hidden" name="dot" value="red" />
 	<input type="submit" value="I'm done harassing the dot." />
 </form>
-
-<div style='display: none; margin-top: 40px; text-align: center;'>
-	Wait! <a href='/dots'>This isn't the dot I want to harass!</a>
-</div>

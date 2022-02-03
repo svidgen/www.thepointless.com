@@ -21,7 +21,7 @@ const sitemap = {
 	},
 
 	'features': {
-		'/apps/shooty-ship-pumpkin-smash': 'Shooty Ship Pumpkin Smash',
+		'/shooty-ship-pumpkin-smash': 'Shooty Ship Pumpkin Smash',
 
 		// not yet updated for latest president.
 		// need to get art for Biden and offer selection screen

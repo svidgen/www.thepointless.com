@@ -3,26 +3,12 @@ ${meta({
 	author: "svidgen",
 	description: "This is a site about things and stuff."
 })}
-Welcome, dear friend.
+In an internet of darkness there shines forth a **light**.
 
-It's spooky out there. We're already seeing **lots of spooky masks** out there. If you're scared, we don't blame you, and we're here to help.
+***Or so we've been told.***
 
-**Shooty Ship** has taken flight against *spooooky pumkins*. Take the control and join the **fight against fear!**
+In the meantime, you are less than welcome to hang around ~here~ *somewhere else probably*. Do not look in my fridge. Do not drink my beer. And please stay off my lawn.
 
-<p style='text-align: center; font-size: x-large; font-weight: bold;'>
-	<a href='/apps/shooty-ship-pumpkin-smash' target='_blank'>
-		<img width='256' height='256' src='/apps/shooty-ship-pumpkin-smash/img/icon.png' />
-		<br />Click to Play!
-	</a>
-</p>
+This is not your home. It is my home. I do what I want.
 
-Support **us** in supporting **you** fight spooky things this year and **Play Shooty Ship Pumpkin Smash**.
-
-<p style='text-align: center;'><b>Play</b> it and <b>Share</b> your score!</p>
-
-Don't forget to **install** the app after your first round of play for **so you're never stuck without it**.
-
-<!-- TODO: Configure or extend marked.js to not mangle bare custom tags. -->
-<div><tpdc:share
-	text="I support thepointless.com in this vErY SpoOkY HalLoWeeN."
-></tpdc:share></div>
+![Angry Stickman](/images/big_giant.png)

@@ -24,6 +24,7 @@
     "copy-webpack-plugin": "^8.1.0",
     "css-loader": "^5.2.0",
     "file-loader": "^6.2.0",
+    "glob": "^7.2.0",
     "highlight.js": "^11.1.0",
     "http-server": "^13.0.2",
     "jsdom": "^16.5.2",
