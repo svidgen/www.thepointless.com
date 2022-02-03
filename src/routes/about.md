@@ -32,4 +32,4 @@ ${meta({
 	</div>
 </div>
 
-<div><tpdc:share text="Proclaim the good news."></tpdc:share></div>
+<div><tpdc:share header="Proclaim the good news."></tpdc:share></div>
