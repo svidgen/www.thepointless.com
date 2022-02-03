@@ -2,7 +2,7 @@ const { DomClass } = require('wirejs-dom');
 require('./share.css');
 
 const template = `<tpdc:share>
-	<div class='header'>Make it happen, Cap'n.</div>
+	<div class='header' data-id='text'>Make it happen, Cap'n.</div>
 	<a data-id='fb_link' class='social-link'><img class='social-icon' /></a>
 	<a data-id='twitter_link' class='social-link'><img class='social-icon' /></a>
 	<a data-id='email_link' class='social-link'><img class='social-icon' /></a>

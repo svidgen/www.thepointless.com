@@ -4,7 +4,7 @@ const State = require('../lib/state');
 
 const template = `<tpdc:teaser>
 	<div>
-		<span data-id='teaser'></span>:<br />
+		<b><span data-id='teaser'></span></b>
 		<a data-id='link' data-property='href'><span data-id='title'></span></a>
 	</div>
 </tpdc:teaser>`;
@@ -15,13 +15,11 @@ const Teaser = DomClass(template, function _Teaser() {
 
 	function getTeaser() {
 		const teasers = [
-			"If you thought <i>that</i> was ADJECTIVE, you'll <u>really</u> VERB <b>this</b>",
-			"I can't tell if this reminds me more of a llama or a duck",
-			"It may look like a booger, but itsnot",
-			"If it smells like a fart, it is a fart",
-			"Not to put too fine a point on it, say you're the only bae in my bayonet",
-			"Oh, come hither",
-
+			"Hey look!",
+			"My my my ...",
+			"Look what the bat dragged in.",
+			"Well if it isn't",
+			"Whoa! Look!!!"
 		];
 		const index = Math.floor(Math.random() * teasers.length);
 		return teasers[index];

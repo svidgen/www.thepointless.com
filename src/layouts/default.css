@@ -22,7 +22,7 @@ img {
 }
 
 a, tpdc\:start {
-	text-decoration: none;
+	/* text-decoration: none; */
 }
 
 a:hover, tpdc\:start:hover {

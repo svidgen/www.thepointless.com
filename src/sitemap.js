@@ -28,7 +28,6 @@ const sitemap = {
 		// for which president's face you'd like to shoot:
 		// '/shooty-ship/presidential-edition': 'Shooty Ship Presidential Edition',
 
-		'/w/halloweeny-2015': 'halloweeny (2015)',
 		'/falling-candy-corn': 'falling candy corn',
 		'/w/big-dinosaur-problem-lately': 'big dinosaur problem lately',
 		// '/features/meme?name=cleaning-with-kittens': 'a kitten meme',

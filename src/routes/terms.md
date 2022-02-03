@@ -60,5 +60,5 @@ But in all seriousness, we actully do share adspace with contributors. <a href='
 <div>Do not share these terms of service.</div>
 </div>
 
-<div><tpdc:share></tpdc:share></div>
+<div><tpdc:share text="Share these terms of service."></tpdc:share></div>
 
