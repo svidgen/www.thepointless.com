@@ -1,0 +1,2 @@
+# TODO: make ex-gratia auto-generate this
+google.com, pub-6115341109827821, DIRECT, f08c47fec0942fa0
