@@ -2,18 +2,15 @@ ${meta({
 	title: "words and word-like things"
 })}
 
-I'll be honest. Not everything here is words. Close enough though.
+Words come in all shapes and sizes. They say many different things. At times, you may find words herein that make no sense. When possible, I have tried to categorize these words so that you may less likely accuse me of being a loony.
 
-### Unclassified words
+Not that I'm *not* a loony. But, I do ask you to refrain from swinging such an accusation about *willy-nilly*. You might find such accusations smacking perfectly sane bystanders in the face. And we shan't have that. Shan we?
 
-* [Big Dinosaur Problems as of Late](./big-dinosaur-problem-lately)
-	<br />Synopsis: Dinosaurs are a problem.
+* [Serious words](./serious/index.html)
+	<br />You have been warned.
 
-* [dinosaur people](./dinosaur-people)
-	<br />🦖🤷
+* [Silly words](./silly/shorts/index.html)
+	<br />Words like zabing and bazoot would be classified as such, amongst other words, like orangutan.
 
-(There are more words. We just have to find them.)
-
-### Just one word
-
-* [Asparagus](./asparagus)
+* [Unclassified words](./unclassified/index.html)
+	<br />These words may or may not be silly. (Like zebra.) And I prefer them to be ambiguous. (You can let me know if you think they're silly or serious on Twitter, if you like.)
