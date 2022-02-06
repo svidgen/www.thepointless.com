@@ -25,7 +25,7 @@ var lines = [
 	"I don't know what you tried, but if <b>I</b> don't even notice, the dot's not going to.",
 	"How about you go pretty yourself up. Maybe the dot thinks you're ugly.",
 	"Not quite up to par. Try again.",
-	"OK--Time for drastic measures.",
+	"OK &mdash; Time for drastic measures.",
 	"Go away for a minute while I try to talk the red dot into doing something for you.",
 	"Bloody hell! That wasn't nearly enough time. Go away again, and this time, give me some bloody time!",
 	"... Sorry. The dot didn't appreciate your interruption the first time. It's mad at you. Better say you're sorry.",
@@ -45,7 +45,7 @@ var lines = [
 	"CLICK!",
 	"c l i c k !",
 	"Yeah, that's right. I'm making fun of you.",
-	"Look at yourself--sitting at a computer clicking on a damn dot, knowing very well it won't do anything for you.",
+	"Look at yourself &mdash; sitting at a computer clicking on a damn dot, knowing very well it won't do anything for you.",
 	"Nothing good on TV?",
 	"No good books to read?",
 	"You realize you're addicted to clicking on a red dot, right?",
@@ -71,7 +71,7 @@ var lines = [
 	"The dot?",
 	"... or yourself.",
 	"I think we both know what's going on here.",
-	"You needed someplace to run--somebody to listen to you.",
+	"You needed someplace to run &mdash; somebody to listen to you.",
 	"Well that someone isn't here.",
 	"All we have here is a red dot that does nothing.",
 	"It doesn't care about your sorrows.",
@@ -120,17 +120,24 @@ function dotClick() {
 } // dotClick()
 </script>
 
+<p>
+	Long ago, in the early days of the internet, there was a red dot.
+	When you clicked on it, it would do neat things.
+</p>
+<p style='text-align: center;'>
+	<b>This is not that dot.</b>
+</p>
 
-<p align="center">
+<p style='text-align: center;'>
 	<img src="images/reddot.jpg" onClick="dotClick();" />
 </p>
 
-<div id="message" style="text-align: center; margin: 5px; font-size: big;">
+<div id="message" style="text-align: center; margin: 1em; font-size: 1.5em;">
 	This is my red dot. It doesn't do anything when you click on it.
 </div>
 
 <form style="text-align: center;" name="mainForm" method="get" action="dotresults">
 	<input type="hidden" name="clicks" value="0" />
 	<input type="hidden" name="dot" value="red" />
-	<input type="submit" value="I'm done harassing the dot." />
+	<input type="submit" value="I'm done harassing the dot." style='font-size: large;' />
 </form>
