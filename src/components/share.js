@@ -135,11 +135,7 @@ module.exports = DomClass(template, function Share() {
 		);
 	};
 
-	if (navigator.share) {
-		this.fb_link.style.display = 'none';
-		this.twitter_link.style.display = 'none';
-		this.email_link.style.display = 'none';
-	} else {
+	if (!navigator.share) {
 		this.native_link.style.display = 'none';
 	}
 
