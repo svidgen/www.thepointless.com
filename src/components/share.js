@@ -1,6 +1,48 @@
 const { DomClass } = require('wirejs-dom');
 require('./share.css');
 
+/**
+ * Returns the style for a node.
+ *
+ * @param n The node to check.
+ * @param p The property to retrieve (usually 'display').
+ * @link http://www.quirksmode.org/dom/getstyles.html
+ */
+ function getStyle( n, p ) {
+	return n.currentStyle ?
+	  n.currentStyle[p] :
+	  document.defaultView.getComputedStyle(n, null).getPropertyValue(p);
+  }
+  
+  /**
+   * Converts HTML to text, preserving semantic newlines for block-level
+   * elements.
+   *
+   * @param node - The HTML node to perform text extraction.
+   */
+  function toText(node) {
+	var result = '';
+  
+	if( node.nodeType == document.TEXT_NODE ) {
+	  // Replace repeated spaces, newlines, and tabs with a single space.
+	  result = node.nodeValue.replace( /\s+/g, ' ' );
+	}
+	else {
+	  for( var i = 0, j = node.childNodes.length; i < j; i++ ) {
+		result += toText( node.childNodes[i] );
+	  }
+  
+	  var d = getStyle( node, 'display' );
+  
+	  if( d.match( /^block/ ) || d.match( /list/ ) || d.match( /row/ ) ||
+		  node.tagName == 'BR' || node.tagName == 'HR' ) {
+		result += '\n';
+	  }
+	}
+  
+	return result;
+  }
+
 const template = `<tpdc:share>
 	<div class='header' data-id='header'>Make it happen, Cap'n.</div>
 	<a data-id='fb_link' class='social-link'><img class='social-icon' /></a>
@@ -12,52 +54,45 @@ const template = `<tpdc:share>
 module.exports = DomClass(template, function Share() {
 	var _t = this;
 
-	var inner_object;
+	const NL = encodeURIComponent('\n');
+
+	this.getData = function() {
+		return {
+			title: this.title || document.title,
+			text: this.text || (() => {
+				var meta = document.querySelector("meta[name=\'description\']");
+				if (meta) {
+					return meta.getAttribute("content");
+				}
+			})(),
+			url: this.url
+		};
+	};
 
 	this.getObject = function() {
-		// hack to prevent re-processing and url-breaking.
-		var rv = {};
+		const data = this.getData();
 
-		if (_t.object) {
-			rv = _t.object;
-		} else {
-			rv = _t;
+		console.log('getObject', data);
+		window.data = data;
+
+		if (!data.url) {
+			data.url = document.location.href;
 		}
 
-		if (inner_object) {
-			rv.url = inner_object.url;
-		} else if (!rv.url) {	
-			rv.url = document.location;
-		} else {
-			rv.url = document.origin + rv.url;
+		data.url = data.url.innerText ? toText(data.url) : data.url;
+		if (!data.url.startsWith('http')) {
+			data.url = [
+				document.location.origin,
+				'/',
+				data.url.replaceAll('//', '/').replace(/^\//,'')
+			].join('');
 		}
 
-		if (!rv.category) {
-			rv.category = 'page';
-		}
-
-		if (!rv.title) {
-			rv.title = document.title;
-		}
-
-		if (!rv.text) {
-			var meta = document.querySelector("meta[name=\'description\']");
-			if (meta) {
-				rv.text = meta.getAttribute("content");
-			}
-		}
-
-		if (!rv.image) {
-			rv.image = document.origin + "/images/big_giant.jpg";
-		}
-
-		if (typeof(rv.proxy) == 'undefined') {
-			rv.proxy = true;
-		}
-
-		inner_object = rv;
-
-		return rv;
+		return {
+			title: encodeURIComponent(data.title.innerText ? toText(data.title) : data.title),
+			text: encodeURIComponent(data.text.innerText ? toText(data.text) : data.text),
+			url: encodeURIComponent(data.url)
+		};
 	};
 
 	this.track = function(channel) {
@@ -69,66 +104,37 @@ module.exports = DomClass(template, function Share() {
 
 	this.fb_link.onclick = function() {
 		_t.track('facebook');
-		var o = _t.getObject();
-
-		var url = "https://www.facebook.com/sharer.php?u=";
-
-		if (o.proxy) {
-			url = url + "http://" + (location.host || location.hostname) + "/share-data?"
-				+ encodeURIComponent(
-					"t=" + encodeURIComponent(o['title'] || '')
-					+ "&b=" + encodeURIComponent(o['text'] || '')
-					+ "&i=" + encodeURIComponent(o['image'] || '')
-					+ "&u=" + encodeURIComponent(o['url'] || '')
-				)
-			;
-		} else {
-			url = url + o['url'];
-		}
-
-		window.open(url, 'facebook_share');
+		const { text, url } = _t.getObject();
+		window.open(
+			`https://www.facebook.com/sharer.php?u=${url}&quote=${text}`,
+			'facebook_share'
+		);
 		return false;
 	};
 
 	this.twitter_link.onclick = function() {
 		_t.track('twitter');
-		var o = _t.getObject();
-		var title = "#" + (o['title'] || 'thepointlessdotcom')
-			.toLowerCase()
-			.replace(/thepointless\.com/, '')
-			.replace(/[^a-z0-9]/g, '')
-		;
-		var	url = "https://twitter.com/share?"
-			+ "u=" + encodeURIComponent(o['url'])
-			+ "&text=" + encodeURIComponent(
-				(o['text'] || '') + ' ' + title
-			)
-		;
-		window.open(url, 'twitter_share');
+		const { url, text } = _t.getObject();
+		window.open(
+			`https://twitter.com/share?text=${text}${NL}${NL}${url}`,
+			'twitter_share'
+		);
 		return false;
 	};
 
 	this.email_link.onclick = function() {
 		_t.track('email');
-		var o = _t.getObject();
-		var url = "mailto:?to=&"
-			+ "subject=" + encodeURIComponent(o['title'] || 'thepointless.com')
-			+ "&body=" + encodeURIComponent(o['text'] || '')
-			 	+ encodeURIComponent("\n\n")
-				+ encodeURIComponent(o['url'] || document.location)
-		;
-		window.open(url, 'email_share');
+		const { title, text, url } = _t.getObject();
+		window.open(
+			`mailto:?to=&subject=${title}&body=${text}${NL}${NL}${url}`,
+			'email_share'
+		);
 		return false;
 	};
 
 	this.native_link.onclick = function() {
 		_t.track('native');
-		var o = _t.getObject();
-		navigator.share({
-			title: o.title,
-			text: o.text,
-			url: o.url,
-		}).then(
+		navigator.share(_t.getObject()).then(
 			() => console.log('shared')
 		).catch(
 			() => console.log('not shared')

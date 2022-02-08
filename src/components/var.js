@@ -17,8 +17,15 @@ const { DomClass } = require('wirejs-dom');
 const template = `<tpdc:var><span
 	data-id='value'
 	data-property='innerHTML'></span>
-	<span data-id='units' data-property='innerHTML'></span><span data-id='unit' data-property='innerHTML'><
-/span></tpdc:var>`;
+	<span
+		data-id='units'
+		data-property='innerHTML'
+		style='display: none'
+	></span><span
+		data-id='unit'
+		data-property='innerHTML'
+		style='display: none'
+	></span></tpdc:var>`;
 
 const GetVariable = DomClass(template, function _GetVariable() {
 	const url = new URL(location).searchParams;
@@ -28,9 +35,10 @@ const GetVariable = DomClass(template, function _GetVariable() {
 
 	const intval = Number.parseInt(this.value);
 	if (intval === 1 || intval === -1) {
-		this.__dom.units.style.display = 'none';
+		this.__dom.unit.style.display = 'inline';
 	} else {
-		this.__dom.unit.style.display = 'none';
+		this.__dom.units.style.display = 'inline';
+		
 	}
 });
 
