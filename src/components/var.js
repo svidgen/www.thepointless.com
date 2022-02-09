@@ -20,11 +20,9 @@ const template = `<tpdc:var><span
 	<span
 		data-id='units'
 		data-property='innerHTML'
-		style='display: none'
 	></span><span
 		data-id='unit'
 		data-property='innerHTML'
-		style='display: none'
 	></span></tpdc:var>`;
 
 const GetVariable = DomClass(template, function _GetVariable() {
@@ -35,10 +33,9 @@ const GetVariable = DomClass(template, function _GetVariable() {
 
 	const intval = Number.parseInt(this.value);
 	if (intval === 1 || intval === -1) {
-		this.__dom.unit.style.display = 'inline';
+		this.__dom.units.parentNode.removeChild(this.__dom.units);
 	} else {
-		this.__dom.units.style.display = 'inline';
-		
+		this.__dom.unit.parentNode.removeChild(this.__dom.unit);
 	}
 });
 

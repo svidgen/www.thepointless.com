@@ -14,8 +14,19 @@ const template = `<tpdc:resultcard>
 	</div>
 	<h3 class='result-result'><div data-id='result'></div></h3>
 	<div class='result-description'><div data-id='description'></div></div>
-	<tpdc:share data-id='share_buttons'></tpdc:share>
+	<tpdc:share data-id='share_buttons' url='https://www.thepointless.com/clickometer'>
+		<div data-id='text'>
+			I have <tpdc:var get='p'></tpdc:var> click power!
+			<br /><br />How much do you have?
+		</div>
+		<div data-id='header' style='color: #c00; font-weight: bold'><i>
+			How much click power do <b>your friends</b> have?
+		</i></div>
+	</tpdc:share>
 </tpdc:resultcard>`;
+
+// temporarily removed until we can update sharing text, etc.
+
 
 const ResultCard = DomClass(template, function _ResultCard() {
 	var _t = this;
@@ -29,20 +40,7 @@ const ResultCard = DomClass(template, function _ResultCard() {
 		}
 	}; // setImage()
 
-	this.getShareData = function() {
-	}; // getShareData();
-
 	this.setImage(this.image);
-
-	this.share_buttons.object = {
-		title: (_t['share-title'] || _t.header.innerText || '')
-			.replace('{subject}', 'I'),
-		image: _t.image,
-		'text': (_t['share-text'] || _t.result.innerText
-			|| _t.description.innerText || '')
-				.replace('{subject}', 'I'),
-		url: _t.url
-	};
 
 	this.__dom.header.innerHTML = this.__dom.header.innerHTML.replace('{subject}', 'You');
 	this.__dom.result.innerHTML = this.__dom.result.innerHTML.replace('{subject}', 'You');

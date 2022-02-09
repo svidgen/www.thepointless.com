@@ -8,40 +8,40 @@ require('./share.css');
  * @param p The property to retrieve (usually 'display').
  * @link http://www.quirksmode.org/dom/getstyles.html
  */
- function getStyle( n, p ) {
+function getStyle(n, p) {
 	return n.currentStyle ?
-	  n.currentStyle[p] :
-	  document.defaultView.getComputedStyle(n, null).getPropertyValue(p);
-  }
-  
-  /**
-   * Converts HTML to text, preserving semantic newlines for block-level
-   * elements.
-   *
-   * @param node - The HTML node to perform text extraction.
-   */
-  function toText(node) {
+		n.currentStyle[p] :
+		document.defaultView.getComputedStyle(n, null).getPropertyValue(p);
+}
+
+/**
+ * Converts HTML to text, preserving semantic newlines for block-level
+ * elements.
+ *
+ * @param node - The HTML node to perform text extraction.
+ */
+function toText(node) {
 	var result = '';
-  
-	if( node.nodeType == document.TEXT_NODE ) {
-	  // Replace repeated spaces, newlines, and tabs with a single space.
-	  result = node.nodeValue.replace( /\s+/g, ' ' );
+
+	if (node.nodeType == document.TEXT_NODE) {
+		// Replace repeated spaces, newlines, and tabs with a single space.
+		result = node.nodeValue.replace(/\s+/g, ' ');
 	}
 	else {
-	  for( var i = 0, j = node.childNodes.length; i < j; i++ ) {
-		result += toText( node.childNodes[i] );
-	  }
-  
-	  var d = getStyle( node, 'display' );
-  
-	  if( d.match( /^block/ ) || d.match( /list/ ) || d.match( /row/ ) ||
-		  node.tagName == 'BR' || node.tagName == 'HR' ) {
-		result += '\n';
-	  }
+		for (var i = 0, j = node.childNodes.length; i < j; i++) {
+			result += toText(node.childNodes[i]);
+		}
+
+		var d = getStyle(node, 'display');
+
+		if (d.match(/^block/) || d.match(/list/) || d.match(/row/) ||
+			node.tagName == 'BR' || node.tagName == 'HR') {
+			result += '\n';
+		}
 	}
-  
+
 	return result;
-  }
+}
 
 const template = `<tpdc:share>
 	<div class='header' data-id='header'>Make it happen, Cap'n.</div>
@@ -56,7 +56,7 @@ module.exports = DomClass(template, function Share() {
 
 	const NL = encodeURIComponent('\n');
 
-	this.getData = function() {
+	this.getData = function () {
 		return {
 			title: this.title || document.title,
 			text: this.text || (() => {
@@ -69,11 +69,8 @@ module.exports = DomClass(template, function Share() {
 		};
 	};
 
-	this.getObject = function() {
+	this.getObject = function () {
 		const data = this.getData();
-
-		console.log('getObject', data);
-		window.data = data;
 
 		if (!data.url) {
 			data.url = document.location.href;
@@ -84,7 +81,7 @@ module.exports = DomClass(template, function Share() {
 			data.url = [
 				document.location.origin,
 				'/',
-				data.url.replaceAll('//', '/').replace(/^\//,'')
+				data.url.replaceAll('//', '/').replace(/^\//, '')
 			].join('');
 		}
 
@@ -95,14 +92,14 @@ module.exports = DomClass(template, function Share() {
 		};
 	};
 
-	this.track = function(channel) {
+	this.track = function (channel) {
 		var o = _t.getObject();
 		gtag('event', 'share', {
 			'event_category': o.category
 		});
 	};
 
-	this.fb_link.onclick = function() {
+	this.fb_link.onclick = function () {
 		_t.track('facebook');
 		const { text, url } = _t.getObject();
 		window.open(
@@ -112,17 +109,17 @@ module.exports = DomClass(template, function Share() {
 		return false;
 	};
 
-	this.twitter_link.onclick = function() {
+	this.twitter_link.onclick = function () {
 		_t.track('twitter');
 		const { url, text } = _t.getObject();
 		window.open(
-			`https://twitter.com/share?text=${text}${NL}${NL}${url}`,
+			`https://twitter.com/share?url=${url}&text=${text}${NL}${NL}`,
 			'twitter_share'
 		);
 		return false;
 	};
 
-	this.email_link.onclick = function() {
+	this.email_link.onclick = function () {
 		_t.track('email');
 		const { title, text, url } = _t.getObject();
 		window.open(
@@ -132,7 +129,7 @@ module.exports = DomClass(template, function Share() {
 		return false;
 	};
 
-	this.native_link.onclick = function() {
+	this.native_link.onclick = function () {
 		_t.track('native');
 		navigator.share(_t.getObject()).then(
 			() => console.log('shared')
