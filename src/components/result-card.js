@@ -14,15 +14,7 @@ const template = `<tpdc:resultcard>
 	</div>
 	<h3 class='result-result'><div data-id='result'></div></h3>
 	<div class='result-description'><div data-id='description'></div></div>
-	<tpdc:share data-id='share_buttons' url='https://www.thepointless.com/clickometer'>
-		<div data-id='text'>
-			I have <tpdc:var get='p'></tpdc:var> click power!
-			<br /><br />How much do you have?
-		</div>
-		<div data-id='header' style='color: #c00; font-weight: bold'><i>
-			How much click power do <b>your friends</b> have?
-		</i></div>
-	</tpdc:share>
+	<tpdc:share data-id='share_buttons'></tpdc:share>
 </tpdc:resultcard>`;
 
 // temporarily removed until we can update sharing text, etc.

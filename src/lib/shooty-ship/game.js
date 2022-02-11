@@ -844,16 +844,13 @@ const GameOverSplash = DomClass(gameOverSplashTemplate, function _GameOverSplash
 	const score = parseInt(this.score) || 0;
 
 	this.share = new ShareLink({
-		imagePath: PATH_NAME + '/img'
+		title: `Check out ${GAME_NAME}!`,
+		text: `I just scored ${score} in ${GAME_NAME}! Can you beat that? #pewpewpew`,
+		header: 'See how well your friends do!'
 	});
 
 	if (score == 0) {
 		this.share.parentNode.removeChild(this.share);
-	} else {
-		this.share.object = {
-			text: `I scored ${score} in ${GAME_NAME}!`,
-			category: "game"
-		};
 	}
 
 	let max = 0;

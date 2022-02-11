@@ -32,6 +32,7 @@ ${meta({
 <div><tpdc:share
 	url="/zebra-awareness"
 	title="Zebra Awareness"
+	header="Help spread Zebra Awareness."
 	text="Zebras are all around us and we don't even acknowledge them. Raise awareness, and GET TESTED."
 	image="/images/zebratest/zebra.png"
 ></tpdc:share></div>

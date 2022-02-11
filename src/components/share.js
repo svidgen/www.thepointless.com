@@ -86,8 +86,8 @@ module.exports = DomClass(template, function Share() {
 		}
 
 		return {
-			title: encodeURIComponent(data.title.innerText ? toText(data.title) : data.title),
-			text: encodeURIComponent(data.text.innerText ? toText(data.text) : data.text),
+			title: encodeURIComponent((data.title && data.title.innerText) ? toText(data.title) : data.title || ''),
+			text: encodeURIComponent((data.text && data.text.innerText) ? toText(data.text) : data.text || ''),
 			url: encodeURIComponent(data.url)
 		};
 	};

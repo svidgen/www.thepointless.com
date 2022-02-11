@@ -1,7 +1,17 @@
 ${meta({
 	title: "Click Power!"
 })}
-<div><tpdc:resultcard id='resultcard'></tpdc:resultcard></div>
+<div><tpdc:resultcard id='resultcard'>
+	<tpdc:share data-id='share_buttons' url='/clickometer'>
+		<div data-id='text'>
+			I have <tpdc:var get='p'></tpdc:var> click power!
+			<br /><br />How much do you have?
+		</div>
+		<div data-id='header' style='color: #c00; font-weight: bold'><i>
+			How much click power do <b>your friends</b> have?
+		</i></div>
+	</tpdc:share>
+</tpdc:resultcard></div>
 <div><a href='./clickometer'>Try again</a></div>
 
 <script>
