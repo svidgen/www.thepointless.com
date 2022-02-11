@@ -1,7 +1,7 @@
 ${meta({
 	title: "for the love of the dot!"
 })}
-<div><tpdc:resultcard header='Amazing!' />
+<div><tpdc:resultcard header='Amazing!' id='card' />
 	<div data-id='result'>
 		You clicked the <tpdc:var get='dot'></tpdc:var> dot
 		<tpdc:var get="clicks" units="times" unit="time"></tpdc:var>!
@@ -29,6 +29,16 @@ ${meta({
 		</i></div>
 	</tpdc:share>
 </tpdc:resultcard></div>
+
+<script>
+	const card = document.getElementById('card');
+	const query = new URL(location).searchParams;
+	const doturl = location.origin + '/' + query.get('dot') + 'dot';
+	once(() => card.share_buttons).then(() => {
+		console.log('setting dot url', doturl);
+		card.share_buttons.url = doturl;
+	});
+</script>
 
 <p>
 	Show your support for our <b>incredible work</b> by ...

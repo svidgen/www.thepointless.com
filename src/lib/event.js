@@ -98,8 +98,26 @@ const onready = function (o, f) {
 };
 
 
+const once = async function(f) {
+	return new Promise((resolve, reject) => {
+		const loop = setInterval(() => {
+			try {
+				if (f()) {
+					clearInterval(loop);
+					resolve();
+				}
+			} catch (err) {
+				clearInterval(loop);
+				reject(err);
+			}
+		}, 15);
+	});
+};
+
+
 module.exports = {
 	on,
 	onready,
-	Event
+	Event,
+	once
 };

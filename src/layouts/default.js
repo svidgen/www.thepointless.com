@@ -14,6 +14,12 @@ require('../components/share');
 require('../components/teaser');
 require('../components/var');
 
+// utils
+const { on, onready, once } = require('../lib/event');
+window.on = on;
+window.onready = onready;
+window.once = once;
+
 const GoogleAds = require('ex-gratia/google');
 
 // no ads at "home".
