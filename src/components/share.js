@@ -105,7 +105,7 @@ module.exports = DomClass(template, function Share() {
 	this.track = function (channel) {
 		var o = _t.getObject();
 		gtag('event', 'share', {
-			'event_category': o.category
+			'event_category': 'page'
 		});
 	};
 
