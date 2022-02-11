@@ -48,6 +48,7 @@ const template = `<tpdc:share>
 	<a data-id='fb_link' class='social-link'><img class='social-icon' /></a>
 	<a data-id='twitter_link' class='social-link'><img class='social-icon' /></a>
 	<a data-id='email_link' class='social-link'><img class='social-icon' /></a>
+	<a data-id='copy_link' class='social-link'>📋</a>
 	<a data-id='native_link' class='social-link'><img class='social-icon' /></a>
 </tpdc:share>`;
 
@@ -86,11 +87,20 @@ module.exports = DomClass(template, function Share() {
 		}
 
 		return {
-			title: encodeURIComponent((data.title && data.title.innerText) ? toText(data.title) : data.title || ''),
-			text: encodeURIComponent((data.text && data.text.innerText) ? toText(data.text) : data.text || ''),
-			url: encodeURIComponent(data.url)
+			title: (data.title && data.title.innerText) ? toText(data.title) : data.title || '',
+			text: (data.text && data.text.innerText) ? toText(data.text) : data.text || '',
+			url: data.url
 		};
 	};
+
+	this.getEncodedObject = function() {
+		const o = this.getObject();
+		return {
+			title: encodeURIComponent(o.title),
+			text: encodeURIComponent(o.text),
+			url: encodeURIComponent(o.url)
+		};
+	}
 
 	this.track = function (channel) {
 		var o = _t.getObject();
@@ -101,7 +111,7 @@ module.exports = DomClass(template, function Share() {
 
 	this.fb_link.onclick = function () {
 		_t.track('facebook');
-		const { text, url } = _t.getObject();
+		const { text, url } = _t.getEncodedObject();
 		window.open(
 			`https://www.facebook.com/sharer.php?u=${url}&quote=${text}`,
 			'facebook_share'
@@ -111,7 +121,7 @@ module.exports = DomClass(template, function Share() {
 
 	this.twitter_link.onclick = function () {
 		_t.track('twitter');
-		const { url, text } = _t.getObject();
+		const { url, text } = _t.getEncodedObject();
 		window.open(
 			`https://twitter.com/share?url=${url}&text=${text}${NL}${NL}`,
 			'twitter_share'
@@ -121,12 +131,22 @@ module.exports = DomClass(template, function Share() {
 
 	this.email_link.onclick = function () {
 		_t.track('email');
-		const { title, text, url } = _t.getObject();
+		const { title, text, url } = _t.getEncodedObject();
 		window.open(
 			`mailto:?to=&subject=${title}&body=${text}${NL}${NL}${url}`,
 			'email_share'
 		);
 		return false;
+	};
+
+	
+	this.copy_link.onclick = function () {
+		_t.track('copy');
+		const { title, text, url } = _t.getObject();
+		navigator.clipboard.writeText(`${text}\n\n${url}`).then(() => {
+			_t.copy_link = '✔️';
+			setTimeout(() => _t.copy_link = '📋', 1000);
+		});
 	};
 
 	this.native_link.onclick = function () {
