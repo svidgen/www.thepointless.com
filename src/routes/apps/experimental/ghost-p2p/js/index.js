@@ -1,6 +1,11 @@
 console.log('here i am')
 
-pc = new RTCPeerConnection([]);
+pc = new RTCPeerConnection({
+	iceServers: [
+		{ urls: 'stun:stun3.l.google.com:19302' }
+	]
+});
+dc = pc.createDataChannel('test', {reliable: true})
 
 pc.onicecandidate = (event) => {
 	if (event.candidate) {
@@ -20,6 +25,7 @@ pc.onicecandidate = (event) => {
     //   name: myUsername,
     //   target: targetUsername,
     //   type: "video-offer",
+		type: 'data-offer',
       sdp: pc.localDescription
     });
   })
