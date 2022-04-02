@@ -1,4 +1,10 @@
+const { ConsoleLogger } = require('@aws-amplify/core');
 const QRCode = require('qrcode');
+
+const url = new URL(location);
+const query = url.searchParams;
+const CANDIDATE = query.get('c');
+const DESC = query.get('o');
 
 pc = new RTCPeerConnection({
 	iceServers: [
@@ -16,88 +22,69 @@ dc.onmessage = e => {
 	try {
 		console.log('onmessage', JSON.parse(e.data));
 		setTimeout(() => {
-			dc.send(JSON.stringify('hello, client.'));
+			dc.send(JSON.stringify('hello'));
 		}, 1000);
 	} catch (err) {
 		console.error('could not parse', err);
 	}
 };
 
+dc.onopen = function () {
+	console.log('on open');
+	dc.send(JSON.stringify('hello, server'));
+};
+
 pc.onicecandidate = (event) => {
-	if (event.candidate) {
+	if (DESC) {
+		console.log('what do we do now?');
+	} else if (event.candidate) {
 		// sendCandidateToRemotePeer(event.candidate)
-		const candidate = encodeURIComponent(event.candidate.candidate);
-		const url = `${location.href}?c=${candidate}`;
-		QRCode.toCanvas(url, {}, (err, canvas) => {
+		console.log('event with candidate', event);
+		const candidate = encodeURIComponent(JSON.stringify(event.candidate));
+		const offer = encodeURIComponent(JSON.stringify(pc.localDescription));
+		// const candidateUrl = `${location.href}?c=${candidate}&o=${offer}`;
+		const offerURL = `${location.href}?o=${offer}`;
+		
+		QRCode.toCanvas(offerURL, {}, (err, canvas) => {
 			if (err) throw err;
+
 			document.body.appendChild(canvas);
+			const infos = document.createElement('div');
+			const link = document.createElement('a');
+			link.href = offerURL;
+			link.innerHTML = 'test ' + event.candidate.address;
+			link.target = '_blank';
+			infos.appendChild(link);
+			document.body.appendChild(infos);
 		});
-		const link = document.createElement('a');
-		link.href = url;
-		link.innerHTML = 'test';
-		link.target = '_blank';
-		document.body.appendChild(link);
-		console.log('event', event, url);
 	} else {
 		/* there are no more candidates coming during this negotiation */
+		console.log('shrug', event);
 	}
 };
 
-pc.createOffer().then(function (offer) {
-	console.log('offer', offer);
-	return pc.setLocalDescription(offer);
-}).then(function () {
-	console.log({
-		//   name: myUsername,
-		//   target: targetUsername,
-		//   type: "video-offer",
-		type: 'data-offer',
-		sdp: pc.localDescription
+if (DESC || CANDIDATE) {
+	if (CANDIDATE) {
+		console.log('candidate given', CANDIDATE);
+		const candidate = new RTCIceCandidate(JSON.parse(CANDIDATE));
+		pc.addIceCandidate(candidate);
+	}
+
+	console.log('offer received', JSON.parse(DESC));
+	pc.setRemoteDescription(JSON.parse(DESC)).then(() => {
+		pc.createAnswer().then(answer => {
+			console.log('answer', answer)
+			pc.setLocalDescription(answer);
+		})
 	});
-}).catch(function (reason) {
-	console.log('reason', reason);
-	// An error occurred, so handle the failure to connect
-});
+} else {
+	console.log('no offer present. creating one');
+	pc.createOffer().then(async function (offer) {
+		await pc.setLocalDescription(offer);
+		console.log('pc.localDescription', pc.localDescription);
+	});
+}
 
-//   pc.addEventListener("negotiationneeded", ev => {
-// 	pc.createOffer()
-// 	.then(offer => pc.setLocalDescription(offer))
-// 	.then(() => sendSignalingMessage({
-// 	  type: "video-offer",
-// 	  sdp: pc.localDescription
-// 	}))
-// 	.catch(err => {
-// 	  /* handle error */
-// 	});
-//   }, false);
-
-// pc.
-
-// self.onpush = function(event) {
-// 	if (!(self.Notification && self.Notification.permission === 'granted')) {
-// 		return;
-// 	  }
-
-// 	  var data = {};
-// 	  if (event.data) {
-// 		data = event.data.json();
-// 	  }
-// 	  var title = data.title || "Something Has Happened";
-// 	  var message = data.message || "Here's something you might want to check out.";
-// 	  var icon = "images/new-notification.png";
-
-// 	  var notification = new Notification(title, {
-// 		body: message,
-// 		tag: 'simple-push-demo-notification',
-// 		icon: icon
-// 	  });
-
-// 	  notification.addEventListener('click', function() {
-// 		if (clients.openWindow) {
-// 		  clients.openWindow('https://example.blog.com/2015/03/04/something-new.html');
-// 		}
-// 	  });
-// };
 
 if ('serviceWorker' in navigator) {
 	navigator.serviceWorker.register('sw.js?v=${BUILD_ID}').then((swr) => {
