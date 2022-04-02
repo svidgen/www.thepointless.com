@@ -1,7 +1,5 @@
 const QRCode = require('qrcode');
 
-console.log('here i am')
-
 pc = new RTCPeerConnection({
 	iceServers: [
 		{ urls: 'stun:stun3.l.google.com:19302' }
@@ -13,6 +11,17 @@ dc.addEventListener("open", (event) => {
 	// beginTransmission(dataChannel);
 	console.log('open', event);
 });
+
+dc.onmessage = e => {
+	try {
+		console.log('onmessage', JSON.parse(e.data));
+		setTimeout(() => {
+			dc.send(JSON.stringify('hello, client.'));
+		}, 1000);
+	} catch (err) {
+		console.error('could not parse', err);
+	}
+};
 
 pc.onicecandidate = (event) => {
 	if (event.candidate) {
