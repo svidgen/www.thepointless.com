@@ -1,3 +1,5 @@
+const QRCode = require('qrcode');
+
 console.log('here i am')
 
 pc = new RTCPeerConnection({
@@ -15,7 +17,18 @@ dc.addEventListener("open", (event) => {
 pc.onicecandidate = (event) => {
 	if (event.candidate) {
 		// sendCandidateToRemotePeer(event.candidate)
-		console.log('event', event);
+		const candidate = encodeURIComponent(event.candidate.candidate);
+		const url = `${location.href}?c=${candidate}`;
+		QRCode.toCanvas(url, {}, (err, canvas) => {
+			if (err) throw err;
+			document.body.appendChild(canvas);
+		});
+		const link = document.createElement('a');
+		link.href = url;
+		link.innerHTML = 'test';
+		link.target = '_blank';
+		document.body.appendChild(link);
+		console.log('event', event, url);
 	} else {
 		/* there are no more candidates coming during this negotiation */
 	}
