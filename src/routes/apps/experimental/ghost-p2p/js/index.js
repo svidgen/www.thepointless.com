@@ -4,7 +4,7 @@ const QRCode = require('qrcode');
 const template = `<p2p:index>
 	<h2 data-id='title'>WebRTC Negotation</h2>
 
-	<h3>Offer</h3>
+	<h3>Offer (or Answer)</h3>
 	<textarea data-id='offer'
 		readonly
 		data-property='value'		
@@ -33,6 +33,8 @@ const template = `<p2p:index>
 const Index = DomClass(template, function _Index() {
 	const _t = this;
 
+	const url = new URL(location);
+
 	this.messages = '';
 	this._messages = [];
 
@@ -41,11 +43,6 @@ const Index = DomClass(template, function _Index() {
 		this.messages = this._messages.join('\n\n');
 	};
 
-	const url = new URL(location);
-	const query = url.searchParams;
-	const CANDIDATE = query.get('c');
-	const DESC = query.get('o');
-
 	const pc = new RTCPeerConnection({
 		iceServers: [
 			// single google STUN server for development.
@@ -53,18 +50,20 @@ const Index = DomClass(template, function _Index() {
 			{ urls: 'stun:stun3.l.google.com:19302' }
 		]
 	});
-	pc.ondatachannel = (event) => {
-		_t.log('ondatachannel', event);
-		const rc = event.channel;
-		rc.onmessage = evt => {
-			_t.log('onmessage', evt, evt.data);
-		}
-	};
+
 	const dc = pc.createDataChannel('test')
 
 	// for debugging/development
 	window.pc = pc;
 	window.dc = dc;
+
+	pc.addEventListener('datachannel', event => {
+		_t.log('ondatachannel', event);
+		const rc = event.channel;
+		rc.onmessage = evt => {
+			_t.log('onmessage', evt, evt.data);
+		}
+	});
 
 	this.__dom.answerButton.onclick = async function() {
 		const message = JSON.parse(_t.answer);
@@ -80,11 +79,11 @@ const Index = DomClass(template, function _Index() {
 		}
 	};
 
-	this.__dom.ping.onclick = async function() {
+	this.__dom.ping.addEventListener('click', async event => {
 		dc.send('ping');
-	}
+	});
 
-	dc.onmessage = e => {
+	dc.addEventListener('message', e => {
 		try {
 			_t.log('onmessage', JSON.parse(e));
 			setTimeout(() => {
@@ -93,90 +92,54 @@ const Index = DomClass(template, function _Index() {
 		} catch (err) {
 			console.error('could not parse', err);
 		}
-	};
+	});
 	
-	dc.onopen = function () {
+	dc.addEventListener('open', event => {
+		// signal to the app that messages can be sent now.
+		// or start drainging the message queue or whatever.
 		_t.log('on open');
 		setTimeout(() => {
 			_t.log('sending a message');
 			dc.send(JSON.stringify('hello, server'));
 		}, 1000)
-		
-	};
+	});
 
-	pc.onicecandidate = (event) => {
+	dc.addEventListener('close', event => {
+		// stop transmitting. if there's an item in the buffer to
+		// be written, put it back into local storage. make callbacks. etc.
+	});
+
+	pc.addEventListener('icecandidate', event => {
 		if (event.candidate) {
 			this.log('onicecandidate', event.candidate)
 		} else {
 			this.log('onicecandidate no candidate', event);
 		}
+
+		// send the offer to the other party
 		this.offer = JSON.stringify(pc.localDescription);
-		// if (DESC) {
-		// 	this.log('what do we do now?');
-		// } else if (event.candidate) {
-		// 	// sendCandidateToRemotePeer(event.candidate)
-		// 	this.log('event with candidate', event);
-		// 	const candidate = encodeURIComponent(JSON.stringify(event.candidate));
-		// 	const offer = encodeURIComponent(JSON.stringify(pc.localDescription));
-		// 	// const candidateUrl = `${location.href}?c=${candidate}&o=${offer}`;
-		// 	// const offerURL = `${location.href}?o=${offer}`;
-			
-		// 	// QRCode.toCanvas(offerURL, {}, (err, canvas) => {
-		// 	// 	if (err) throw err;
-	
-		// 	// 	document.body.appendChild(canvas);
-		// 	// 	const infos = document.createElement('div');
-		// 	// 	const link = document.createElement('a');
-		// 	// 	link.href = offerURL;
-		// 	// 	link.innerHTML = 'test ' + event.candidate.address;
-		// 	// 	link.target = '_blank';
-		// 	// 	infos.appendChild(link);
-		// 	// 	document.body.appendChild(infos);
-		// 	// });
-		// } else {
-		// 	/* there are no more candidates coming during this negotiation */
-		// 	this.log('shrug', event);
-		// }
-	};
-	
-	if (DESC || CANDIDATE) {
-		if (CANDIDATE) {
-			this.log('candidate given', CANDIDATE);
-			const candidate = new RTCIceCandidate(JSON.parse(CANDIDATE));
-			pc.addIceCandidate(candidate);
+	});
+
+	pc.addEventListener('connectionstatechange', event => {
+		if (event === 'disconnected' || event === 'closed') {
+			// clean things up!
+			// turn audio/video feeds off.
+			// notify the user that the session has ended.
+			// etc.
 		}
-	
-		this.log('offer received', JSON.parse(DESC));
-		pc.setRemoteDescription(JSON.parse(DESC)).then(() => {
-			pc.createAnswer().then(answer => {
-				this.log('answer', answer)
-				pc.setLocalDescription(answer);
-			})
-		});
-	} else {
-		// this.log('no offer present. creating one');
-		// pc.createOffer().then(async function (offer) {
-		// 	await pc.setLocalDescription(offer);
-		// 	this.log('pc.localDescription', pc.localDescription);
-		// });
-	}
-	
-	pc.onnegotiationneeded = async () => {
-		this.log('no offer present. creating one');
-		const offer = await pc.createOffer();
-		await pc.setLocalDescription(offer);
-		this.log('pc.localDescription', pc.localDescription);
-	};
+	});
+
+	pc.addEventListener('negotiationneeded', async event => {
+			this.log('no offer present. creating one');
+			const offer = await pc.createOffer();
+			await pc.setLocalDescription(offer);
+			this.log('pc.localDescription', pc.localDescription);
+	});
+
 });
 
 module.exports = Index;
 
 if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register('sw.js?v=${BUILD_ID}').then((swr) => {
-		// swr.pushManager.subscribe({userVisibleOnly: true}).then((sub) => {
-		// 	this.log(sub);
-		// }).catch((error) => {
-		// 	console.error('error', error);
-		// })
-	})
+	navigator.serviceWorker.register('sw.js?v=${BUILD_ID}');
 };
