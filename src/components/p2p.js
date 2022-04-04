@@ -58,6 +58,7 @@ const Index = DomClass(template, function _Index() {
 			data: JSON.stringify(pc.localDescription),
 			readonly: true,
 		});
+		pc.onicecandidate = () => this.step.data = JSON.stringify(pc.localDescription);
 		await this.step.next();
 
 		this.step = new Prompt({
@@ -87,6 +88,7 @@ const Index = DomClass(template, function _Index() {
 			data: JSON.stringify(pc.localDescription),
 			readonly: true
 		});
+		pc.onicecandidate = () => this.step.data = JSON.stringify(pc.localDescription);
 		await this.step.next();
 
 		this.step = 'Once your caller finishes the connection, stuff happens... i dunno';
@@ -106,21 +108,6 @@ const Index = DomClass(template, function _Index() {
 				// no control messages implemented yet.
 			}
 		}
-	});
-
-	pc.addEventListener('icecandidate', event => {
-		if (event.candidate) {
-			this.log('onicecandidate', event.candidate)
-		} else {
-			this.log('onicecandidate no candidate', event);
-		}
-
-		// send the offer to the other party
-		this.offer = JSON.stringify(pc.localDescription);
-
-		// after connection is established, can we send new candidates
-		// through the peer connection? (in case ice restart is needed,
-		// for example.)
 	});
 
 	pc.addEventListener('connectionstatechange', event => {
