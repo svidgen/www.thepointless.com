@@ -45,11 +45,11 @@ function toText(node) {
 
 const template = `<tpdc:share>
 	<div class='header' data-id='header'>Make it happen, Cap'n.</div>
-	<a data-id='fb_link' class='social-link'><img class='social-icon' /></a>
-	<a data-id='twitter_link' class='social-link'><img class='social-icon' /></a>
-	<a data-id='email_link' class='social-link'><img class='social-icon' /></a>
-	<a data-id='copy_link' class='social-link'>📋</a>
-	<a data-id='native_link' class='social-link'><img class='social-icon' /></a>
+	<a data-id='facebook_link' provider='facebook' class='social-link'><img class='social-icon' /></a>
+	<a data-id='twitter_link' provider='twitter' class='social-link'><img class='social-icon' /></a>
+	<a data-id='email_link' provider='email' class='social-link'><img class='social-icon' /></a>
+	<a data-id='copy_link' provider='copy' class='social-link'>📋</a>
+	<a data-id='native_link' provider='copy' class='social-link'><img class='social-icon' /></a>
 </tpdc:share>`;
 
 module.exports = DomClass(template, function Share() {
@@ -109,7 +109,7 @@ module.exports = DomClass(template, function Share() {
 		});
 	};
 
-	this.fb_link.onclick = function () {
+	this.facebook_link.onclick = function () {
 		_t.track('facebook');
 		const { text, url } = _t.getEncodedObject();
 		window.open(
@@ -166,9 +166,19 @@ module.exports = DomClass(template, function Share() {
 	// but, it let's us share the share code between the main site
 	// and our individual PWA's.
 	const imagePath = this.imagePath || '/images';
-	this.fb_link.firstChild.src = `${imagePath}/fb_icon_22px.png`;
+	this.facebook_link.firstChild.src = `${imagePath}/fb_icon_22px.png`;
 	this.twitter_link.firstChild.src = `${imagePath}/twitter_logo_22px.png`;
 	this.email_link.firstChild.src = `${imagePath}/email_logo_22px_h.png`;
 	this.native_link.firstChild.src = `${imagePath}/native-share.svg`;
+
+	const possible_methods = 'facebook,twitter,email,copy,native';
+	const given_methods = new Set(
+		(this.methods || possible_methods).split(',').map(m => m.trim())
+	);
+	possible_methods.split(',').forEach(method => {
+		if (!given_methods.has(method)) {
+			this.__dom[`${method}_link`].style.display = 'none';
+		}
+	});
 
 });

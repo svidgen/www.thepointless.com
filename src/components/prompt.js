@@ -1,13 +1,20 @@
 const { DomClass } = require('wirejs-dom');
+const { Share } = require('./share');
 
 const template = `<tpdc:prompt>
 	<h3 data-id='header'></h3>
 	<p data-id='instructions'></p>
 	<textarea
+		readonly
 		data-id='data'
 		data-property='value'		
-		rows='10' cols='80'
+		rows='5' cols='80'
 	></textarea>
+	<tpdc:share
+		data-id='share'
+		methods='email,copy,native'
+	></tpdc:share>
+	</div>
 	<p>
 		<button data-id='nextButton'>Continue</button>
 	</p>
@@ -19,7 +26,10 @@ const Prompt = DomClass(template, function _Prompt() {
 	this.isNextClicked = false;
 	this.resolvers = [];
 
-	// this.data.readonly = this.readonly;
+	if (this.data) {
+	} else {
+		this.__dom.data.readOnly = false;
+	}
 
 	this.__dom.nextButton.onclick = () => {
 		this.isNextClicked = true;

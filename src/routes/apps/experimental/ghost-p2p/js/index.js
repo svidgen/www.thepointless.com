@@ -1,11 +1,11 @@
 const { DomClass } = require('wirejs-dom');
-const p2p = require('/src/components/p2p');
+const Connector = require('/src/components/p2p/connector');
 const QRCode = require('qrcode');
 
 const template = `<p2p:index>
 	<h2 data-id='title'>WebRTC Manual Negotation Experiment (WIP)</h2>
 	<p>Just learning WebRTC to see if we can do anything fun with it.</p>
-	<tpdc:p2p data-id='connector'></tpdc:p2p>
+	<tpdc:connector data-id='connector'></tpdc:connector>
 	<div data-id='messaging'>
 		<h3>Messages</h3>
 		<div>
