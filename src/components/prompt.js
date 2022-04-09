@@ -6,12 +6,15 @@ const template = `<tpdc:prompt>
 	<p data-id='instructions'></p>
 	<textarea
 		readonly
+		style='display: none';
 		data-id='data'
-		data-property='value'		
-		rows='5' cols='80'
+		data-property='value'
+		style='width: 80vw; height: 10em;'
 	></textarea>
 	<tpdc:share
 		data-id='share'
+		title='Ghost P2P call info'
+		header='Ways to share your info:'
 		methods='email,copy,native'
 	></tpdc:share>
 	</div>
