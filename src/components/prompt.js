@@ -21,13 +21,14 @@ const template = `<tpdc:prompt>
 </tpdc:prompt>`;
 
 const Prompt = DomClass(template, function _Prompt() {
-	const self = this;
-
 	this.isNextClicked = false;
 	this.resolvers = [];
 
 	if (this.data) {
+		this.share.title = '';
+		this.share.text = this.data;
 	} else {
+		this.share.style.display = 'none';
 		this.__dom.data.readOnly = false;
 	}
 
