@@ -15,7 +15,7 @@ const template = `<tpdc:prompt>
 		data-id='share'
 		title='Ghost P2P call info'
 		header='Ways to share your info:'
-		methods='email,copy,native'
+		methods='email,copy,native,qr'
 	></tpdc:share>
 	</div>
 	<p>

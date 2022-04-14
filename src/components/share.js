@@ -1,4 +1,7 @@
 const { DomClass } = require('wirejs-dom');
+const QRCode = require('qrcode');
+
+const Modal = require('./modal');
 require('./share.css');
 
 /**
@@ -49,6 +52,7 @@ const template = `<tpdc:share>
 	<a data-id='twitter_link' provider='twitter' class='social-link'><img class='social-icon' /></a>
 	<a data-id='email_link' provider='email' class='social-link'><img class='social-icon' /></a>
 	<a data-id='copy_link' provider='copy' class='social-link'>📋</a>
+	<a data-id='qr_link' provider='qr' class='social-link'><img class='social-icon' /></a>
 	<a data-id='native_link' provider='copy' class='social-link'><img class='social-icon' /></a>
 </tpdc:share>`;
 
@@ -138,7 +142,6 @@ module.exports = DomClass(template, function Share() {
 		);
 		return false;
 	};
-
 	
 	this.copy_link.onclick = function () {
 		_t.track('copy');
@@ -146,6 +149,18 @@ module.exports = DomClass(template, function Share() {
 		navigator.clipboard.writeText(`${text}\n\n${url}`).then(() => {
 			_t.copy_link = '✔️';
 			setTimeout(() => _t.copy_link = '📋', 1000);
+		});
+	};
+
+	this.qr_link.onclick = function() {
+		_t.track('qr');
+
+		// will need to flag on presence of "data", which may indicate
+		// a slightly different sharing scheme.
+		const { title, text, url } = _t.getObject();
+		QRCode.toCanvas(url, {}, (err, canvas) => {
+			if (err) throw err;
+			new Modal({ content: canvas }).open();
 		});
 	};
 
@@ -169,9 +184,10 @@ module.exports = DomClass(template, function Share() {
 	this.facebook_link.firstChild.src = `${imagePath}/fb_icon_22px.png`;
 	this.twitter_link.firstChild.src = `${imagePath}/twitter_logo_22px.png`;
 	this.email_link.firstChild.src = `${imagePath}/email_logo_22px_h.png`;
+	this.qr_link.firstChild.src = `${imagePath}/qr-code.svg`;
 	this.native_link.firstChild.src = `${imagePath}/native-share.svg`;
 
-	const possible_methods = 'facebook,twitter,email,copy,native';
+	const possible_methods = 'facebook,twitter,email,copy,qr,native';
 	const given_methods = new Set(
 		(this.methods || possible_methods).split(',').map(m => m.trim())
 	);

@@ -72,7 +72,11 @@ const Connector = DomClass(template, function _Connector() {
 
 		this.step = new Prompt({
 			header: 'Getting ready to connect',
-			instructions: `The other caller needs to click "answer". Send them your info and click "Continue".`,
+			instructions: `<ol>
+				<li>Instruct the other caller needs to click "answer".</li>
+				<li>Send your <b>connection data</b> to the other caller.</li>
+				<li>Click "Continue".</li>
+			</ol>`,
 			data: serialize(pc.localDescription),
 			readonly: true,
 		});
