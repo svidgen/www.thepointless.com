@@ -1,8 +1,22 @@
 const { DomClass } = require('wirejs-dom');
-const Prompt = require('../prompt');
+const Prompt = require('./prompt');
 
-const serialize = o => btoa(JSON.stringify(o));
-const deserialize = o => JSON.parse(atob(o));
+const serialize = o => {
+	const data = btoa(JSON.stringify(o));
+	const url = new URL(location);
+	url.searchParams.set('o', data);
+	return url.href;
+};
+
+const deserialize = o => {
+	try {
+		const url = new URL(o);
+		const data = url.searchParams.get('o');
+		return JSON.parse(atob(data));
+	} catch (err) {
+		return;
+	}
+};
 
 const template = `<tpdc:connector>
 	<div data-id='actions'>
@@ -17,8 +31,7 @@ const Connector = DomClass(template, function _Connector() {
 	const self = this;
 
 	// TODO: read call from URL if present.
-	const url = new URL(location);
-	const startingOffer = url.searchParams.get('o');
+	const startingOffer = deserialize(location);
 
 	this.log = function(...messages) {
 		console.log(...messages);
@@ -74,7 +87,7 @@ const Connector = DomClass(template, function _Connector() {
 			header: 'Getting ready to connect',
 			instructions: `<ol>
 				<li>Instruct the other caller needs to click "answer".</li>
-				<li>Send your <b>connection data</b> to the other caller.</li>
+				<li>Send your <b>connection link</b> to the other caller.</li>
 				<li>Click "Continue".</li>
 			</ol>`,
 			data: serialize(pc.localDescription),
@@ -85,7 +98,7 @@ const Connector = DomClass(template, function _Connector() {
 
 		this.step = new Prompt({
 			header: "Waiting for an answer",
-			instructions: `When your other caller gives you their connection info, put it here and click "Continue".`,
+			instructions: `When your other caller gives you their connection link, put it here and click "Continue".`,
 		})
 		const answer = deserialize(await this.step.next());
 		await pc.setRemoteDescription(new RTCSessionDescription(answer));
@@ -109,9 +122,7 @@ const Connector = DomClass(template, function _Connector() {
 		const offer = deserialize(await this.step.next());
 		*/
 
-		const offer = deserialize(startingOffer);
-		
-		await pc.setRemoteDescription(new RTCSessionDescription(offer));
+		await pc.setRemoteDescription(new RTCSessionDescription(startingOffer));
 		const answer = pc.createAnswer();
 		await pc.setLocalDescription(answer);
 

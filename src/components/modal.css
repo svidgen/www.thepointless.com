@@ -33,4 +33,7 @@ tpdc\:modal .content {
 	display: block;
 	position: fixed;
 	z-index: 2002;
+	left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
