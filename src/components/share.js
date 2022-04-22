@@ -54,6 +54,7 @@ const template = `<tpdc:share>
 	<a data-id='copy_link' provider='copy' class='social-link'>📋</a>
 	<a data-id='qr_link' provider='qr' class='social-link'><img class='social-icon' /></a>
 	<a data-id='native_link' provider='copy' class='social-link'><img class='social-icon' /></a>
+	<a data-id='preview_link' provider='preview' class='social-link'>🔍</a>
 </tpdc:share>`;
 
 module.exports = DomClass(template, function Share() {
@@ -173,6 +174,25 @@ module.exports = DomClass(template, function Share() {
 		);
 	};
 
+	this.preview_link.onclick = function() {
+		_t.track('preview');
+		const { title, text, url } = _t.getObject();
+		
+		const preview = document.createElement('div');
+		preview.innerHTML = `
+			<div>Here's what your message will look like:</div>
+			<hr />
+			<h4>${title}</h4>
+			<div>${text}</div>
+			<br />
+			<div style='width: 60vw; overflow: scroll hidden;'>
+				<a href='${url}' target='_blank'>${url}</a>
+			</div>
+		`;
+
+		new Modal({ content: preview }).open();
+	}
+
 	if (!navigator.share) {
 		this.native_link.style.display = 'none';
 	}
@@ -186,8 +206,8 @@ module.exports = DomClass(template, function Share() {
 	this.email_link.firstChild.src = `${imagePath}/email_logo_22px_h.png`;
 	this.qr_link.firstChild.src = `${imagePath}/qr-code.svg`;
 	this.native_link.firstChild.src = `${imagePath}/native-share.svg`;
-
-	const possible_methods = 'facebook,twitter,email,copy,qr,native';
+	
+	const possible_methods = 'facebook,twitter,email,copy,qr,native,preview';
 	const given_methods = new Set(
 		(this.methods || possible_methods).split(',').map(m => m.trim())
 	);

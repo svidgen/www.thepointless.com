@@ -15,10 +15,10 @@ const template = `<tpdc:prompt>
 		data-id='share'
 		title='Ghost P2P call info'
 		header='Ways to share your info:'
-		methods='email,copy,native,qr'
+		methods='email,copy,native,qr,preview'
 	></tpdc:share>
 	</div>
-	<p>
+	<p style='display: none'>
 		<button data-id='nextButton'>Continue</button>
 	</p>
 </tpdc:prompt>`;
@@ -36,8 +36,8 @@ const Prompt = DomClass(template, function _Prompt() {
 	}
 
 	this.share.getObject = () => ({
-		title: this.header,
-		text: this.__dom.instructions.innerText,
+		title: "My Call Link",
+		text: "Click this to get connected with me:",
 		url: this.data
 	});
 
@@ -52,6 +52,11 @@ const Prompt = DomClass(template, function _Prompt() {
 			this.resolvers.push(resolve);
 		});
 	};
+
+	this.complete = function(data) {
+		this.data = data;
+		this.resolvers.forEach(resolve => resolve(data));
+	}
 });
 
 module.exports = Prompt;

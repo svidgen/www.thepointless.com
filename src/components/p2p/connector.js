@@ -5,6 +5,7 @@ const serialize = o => {
 	const data = btoa(JSON.stringify(o));
 	const url = new URL(location);
 	url.searchParams.set('o', data);
+	console.log('serialized', o);
 	return url.href;
 };
 
@@ -18,10 +19,12 @@ const deserialize = o => {
 	}
 };
 
+const answersChannel = new BroadcastChannel('answer-broadcasting');
+window.answersChannel = answersChannel;
+
 const template = `<tpdc:connector>
 	<div data-id='actions'>
 		<button data-id='makeCall'>Call</button>
-		<button data-id='makeAnswer'>Answer</button>
 		<button data-id='startOver' style='display: none;'>Start Over</button>
 	</div>
 	<div data-id='step'></div>
@@ -76,17 +79,21 @@ const Connector = DomClass(template, function _Connector() {
 		}));
 	}
 
+	// troubleshooting
+	window.pc = pc;
+	window.control = control;
+	window.chat = chat;
+	
+
 	this.__dom.startOver.onclick = () => location.reload();
 
 	this.__dom.makeCall.onclick = async () => {
 		this.__dom.makeCall.style.display = 'none';
-		this.__dom.makeAnswer.style.display = 'none';
 		this.__dom.startOver.style.display = '';
 
 		this.step = new Prompt({
 			header: 'Getting ready to connect',
 			instructions: `<ol>
-				<li>Instruct the other caller needs to click "answer".</li>
 				<li>Send your <b>connection link</b> to the other caller.</li>
 				<li>Click "Continue".</li>
 			</ol>`,
@@ -94,24 +101,50 @@ const Connector = DomClass(template, function _Connector() {
 			readonly: true,
 		});
 		pc.onicecandidate = () => this.step.data = JSON.stringify(pc.localDescription);
+		answersChannel.onmessage = async answer => {
+			self.step.complete(answer);
+			await pc.setRemoteDescription(new RTCSessionDescription(answer.data));
+		};
 		await this.step.next();
 
-		this.step = new Prompt({
-			header: "Waiting for an answer",
-			instructions: `When your other caller gives you their connection link, put it here and click "Continue".`,
-		})
-		const answer = deserialize(await this.step.next());
-		await pc.setRemoteDescription(new RTCSessionDescription(answer));
+		// this.step = new Prompt({
+		// 	header: "Waiting for an answer",
+		// 	instructions: `When your other caller gives you their connection link, put it here and click "Continue".`,
+		// })
+		// // we can get an answer from another tab too:
+		// const answer = deserialize(await this.step.next());
+		// await pc.setRemoteDescription(new RTCSessionDescription(answer));
 
-		this.step = 'All set!';
+		// this.step = 'All set!';
 	};
 
 	// this.__dom.makeAnswer.onclick = async () => {
 	setTimeout(async () => {
-		if (!startingOffer) return;
+		if (!startingOffer) {
+			console.log('No starting offer. User needs to initiate a call.');
+			return;
+		} else {
+			console.log('Offer is present. Generating an answer.', startingOffer);
+		}
+
+		// based on workflow of,
+		//   1. caller 1 sends offer link
+		//   2. caller 2 sends answer link
+		// if we have an answer, it needs to be broadcast to another
+		// open tab, and we need to instruct the caller to close THIS tab.
+		if (startingOffer.type === 'answer') {
+			console.log('starting offer is an answer. posting offer', startingOffer);
+			answersChannel.postMessage(startingOffer);
+			this.step = new Prompt({
+				header: "Answer recieved",
+				instructions: "You may now close this tab and return to your call.",
+				data: ''
+			})
+			// await this.step.next();
+			// window.close();
+		}
 
 		this.__dom.makeCall.style.display = 'none';
-		this.__dom.makeAnswer.style.display = 'none';
 		this.__dom.startOver.style.display = '';
 
 		/*
@@ -123,19 +156,20 @@ const Connector = DomClass(template, function _Connector() {
 		*/
 
 		await pc.setRemoteDescription(new RTCSessionDescription(startingOffer));
-		const answer = pc.createAnswer();
+		const answer = await pc.createAnswer();
 		await pc.setLocalDescription(answer);
 
 		this.step = new Prompt({
 			header: 'Your Call Info',
-			instructions: `Give this info to your caller to finish connecting.`,
+			instructions: `Give this link to your caller to finish connecting.
+			Once they accept your answer you will be connected.`,
 			data: serialize(pc.localDescription),
 			readonly: true
 		});
 		pc.onicecandidate = () => this.step.data = serialize(pc.localDescription);
-		await this.step.next();
+		// await this.step.next();
 
-		this.step = `Once your caller finishes the connection, we'll give you secure, peer-to-peer chat to use!`;
+		// this.step = `Once your caller finishes the connection, we'll give you secure, peer-to-peer chat to use!`;
 	}, 1);
 	// };
 
