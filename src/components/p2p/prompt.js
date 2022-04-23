@@ -13,8 +13,8 @@ const template = `<tpdc:prompt>
 	></textarea>
 	<tpdc:share
 		data-id='share'
-		title='Ghost P2P call info'
-		header='Ways to share your info:'
+		title='Ghost P2P call link'
+		header='Ways to share your link:'
 		methods='email,copy,native,qr,preview'
 	></tpdc:share>
 	</div>

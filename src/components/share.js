@@ -161,6 +161,8 @@ module.exports = DomClass(template, function Share() {
 		const { title, text, url } = _t.getObject();
 		QRCode.toCanvas(url, {}, (err, canvas) => {
 			if (err) throw err;
+			canvas.style.width = 'min(90vw, 90vh)';
+			canvas.style.height = 'min(90vw, 90vh)';
 			new Modal({ content: canvas }).open();
 		});
 	};

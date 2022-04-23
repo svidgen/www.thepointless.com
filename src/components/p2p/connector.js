@@ -95,7 +95,8 @@ const Connector = DomClass(template, function _Connector() {
 			header: 'Getting ready to connect',
 			instructions: `<ol>
 				<li>Send your <b>connection link</b> to the other caller.</li>
-				<li>Click "Continue".</li>
+				<li>Click the other caller's <b>connection link</b> when they send it to you.</li>
+				<li><i>Keep this tab open.</i></li>
 			</ol>`,
 			data: serialize(pc.localDescription),
 			readonly: true,

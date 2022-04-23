@@ -60,10 +60,7 @@ const Index = DomClass(template, function _Index() {
 
 	this.connector.addEventListener('disconnected', evt => {
 		this.addMessage('DISCONNECTED.');
-		this.addMessage('Reloading in 10 seconds... ');
-		setTimeout(() => {
-			location.reload();
-		}, 10000);
+		this.addMessage('Reloading the page to start over.');
 	});
 
 	this.connector.addEventListener('message', evt => {
