@@ -1,0 +1,19 @@
+{
+	"manifest_package": "com.thepointless.apps.experimental.ghost-p2p",
+	"short_name": "ghost-p2p",
+	"name": "ghost p2p experiment",
+	"description": "Testing p2p things",
+	"icons": [
+		{
+			"src": "/apps/experimental/ghost-p2p/img/icon.svg",
+			"type": "image/svg+xml",
+			"sizes": "any"	
+		}
+	],
+	"start_url": "index.html",
+	"scope": "/apps/experimental/ghost-p2p/",
+	"id": "/apps/experimental/ghost-p2p/index.html",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff"
+}

@@ -38,6 +38,7 @@
   "dependencies": {
     "aws-amplify": "^4.3.2",
     "ex-gratia": "^1.0.3",
+    "qrcode": "^1.5.0",
     "wirejs-dom": "^1.0.4"
   }
 }

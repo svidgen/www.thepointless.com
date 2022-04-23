@@ -27,6 +27,11 @@ ${meta({
 * [The Clickometer](clickometer)
 	<br />Test your clicking *prowess*.
 
+### Experimental
+
+* [Ghost P2P](./apps/experimental/ghost-p2p/)
+	<br />Playing with miscellaneous peer-to-peer PWA concepts.
+
 ### Recommendations and Reviews
 
 You can ask for an app review on [Twitter (@pointlessdotcom)](https://twitter.com/intent/tweet?text=@pointlessdotcom%20please%20review%20APP).
