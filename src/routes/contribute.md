@@ -14,6 +14,22 @@ const content = write({
 });
 ```
 
+*Not to mention fancy diagrams like this:*
+
+```mermaid
+graph LR;
+	subgraph The Beginning;
+		a(a) --> b(b);
+		b --> c(c);
+	end;
+	subgraph The End;
+		x --> y(y);
+		y --> z(z);
+	end;
+	c --> etc("... 🌪️ ...");
+	etc --> x;
+```
+
 *Beep. Boop. Bop.*
 
 We use [ex-gratia](https://github.com/svidgen/ex-gratia/blob/main/contributors-guide.md) to share our ad space our contributors. So, your contributions can not only give you experience and bragging rights, they can help generate traffic and make you money!
