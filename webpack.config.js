@@ -51,7 +51,7 @@ const CollectLayouts = {
 };
 
 async function mermaid(text) {
-	const tempbase = `./__mermaid_temp_${new Date().getTime()}`;
+	const tempbase = `__mermaid_temp_${new Date().getTime()}`;
 	const tempInput = `${tempbase}.txt`;
 	const tempOutput = `${tempbase}.svg`;
 
@@ -59,18 +59,17 @@ async function mermaid(text) {
 	fs.writeFileSync(tempInput, text);
 
 	await new Promise((resolve, reject) => {
-		const cmd = `yarn mmdc -i ${tempInput} -o ${tempOutput} -b transparent`;
+		const cmd = `yarn mmdc -i ${tempInput} -o ${tempOutput} -b transparent -p puppeteer-config.json`;
 		console.log(`executing ${cmd} ...`);
 		exec(cmd, (err, stdout, stderr) => {
-			if (err) {
-				console.log(`failed`, err);
+			if (err || stderr) {
+				console.log('failed', {err, stdout, stderr});
 				reject(err);
 			}
-			console.log({err, stdout, stderr});
 			resolve();
 		});
 	});
-	console.log(`mermaid CLI done generating ${tempOutput} ... ???`);
+	console.log(`mermaid CLI done generating ${tempOutput}`);
 
 	const svg = fs.readFileSync(tempOutput);
 	fs.unlinkSync(tempInput)
