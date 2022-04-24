@@ -55,15 +55,22 @@ async function mermaid(text) {
 	const tempInput = `${tempbase}.txt`;
 	const tempOutput = `${tempbase}.svg`;
 
+	console.log(`writing ${tempInput} ...`);
 	fs.writeFileSync(tempInput, text);
+
 	await new Promise((resolve, reject) => {
-		exec(`yarn mmdc -i ${tempInput} -o ${tempOutput} -b transparent`, (err) => {
+		const cmd = `yarn mmdc -i ${tempInput} -o ${tempOutput} -b transparent`;
+		console.log(`executing ${cmd} ...`);
+		exec(cmd, (err) => {
 			if (err) {
+				console.log(`failed`, err);
 				reject(err);
 			}
+			console.log('succeeded');
 			resolve();
 		});
 	});
+	console.log(`mermaid CLI done generating ${tempOutput} ... ???`);
 
 	const svg = fs.readFileSync(tempOutput);
 	fs.unlinkSync(tempInput)
