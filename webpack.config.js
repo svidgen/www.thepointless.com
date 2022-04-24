@@ -61,12 +61,12 @@ async function mermaid(text) {
 	await new Promise((resolve, reject) => {
 		const cmd = `yarn mmdc -i ${tempInput} -o ${tempOutput} -b transparent`;
 		console.log(`executing ${cmd} ...`);
-		exec(cmd, (err) => {
+		exec(cmd, (err, stdout, stderr) => {
 			if (err) {
 				console.log(`failed`, err);
 				reject(err);
 			}
-			console.log('succeeded');
+			console.log({err, stdout, stderr});
 			resolve();
 		});
 	});
