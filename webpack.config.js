@@ -51,7 +51,7 @@ const CollectLayouts = {
 };
 
 async function mermaid(text) {
-	const tempbase = `__mermaid_temp_${new Date().getTime()}`;
+	const tempbase = `./__mermaid_temp_${new Date().getTime()}`;
 	const tempInput = `${tempbase}.txt`;
 	const tempOutput = `${tempbase}.svg`;
 
