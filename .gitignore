@@ -9,6 +9,7 @@ test-stdout.log
 
 node_modules
 dist
+src/build_id.json
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
