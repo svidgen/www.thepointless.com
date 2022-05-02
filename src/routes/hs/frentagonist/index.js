@@ -7,7 +7,6 @@ const dimensions = require('./dimensions');
 const ProfileEditor = require('./profile-editor');
 
 const markup = `<ft:app>
-	<h1>WIP!!!</h1>
 	<div data-id='action'></div>
 </ft:app>`;
 
