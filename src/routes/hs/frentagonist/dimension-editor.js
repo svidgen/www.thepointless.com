@@ -1,5 +1,7 @@
 const { DomClass } = require('wirejs-dom');
 
+const Radio = require('./radio');
+
 const markup = `<ft:editdimension>
 	<div><b data-id='label'></b></div>
 	<div data-id='options'></div>
@@ -21,7 +23,15 @@ function radio(parent, value) {
 
 const DimensionEditor = DomClass(markup, function _DimensionEditor() {
 	this.selected = null;
-	this.options = this.values.map(o => radio(this, o));
+	// this.options = this.values.map(o => radio(this, o));
+	this.options = this.values.map(value => new Radio({
+		name: this.label,
+		value,
+		onselect: value => {
+			this.selected = value;
+			console.log(`${this.label} => ${this.selected}`);
+		}
+	}))
 });
 
 module.exports = DimensionEditor;
