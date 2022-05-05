@@ -2,6 +2,7 @@ const { DomClass } = require('wirejs-dom');
 
 const ephemeral = new (require('/src/lib/url-state'))('p');
 const local = new (require('/src/lib/state'))(__filename);
+const { encode, decode } = require('/src/lib/enumcode');
 
 const dimensions = require('./dimensions');
 const ProfileEditor = require('./profile-editor');
@@ -15,7 +16,13 @@ const markup = `<ft:app>
 const App = DomClass(markup, function _App() {
 	if (!local.profile) {
 		// user needs to create a profile!
-		this.action = new ProfileEditor({dimensions});
+		this.action = new ProfileEditor({
+			dimensions,
+			onsave: profile => {
+				console.log(profile)
+				local.profile = encode(dimensions, profile);
+			}
+		});
 	} else {
 		if (ephemeral.p) {
 		} else {

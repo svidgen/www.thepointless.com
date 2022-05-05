@@ -2,36 +2,24 @@ const { DomClass } = require('wirejs-dom');
 
 const Radio = require('./radio');
 
+// TODO: fix impurity. includes css and superfluous container div
 const markup = `<ft:editdimension>
-	<div><b data-id='label'></b></div>
-	<div data-id='options'></div>
+	<div style='margin: 1em;'>
+		<div><b data-id='label'></b></div>
+		<div data-id='options'></div>
+	</div>
 </fd:editdimension>`;
 
-function radio(parent, value) {
-	const radio = document.createElement('input');
-	radio.type = 'radio';
-	radio.name = parent.label;
-	radio.value = value;
-	radio.onclick = () => {
-		if (radio.checked) {
-			parent.selected = value;
-			console.log('selected', parent.label, value);
-		}
-	};
-	return radio;
-}
-
 const DimensionEditor = DomClass(markup, function _DimensionEditor() {
-	this.selected = null;
-	// this.options = this.values.map(o => radio(this, o));
+	this.value = null;
 	this.options = this.values.map(value => new Radio({
 		name: this.label,
 		value,
 		onselect: value => {
-			this.selected = value;
-			console.log(`${this.label} => ${this.selected}`);
+			this.value = value;
+			console.debug(`${this.label} => ${this.value}`);
 		}
-	}))
+	}));
 });
 
 module.exports = DimensionEditor;
