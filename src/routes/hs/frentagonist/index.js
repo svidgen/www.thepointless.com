@@ -24,6 +24,9 @@ const App = DomClass(markup, function _App() {
 			}
 		});
 	} else {
+		const profile = decode(dimensions, local.profile);
+		console.debug('loaded profile', profile);
+		
 		if (ephemeral.p) {
 		} else {
 		}
