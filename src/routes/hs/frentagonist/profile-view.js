@@ -1,17 +1,17 @@
 const { DomClass } = require('wirejs-dom');
 
-const ProfileDimensionView = require('./profile-dimension-view');
+const DimensionView = require('./dimension-view');
 
 const markup = `<ft:profileview>
 	<div>
 		<input type='button' data-id='editButton' value='Edit' />
 	</div>
-	<div data-id='dimensions'></div>
+	<div data-id='dimensionsView'></div>
 </ft:profileview>`;
 
 const ProfileView = DomClass(markup, function _Editor() {
-	this.dimensions = Object.entries(this.profile).map(([label, value]) => {
-		return new ProfileDimensionView({label, value});
+	this.dimensionsView = Object.keys(this.dimensions).map(label => {
+		return new DimensionView({label, value: this.profile[label]});
 	});
 
 	this.editButton.onclick = () => {

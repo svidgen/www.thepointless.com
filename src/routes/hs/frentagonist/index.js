@@ -33,7 +33,10 @@ const App = DomClass(markup, function _App() {
 	
 			if (ephemeral.p) {
 			} else {
-				const profileView = new ProfileView({profile});
+				const profileView = new ProfileView({
+					dimensions,
+					profile
+				});
 				profileView.oneditclick = () => this.render(profile);
 				this.action = profileView;
 			}
