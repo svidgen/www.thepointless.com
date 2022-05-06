@@ -2,10 +2,11 @@ const { DomClass } = require('wirejs-dom');
 
 const ephemeral = new (require('/src/lib/url-state'))('p');
 const local = new (require('/src/lib/state'))(__filename);
-const { encode, decode } = require('/src/lib/enumcode');
+const { pack, unpack } = require('/src/lib/enumcode');
 
 const dimensions = require('./dimensions');
 const ProfileEditor = require('./profile-editor');
+const ProfileView = require('./profile-view');
 
 const markup = `<ft:app>
 	<div data-id='action'></div>
@@ -14,21 +15,30 @@ const markup = `<ft:app>
 // TODO: include widget to import/export profile
 
 const App = DomClass(markup, function _App() {
-	if (!local.profile) {
-		// user needs to create a profile!
-		this.action = new ProfileEditor({
-			dimensions,
-			onsave: profile => {
-				console.log(profile)
-				local.profile = encode(dimensions, profile);
-			}
-		});
-	} else {
-		const profile = decode(dimensions, local.profile);
-		console.debug('loaded profile', profile);
-		
-		if (ephemeral.p) {
+
+	this.render = (edit = null) => {
+		if (!local.profile || edit) {
+			// user needs to create a profile!
+			this.action = new ProfileEditor({
+				dimensions,
+				values: edit || {},
+				onsave: profile => {
+					console.log(profile)
+					local.profile = pack(dimensions, profile);
+					this.render();
+				}
+			});
 		} else {
+			const profile = unpack(dimensions, local.profile);
+	
+			if (ephemeral.p) {
+			} else {
+				const profileView = new ProfileView({profile});
+				profileView.oneditclick = () => this.render(profile);
+				this.action = profileView;
+			}
 		}
 	}
+
+	this.render();
 });

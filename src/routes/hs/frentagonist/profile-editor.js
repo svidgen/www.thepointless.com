@@ -6,17 +6,20 @@ const markup = `<ft:editprofile>
 	<h3 data-id='instructions'>
 		All fields are required.
 	</h3>
+
 	<div data-id='pickers'></div>
 	<p>
 		<input type='button' data-id='saveButton' value='Save' />
 	</p>
 </ft:editprofile>`;
 
-const Editor = DomClass(markup, function _Editor() {
+const ProfileEditor = DomClass(markup, function _Editor() {
 	const index = {};
+
 	this.pickers = Object.entries(this.dimensions).map(
 		([label, values]) => {
-			index[label] = new DimensionEditor({ label, values });
+			const preset = this.values[label];
+			index[label] = new DimensionEditor({ label, values, preset });
 			return index[label];
 		}
 	);
@@ -28,8 +31,9 @@ const Editor = DomClass(markup, function _Editor() {
 		
 		let hasErrors = false;
 		this.instructions.style.color = '';
-		for (const label of Object.keys(profile)) {
-			if (profile[label] === null) {
+
+		for (const label of Object.keys(this.dimensions)) {
+			if (profile[label] === '') {
 				index[label].style.color = 'red';
 				this.instructions.style.color = 'red';
 				hasErrors = true;
@@ -44,4 +48,4 @@ const Editor = DomClass(markup, function _Editor() {
 	}
 });
 
-module.exports = Editor;
+module.exports = ProfileEditor;

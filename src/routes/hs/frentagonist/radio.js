@@ -22,6 +22,10 @@ const Radio = DomClass(markup, function _Radio() {
 			this.onselect(this.value);
 		}
 	}
+
+	this.select = () => {
+		this.__dom.radio.checked = true;
+	};
 });
 
 module.exports = Radio;

@@ -18,47 +18,59 @@
 
 */
 
-function encode(terms, data) {
+function pack(terms, data) {
     const indexes = [];
+    const raw = [];
+
     for (const k of Object.keys(terms).sort()) {
-        const v = typeof data[k] === 'number' ? data[k] : terms[k].indexOf(data[k]);
-        if (v > 36) throw new Error("Cannot encode value > 36");
-        indexes.push(v);
+        if (terms[k] === 'string') {
+            raw.push(data[k]);
+        } else {
+            const v = typeof data[k] === 'number' ? data[k] : terms[k].indexOf(data[k]);
+            if (v > 36) throw new Error("Cannot encode value > 36");
+            indexes.push(v);
+        }
     }
-    return indexes.map(i => i.toString(36)).join('');
+
+    return [raw, indexes.map(i => i.toString(36)).join('')];
 }
 
-function decode(terms, data) {
-    const canon = Object.keys(terms).sort();
-    const digits = data.split('');
-    const o = {};
-    let index = 0;
+function parseIndexes(indexString) {
+    const digits = indexString.split('');
+    const indexes = [];
 
-    function getValue(key, value) {
-        const index = parseInt(value, 36);
-        if (terms[key] instanceof Array) {
-            return terms[key][value];
-        } else {
-            return index;
-        }
-    }
- 
     while (digits.length > 0) {
-        const key = canon[index];
         const c = digits.shift();
         if (c === '-') {
-            o[key] = getValue(key, digits.shift());
+            indexes.push(parseInt(digits.shift()) * -1);
         } else {
-            o[key] = getValue(key, c);
+            indexes.push(parseInt(c));
         }
-        index++;
+    }
+
+    return indexes;
+}
+
+function unpack(terms, data) {
+    const [raw, indexString] = data;
+
+    const canon = Object.keys(terms).sort();
+    const indexes = parseIndexes(indexString);
+    const o = {};
+
+    for (const field of Object.keys(terms).sort()) {
+        if (terms[field] === 'string') {
+            o[field] = raw.shift();
+        } else {
+            o[field] = terms[field][indexes.shift()];
+        }
     }
 
     return o;
 }
 
 module.exports = {
-	encode,
-	decode
+	pack,
+	unpack
 };
 

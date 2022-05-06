@@ -1,4 +1,5 @@
 module.exports = {
+	"Name": "string",
 	"Your Political Leaning": [
 		"Leftist", "Progressive", "Mixed", "Conservative", "Alt-Right"
 	],
@@ -30,5 +31,5 @@ module.exports = {
 	],
 	"Discussion Topics": [
 		"Weather", "Hobbies", "Politics and Religion"
-	]
+	],
 };
