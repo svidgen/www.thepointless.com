@@ -1,14 +1,10 @@
 const { DomClass } = require('wirejs-dom');
 
-const markup = `<ft:dimensionview>
-	<p>
+const DimensionView = DomClass(`<ft:dimensionview>
+	<div>
 		<label data-id='label' style='font-weight: bold;'></label>:
 		<span data-id='value'></span>
-	</p>
-</ft:dimensionview>`;
-
-const DimensionView = DomClass(markup, function() {
-
-});
+	</div>
+</ft:dimensionview>`);
 
 module.exports = DimensionView;

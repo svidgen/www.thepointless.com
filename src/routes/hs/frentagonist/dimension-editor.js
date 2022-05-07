@@ -39,7 +39,7 @@ const DimensionEditor = DomClass(markup, function _DimensionEditor() {
 					}
 				})
 			}
-			this.innerValue = value;
+			this.innerValue = value ?? '';
 		}
 	})
 

@@ -1,6 +1,6 @@
 const { DomClass } = require('wirejs-dom');
 
-const ephemeral = new (require('/src/lib/url-state'))('p');
+const ephemeral = new (require('/src/lib/url-state'))('s');
 const local = new (require('/src/lib/state'))(__filename);
 const { pack, unpack } = require('/src/lib/enumcode');
 
@@ -29,17 +29,30 @@ const App = DomClass(markup, function _App() {
 				}
 			});
 		} else {
-			const profile = unpack(dimensions, local.profile);
-	
+			this.action = [];
+
 			if (ephemeral.p) {
-			} else {
-				const profileView = new ProfileView({
+				console.log('profile', ephemeral.p);
+				const linked = unpack(dimensions, ephemeral.p);
+				const linkedView = new ProfileView({
 					dimensions,
-					profile
+					profile: linked,
+					readonly: true
 				});
-				profileView.oneditclick = () => this.render(profile);
-				this.action = profileView;
+				this.action.push('<h3>Linked Profile</h3>');
+				this.action.push(linkedView);
 			}
+
+			const saved = unpack(dimensions, local.profile);
+			const profileView = new ProfileView({
+				dimensions,
+				profile: saved,
+				link: '?s=' + btoa(JSON.stringify({p: local.profile}))
+			});
+			profileView.oneditclick = () => this.render(saved);
+
+			this.action.push('<h3>Saved Profile</h3>');
+			this.action.push(profileView);
 		}
 	}
 
