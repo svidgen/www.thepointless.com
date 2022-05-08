@@ -3,10 +3,11 @@ const { DomClass } = require('wirejs-dom');
 const DimensionEditor = require('./dimension-editor');
 
 const markup = `<ft:editprofile>
-	<h3 data-id='instructions'>
-		All fields are required.
-	</h3>
-
+	<h3 data-id='title'>Your Profile</h3>
+	<div data-id='instructions'>
+		Fill out your profile to see how frentagonistic you are with someone. You do <i>not</i> need to create an account. We'll give you a sharable link.
+	</div>
+	<h4 data-id='requiredWarning'>All fields are required.</h4>
 	<div data-id='pickers'></div>
 	<p>
 		<input type='button' data-id='saveButton' value='Save' />
@@ -30,12 +31,12 @@ const ProfileEditor = DomClass(markup, function _Editor() {
 		);
 		
 		let hasErrors = false;
-		this.instructions.style.color = '';
+		this.requiredWarning.style.color = '';
 
 		for (const label of Object.keys(this.dimensions)) {
 			if (profile[label] === '') {
 				index[label].style.color = 'red';
-				this.instructions.style.color = 'red';
+				this.requiredWarning.style.color = 'red';
 				hasErrors = true;
 			} else {
 				index[label].style.color = '';

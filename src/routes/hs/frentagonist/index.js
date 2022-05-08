@@ -7,6 +7,7 @@ const { pack, unpack } = require('/src/lib/enumcode');
 const dimensions = require('./dimensions');
 const ProfileEditor = require('./profile-editor');
 const ProfileView = require('./profile-view');
+const ProfileComparison = require('./profile-comparison');
 
 const markup = `<ft:app>
 	<div data-id='action'></div>
@@ -31,28 +32,28 @@ const App = DomClass(markup, function _App() {
 		} else {
 			this.action = [];
 
+			const saved = unpack(dimensions, local.profile);
+
 			if (ephemeral.p) {
 				console.log('profile', ephemeral.p);
 				const linked = unpack(dimensions, ephemeral.p);
-				const linkedView = new ProfileView({
+				const comparison = new ProfileComparison({
 					dimensions,
-					profile: linked,
-					readonly: true
+					theirs: linked,
+					yours: saved,
 				});
-				this.action.push('<h3>Linked Profile</h3>');
-				this.action.push(linkedView);
+				this.action.push(comparison);
+			} else {
+				const profileView = new ProfileView({
+					dimensions,
+					profile: saved,
+					link: '?s=' + btoa(JSON.stringify({p: local.profile}))
+				});
+				profileView.oneditclick = () => this.render(saved);
+
+				this.action.push('<h3>Saved Profile</h3>');
+				this.action.push(profileView);
 			}
-
-			const saved = unpack(dimensions, local.profile);
-			const profileView = new ProfileView({
-				dimensions,
-				profile: saved,
-				link: '?s=' + btoa(JSON.stringify({p: local.profile}))
-			});
-			profileView.oneditclick = () => this.render(saved);
-
-			this.action.push('<h3>Saved Profile</h3>');
-			this.action.push(profileView);
 		}
 	}
 
