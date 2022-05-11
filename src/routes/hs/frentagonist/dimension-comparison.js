@@ -10,7 +10,7 @@ const markup = `<ft:dimensioncomparison>
 		<tr>
 			<td style='width: 33%;'><span data-id='theirs'></span></td>
 			<td style='width: 33%;'><span data-id='yours'></span></td>
-			<td style='width: 33%;'><span data-id='delta'></span></td>
+			<td style='width: 33%;'><span data-id='delta'></span>%</td>
 		</tr>
 	</table>
 </ft:dimensioncomparision>`;
@@ -22,9 +22,11 @@ const DimensionComparison = DomClass(markup, function() {
 
 	const computeScore = value => {
 		const options = this.dimensions[this.dimension];
+
+		// highly scientific stuff here, folks.
 		if (options instanceof Array) {
 			const index = options.indexOf(value);
-			return Math.floor(100 * (index / options.length));
+			return Math.floor(100 * (index / (options.length - 1)));
 		} else {
 			return value.length;
 		}

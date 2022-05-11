@@ -1,10 +1,11 @@
 const { DomClass } = require('wirejs-dom');
 
+const { avg, distance, product } = require('/src/lib/math');
 const DimensionComparison = require('./dimension-comparison');
 
 const markup = `<ft:profilecomparison>
 	<div data-id='details'></div>
-	<h2>Conclusion: <span data-id='result'>computing...</span></h2>
+	<h2>Conclusion: <span data-id='result'>computing...</span>%</h2>
 </ft:profilecomparison>`;
 
 const ProfileComparison = DomClass(markup, function() {
@@ -16,6 +17,10 @@ const ProfileComparison = DomClass(markup, function() {
 			dimensions: this.dimensions,
 		});
 	});
+
+	this.result = Math.floor(
+		100 * distance(this.details.map(row => 1 - row.delta/100))
+	);
 });
 
 module.exports = ProfileComparison;

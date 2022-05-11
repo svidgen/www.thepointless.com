@@ -3,7 +3,7 @@ const { DomClass } = require('wirejs-dom');
 const DimensionEditor = require('./dimension-editor');
 
 const markup = `<ft:editprofile>
-	<h3 data-id='title'>Your Profile</h3>
+	<h3 data-id='title'>Create Your Profile</h3>
 	<div data-id='instructions'>
 		Fill out your profile to see how frentagonistic you are with someone. You do <i>not</i> need to create an account. We'll give you a sharable link.
 	</div>

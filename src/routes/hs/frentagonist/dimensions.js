@@ -18,18 +18,13 @@ module.exports = Object.freeze({
 	"Sport to Watch": [
 		"Chess", "Bowling", "Soccer", "Football", "Mixed Martial Arts"
 	],
-	/* 
-	"TV": [
-		"Seventh Heaven", "Friends", "Big Bang Theory", "Firefly", "Squid Game"
-	],
-	*/
 	"Alcohol": [
 		"Water", "Wine", "Scotch", "Beer", "Vodka"
 	],
 	"Expressiveness": [
-		"Introvert", "Ambivert", "Extrovert"
+		"Super Introver", "Introvert", "Ambivert", "Extrovert", "Super Extrovert"
 	],
 	"Discussion Topics": [
-		"Weather", "Hobbies", "Politics and Religion"
+		"Pretty Clouds", "Weather", "News/Gossip", "Hobbies", "Politics and Religion"
 	],
 });

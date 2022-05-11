@@ -11,6 +11,9 @@ const ProfileComparison = require('./profile-comparison');
 
 const markup = `<ft:app>
 	<div data-id='action'></div>
+	<div data-id='editControl'>
+		<input type='button' data-id='editButton' value='Edit Your Profile' />
+	</div>
 </ft:app>`;
 
 // TODO: include widget to import/export profile
@@ -29,30 +32,27 @@ const App = DomClass(markup, function _App() {
 					this.render();
 				}
 			});
+			this.editControl.style.display = 'none';
 		} else {
-			this.action = [];
-
 			const saved = unpack(dimensions, local.profile);
+			
+			this.editControl.style.display = '';
+			this.editButton.onclick = () => this.render(saved);
 
 			if (ephemeral.p) {
 				console.log('profile', ephemeral.p);
 				const linked = unpack(dimensions, ephemeral.p);
-				const comparison = new ProfileComparison({
+				this.action = new ProfileComparison({
 					dimensions,
 					theirs: linked,
 					yours: saved,
 				});
-				this.action.push(comparison);
 			} else {
-				const profileView = new ProfileView({
+				this.action = new ProfileView({
 					dimensions,
 					profile: saved,
 					link: '?s=' + btoa(JSON.stringify({p: local.profile}))
 				});
-				profileView.oneditclick = () => this.render(saved);
-
-				this.action.push('<h3>Saved Profile</h3>');
-				this.action.push(profileView);
 			}
 		}
 	}
