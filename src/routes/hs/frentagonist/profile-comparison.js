@@ -18,8 +18,13 @@ const ProfileComparison = DomClass(markup, function() {
 		});
 	});
 
+	// this.result = Math.floor(
+	// 	100 * distance(this.details.map(row => row.delta/100))
+	// );
+
+	const values = this.details.map(row => row.delta/100);
 	this.result = Math.floor(
-		100 * distance(this.details.map(row => 1 - row.delta/100))
+		100 * product(values)
 	);
 });
 

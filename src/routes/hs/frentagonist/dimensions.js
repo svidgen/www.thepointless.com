@@ -22,7 +22,7 @@ module.exports = Object.freeze({
 		"Water", "Wine", "Scotch", "Beer", "Vodka"
 	],
 	"Expressiveness": [
-		"Super Introver", "Introvert", "Ambivert", "Extrovert", "Super Extrovert"
+		"Super Introvert", "Introvert", "Ambivert", "Extrovert", "Super Extrovert"
 	],
 	"Discussion Topics": [
 		"Pretty Clouds", "Weather", "News/Gossip", "Hobbies", "Politics and Religion"
