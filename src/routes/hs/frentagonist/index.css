@@ -1,0 +1,11 @@
+ft\:app {
+	display: block;
+}
+
+ft\:app > [data-id="editControl"] {
+	margin: 1em 0;
+}
+
+ft\:app > ft\:profileview > [data-id='actions'] {
+	margin: 1em 0;
+}

@@ -9,6 +9,8 @@ const ProfileEditor = require('./profile-editor');
 const ProfileView = require('./profile-view');
 const ProfileComparison = require('./profile-comparison');
 
+require('./index.css');
+
 const markup = `<ft:app>
 	<div data-id='action'></div>
 	<div data-id='editControl'>
