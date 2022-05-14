@@ -4,12 +4,10 @@ const Radio = require('./radio');
 
 // TODO: fix impurity. includes css and superfluous container div
 const markup = `<ft:editdimension>
-	<div style='margin: 1em;'>
-		<div><b data-id='label'></b></div>
-		<div data-id='options'></div>
-		<div data-id='hiddenForm' style='display: none;'>
-			<input type='text' data-id='innerValue' data-property='value' />
-		</div>
+	<div data-id='label'></div>
+	<div data-id='options'></div>
+	<div data-id='hiddenForm' style='display: none;'>
+		<input type='text' data-id='innerValue' data-property='value' />
 	</div>
 </fd:editdimension>`;
 
