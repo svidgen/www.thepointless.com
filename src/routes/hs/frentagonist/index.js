@@ -20,6 +20,30 @@ const markup = `<ft:app>
 
 // TODO: include widget to import/export profile
 
+function gridString(dimensions, profile) {
+	const url = new URL(location.href);
+	url.searchParams.set('s', btoa(JSON.stringify({p: local.profile})));
+	return [
+		...Object.keys(dimensions).map(dimension => {
+			const values = dimensions[dimension];
+			if (values instanceof Array) {
+				let found = false;
+				return values.map(v => {
+					if (v === profile[dimension]) {
+						found = true;
+						return '✅';
+					} else {
+						return found ? '🟦' : '🟥';
+					}
+				}).join('');
+			} else {
+				return profile[dimension];
+			}
+		}),
+		url.href
+	].join('\n');
+}
+
 const App = DomClass(markup, function _App() {
 
 	this.render = (edit = null) => {
@@ -29,7 +53,8 @@ const App = DomClass(markup, function _App() {
 				dimensions,
 				values: edit || {},
 				onsave: profile => {
-					console.log(profile)
+					console.debug(dimensions, profile)
+					console.debug(gridString(dimensions, profile));
 					local.profile = pack(dimensions, profile);
 					this.render();
 				}
