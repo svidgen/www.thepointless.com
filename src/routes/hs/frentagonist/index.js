@@ -14,34 +14,35 @@ require('./index.css');
 const markup = `<ft:app>
 	<div data-id='action'></div>
 	<div data-id='editControl'>
-		<input type='button' data-id='editButton' value='Edit Your Profile' />
+		<input type='button' data-id='editButton' value='Edit Profile' />
 	</div>
 </ft:app>`;
 
 // TODO: include widget to import/export profile
 
-function gridString(dimensions, profile) {
+function shareUrl(profile) {
 	const url = new URL(location.href);
 	url.searchParams.set('s', btoa(JSON.stringify({p: local.profile})));
-	return [
-		...Object.keys(dimensions).map(dimension => {
-			const values = dimensions[dimension];
-			if (values instanceof Array) {
-				let found = false;
-				return values.map(v => {
-					if (v === profile[dimension]) {
-						found = true;
-						return '✅';
-					} else {
-						return found ? '🟦' : '🟥';
-					}
-				}).join('');
-			} else {
-				return profile[dimension];
-			}
-		}),
-		url.href
-	].join('\n');
+	return url.href;
+}
+
+function shareString(dimensions, profile) {
+	return Object.keys(dimensions).map(dimension => {
+		const values = dimensions[dimension];
+		if (values instanceof Array) {
+			let found = false;
+			return values.map(v => {
+				if (v === profile[dimension]) {
+					found = true;
+					return '✅';
+				} else {
+					return found ? '🟦' : '🟥';
+				}
+			}).join('');
+		} else if (dimension.toLowerCase() !== 'name') {
+			return profile[dimension];
+		}
+	}).join('\n');
 }
 
 const App = DomClass(markup, function _App() {
@@ -54,7 +55,10 @@ const App = DomClass(markup, function _App() {
 				values: edit || {},
 				onsave: profile => {
 					console.debug(dimensions, profile)
-					console.debug(gridString(dimensions, profile));
+					console.debug(
+						shareString(dimensions, profile),
+						shareUrl(profile)
+					);
 					local.profile = pack(dimensions, profile);
 					this.render();
 				}
@@ -78,7 +82,8 @@ const App = DomClass(markup, function _App() {
 				this.action = new ProfileView({
 					dimensions,
 					profile: saved,
-					link: '?s=' + btoa(JSON.stringify({p: local.profile}))
+					link: shareUrl(saved),
+					shareString: shareString(dimensions, saved)
 				});
 			}
 		}

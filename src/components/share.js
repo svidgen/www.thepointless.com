@@ -181,13 +181,16 @@ module.exports = DomClass(template, function Share() {
 		const { title, text, url } = _t.getObject();
 		
 		const preview = document.createElement('div');
+		preview.style.backgroundColor = 'white';
+		preview.style.border = '1px solid silver';
+		preview.style.padding = '1em';
 		preview.innerHTML = `
-			<div>Here's what your message will look like:</div>
+			<h3>Here's what your message will look like:</h3>
 			<hr />
 			<h4>${title}</h4>
-			<div>${text}</div>
+			<pre>${text}</pre>
 			<br />
-			<div style='width: 60vw; overflow: scroll hidden;'>
+			<div style='width: 60vw; overflow: scroll hidden; padding-bottom: 1em;'>
 				<a href='${url}' target='_blank'>${url}</a>
 			</div>
 		`;
@@ -220,3 +223,4 @@ module.exports = DomClass(template, function Share() {
 	});
 
 });
+;
