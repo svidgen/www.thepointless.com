@@ -71,12 +71,13 @@ const App = DomClass(markup, function _App() {
 			this.editButton.onclick = () => this.render(saved);
 
 			if (ephemeral.p) {
-				console.log('profile', ephemeral.p);
+				console.debug('profile', ephemeral.p);
 				const linked = unpack(dimensions, ephemeral.p);
 				this.action = new ProfileComparison({
 					dimensions,
 					theirs: linked,
 					yours: saved,
+					link: shareUrl(saved)
 				});
 			} else {
 				this.action = new ProfileView({

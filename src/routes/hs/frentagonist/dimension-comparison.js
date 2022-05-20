@@ -1,5 +1,7 @@
 const { DomClass } = require('wirejs-dom');
 
+const Percentage = require('./percentage');
+
 const markup = `<ft:dimensioncomparison>
 	<table style='width: 100%'>
 		<tr>
@@ -10,7 +12,7 @@ const markup = `<ft:dimensioncomparison>
 		<tr>
 			<td style='width: 33%;'><span data-id='theirs'></span></td>
 			<td style='width: 33%;'><span data-id='yours'></span></td>
-			<td style='width: 33%;'><span data-id='delta'></span>%</td>
+			<td style='width: 33%;'><b><ft:percentage data-id='matchView'></ft:percentage></b></td>
 		</tr>
 	</table>
 </ft:dimensioncomparision>`;
@@ -34,7 +36,8 @@ const DimensionComparison = DomClass(markup, function() {
 
 	const theirScore = computeScore(this.theirs);
 	const yourScore = computeScore(this.yours);
-	this.delta = 100 - Math.abs(theirScore - yourScore);
+	this.match = 100 - Math.abs(theirScore - yourScore);
+	this.matchView.value = this.match;
 });
 
 module.exports = DimensionComparison;
