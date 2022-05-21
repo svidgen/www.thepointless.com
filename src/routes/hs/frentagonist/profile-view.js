@@ -6,9 +6,12 @@ const DimensionView = require('./dimension-view');
 const markup = `<ft:profileview>
 	<div data-id='dimensionsView'></div>
 	<div data-id='actions'>
-		<tpdc:share data-id='share'>
-			<div data-id='header' style='color: darkgreen; font-weight: bold;'>
-				Share to see who your <i>real</i> friends are:
+		<tpdc:share
+			data-id='share'
+			methods='facebook,twitter,email,copy,qr,native'
+		><div data-id='header' style='color: darkgreen; font-weight: bold;'>
+				Share or post in your profile to <br />
+				separate the friends from the foes.
 			</div>
 		</tpdc:share>
 	</div>
@@ -25,7 +28,7 @@ const ProfileView = DomClass(markup, function _Editor() {
 			`My Frentagonist Profile`,
 			this.shareString,
 			'',
-			`Let's see if we should 🤝🏼 or ⚔️ ...`
+			`See if we should 🍻 or ⚔️:`
 		].join('\n'),
 		url: this.link
 	});
