@@ -195,6 +195,18 @@ tpdc\:resultcard {
 	padding-top: 1em;
 }
 
+pre {
+	border: 1px dashed green;
+	background-color: white;
+	padding: 0.5em;
+	margin: 0.5em;
+	overflow-x: scroll;
+}
+
+pre.clipped {
+	text-overflow: ellipsis;
+	overflow-x: clip;
+}
 
 @media (max-width:420px)  {
 	#footer a {

@@ -21,20 +21,40 @@ In the meantime, feel free to look around. **But remember:**
 	/>
 </p>
 
-And while the rest of the world is figuring out how to make Web3 work, we're trying to figure out how *make Web 1.0 great again.*
+And while the rest of the world is figuring out how to make Web3 work, we're
+trying to figure out how *make Web 1.0 great again.*
 
 ## In the meantime,
 
-### Click on this ***[red dot](./reddot)***.
+Our most popular bit of mindlessness was created *many moons* ago, and draws a
+steady flow of traffic for reasons I cannot explain. Take a look.
+
+### It's this ***[red dot](./reddot)***.
 
 It's the best dot. We have the best dots. *Everybody says so.*
 
----
+## Much more importantly,
 
-### Oh yeah!
+We have created a *very handy* [**Frentagonist**](hs/frentagonist/) test. With it,
+you can create a fancy looking profile *like this*:
 
-We are open source now.
+<pre class='clipped'>
+My Frentagonist Profile
 
-If you want to see how this *amazing* dot-com works under the hood or contribute anything to the site, you are 100% **welcome** and **encouraged** to [fork us](https://github.com/svidgen/www.thepointless.com) and submit a pull request.
+🟥🟥✅🟦🟦
+🟥🟥✅🟦🟦
+🟥🟥🟥✅🟦
+🟥🟥✅🟦🟦
+🟥🟥✅🟦🟦
+🟥🟥✅🟦🟦
+🟥🟥🟥✅🟦
 
-<small>Remember to link back to your own site or profile and do your ex-gratia setup (if you want to share our Google ad space). And bear in mind, we reserve the right to reject some content. But, it doesn't hurt to try.</small>
+See if we should 🍻 or ⚔️:
+<a href='/hs/frentagonist/?s=eyJwIjpbWyJ0aGVwb2ludGxlc3MuY29tIl0sIjIyMzIyMjMiXSwidiI6MX0%3D'>
+https://www.thepointless.com/hs/frentagonist/?s=eyJwIjpbWyJ0aGVwb2ludGxlc3MuY29tIl0sIjIyMzIyMjMiXSwidiI6MX0%3D</a>
+</pre>
+
+When your *so-called* friends and followers open it up, they can quickly see
+whether you should plan to have drinks together **or ⚔️ *duel* ⚔️ 
+at the break of dawn.** 🌅
+
