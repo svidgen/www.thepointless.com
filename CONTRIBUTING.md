@@ -76,6 +76,9 @@ Password: devpassword
 | /src/layouts | top-level layouts into which route content (.md and .html files) are embedded. |
 | /src/lib | common javascript modules that are *not* `wirejs-dom` components |
 | /src/routes | routable paths. `.md` and `.html` files herein produce human-navigable URLs. |
+| /src/routes/apps | Stand-alone apps. Generally inteded for installable PWA's, specifically. |
+| /src/routes/hs | Horoscopes and other interactive-ish things that a *High School girl* might be inerested in, like personally tests. |
+| /src/routes/words | Words-focused stuff. Writing. Silly or not. |
 | /static | content that will be deployed as-is. |
 | /static/images | images that are deployed statically, as-is. |
 

@@ -27,6 +27,9 @@ ${meta({
 * [The Clickometer](clickometer)
 	<br />Test your clicking *prowess*.
 
+* 🆕 [Frentagonist Profile](hs/frentagonist/)
+	<br />Generate a \`frentagonist profile\` to let people know whether you are their **friend** or **secret archrival**.
+
 ### Experimental
 
 * [Ghost P2P](./apps/experimental/ghost-p2p/)
