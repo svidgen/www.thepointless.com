@@ -11,6 +11,8 @@ const ProfileComparison = require('./profile-comparison');
 
 require('./index.css');
 
+const PROFILE_VERSION = 1;
+
 const markup = `<ft:app>
 	<div data-id='action'></div>
 	<div data-id='editControl'>
@@ -22,7 +24,10 @@ const markup = `<ft:app>
 
 function shareUrl(profile) {
 	const url = new URL(location.href);
-	url.searchParams.set('s', btoa(JSON.stringify({p: local.profile})));
+	url.searchParams.set('s', btoa(JSON.stringify({
+		p: local.profile,
+		v: PROFILE_VERSION
+	})));
 	return url.href;
 }
 
@@ -48,9 +53,19 @@ function shareString(dimensions, profile) {
 const App = DomClass(markup, function _App() {
 
 	this.render = (edit = null) => {
-		if (!local.profile || edit) {
+		if (!(local.profile && local.version == PROFILE_VERSION) || edit) {
 			// user needs to create a profile!
-			this.action = new ProfileEditor({
+			this.action = [];
+
+			if (local.version != PROFILE_VERSION) {
+				this.action.push(`
+					<b style='color: darkred;'>Yes, I know you created
+					a profile already</b>, but it's from an older version of the
+					questionnaire. The new one is better. <i>I promise!</i>
+				`);
+			}
+			
+			this.action.push(new ProfileEditor({
 				dimensions,
 				values: edit || {},
 				onsave: profile => {
@@ -60,9 +75,11 @@ const App = DomClass(markup, function _App() {
 						shareUrl(profile)
 					);
 					local.profile = pack(dimensions, profile);
+					local.version = PROFILE_VERSION;
 					this.render();
 				}
-			});
+			}));
+
 			this.editControl.style.display = 'none';
 		} else {
 			const saved = unpack(dimensions, local.profile);
@@ -70,7 +87,7 @@ const App = DomClass(markup, function _App() {
 			this.editControl.style.display = '';
 			this.editButton.onclick = () => this.render(saved);
 
-			if (ephemeral.p) {
+			if (ephemeral.p && ephemeral.v == PROFILE_VERSION) {
 				console.debug('profile', ephemeral.p);
 				const linked = unpack(dimensions, ephemeral.p);
 				this.action = new ProfileComparison({
@@ -80,12 +97,24 @@ const App = DomClass(markup, function _App() {
 					link: shareUrl(saved)
 				});
 			} else {
-				this.action = new ProfileView({
+				this.action = [];
+
+				if (ephemeral.p && ephemeral.v != PROFILE_VERSION) {
+					this.action.push(`
+						<b style='color: darkred;'>Sorry, but the profile link
+						you were given is from an older version of of the
+						questionnaire.</b> Please ask the person who shared it
+						with you to fill out a new one. As you know, <i>it's
+						a very quick process!</i>
+					`);
+				}
+				
+				this.action.push(new ProfileView({
 					dimensions,
 					profile: saved,
 					link: shareUrl(saved),
 					shareString: shareString(dimensions, saved)
-				});
+				}));
 			}
 		}
 	}

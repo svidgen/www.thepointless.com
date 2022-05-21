@@ -9,22 +9,16 @@ module.exports = Object.freeze({
 	"Your Religiousness": [
 		"Atheistic", "Agnostic", "Casual", "Devout", "Fundamentalist"
 	],
-	"Academics": [
+	"Academic Style": [
 		"Liberal Arts", "Theoretical Science", "Youtube+Wikipedia", "Applied Science", "Trade School"
-	],
-	"Sport to Play": [
-		"Chess", "Bowling", "Soccer", "Football", "Mixed Martial Arts"
-	],
-	"Sport to Watch": [
-		"Chess", "Bowling", "Soccer", "Football", "Mixed Martial Arts"
 	],
 	"Alcohol": [
 		"Water", "Wine", "Scotch", "Beer", "Vodka"
 	],
-	"Expressiveness": [
+	"Socialization Style": [
 		"Super Introvert", "Introvert", "Ambivert", "Extrovert", "Super Extrovert"
 	],
-	"Discussion Topics": [
+	"Preferred Discussion": [
 		"Pretty Clouds", "Weather", "News/Gossip", "Hobbies", "Politics and Religion"
 	],
 });
