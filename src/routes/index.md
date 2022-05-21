@@ -50,8 +50,8 @@ My Frentagonist Profile
 🟥🟥🟥✅🟦
 
 See if we should 🍻 or ⚔️:
-<a href='http://localhost:8080/hs/frentagonist/?s=eyJwIjpbWyJ0aGVwb2ludGxlc3MuY29tIl0sIjIyMzIyMjMiXSwidiI6MX0%3D'>
-http://localhost:8080/hs/frentagonist/?s=eyJwIjpbWyJ0aGVwb2ludGxlc3MuY29tIl0sIjIyMzIyMjMiXSwidiI6MX0%3D</a>
+<a href='/hs/frentagonist/?s=eyJwIjpbWyJ0aGVwb2ludGxlc3MuY29tIl0sIjIyMzIyMjMiXSwidiI6MX0%3D'>
+https://www.thepointless.com/hs/frentagonist/?s=eyJwIjpbWyJ0aGVwb2ludGxlc3MuY29tIl0sIjIyMzIyMjMiXSwidiI6MX0%3D</a>
 </pre>
 
 When your *so-called* friends and followers open it up, they can quickly see
