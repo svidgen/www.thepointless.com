@@ -1,0 +1,59 @@
+const { DomClass } = require('wirejs-dom');
+
+const { MainLoop } = require('/src/lib/loop');
+
+const markup = `<tpdc:gamepadtest>
+	<h3>Gamepad data</h3>
+	<pre data-id='data'></pre>
+</tpdc:gamepadtest>`;
+
+const GamepadTest = DomClass(markup, function _GamepadTest() {
+	const self = this;
+
+	let pads = [];
+
+	MainLoop.addObject({
+		step() {
+			pads = [...navigator.getGamepads()]
+				.filter(p => p)
+				.map(pad => ({
+					index: pad.index,
+					id: pad.id,
+					axes: pad.axes,
+					buttons: [...pad.buttons].map(b => ({
+						pressed: b.pressed,
+						touched: b.touched,
+						value: b.value
+					})),
+					vibration: pad.vibrationActuator
+				}))
+			;
+		},
+		draw() {
+			self.data = `updated: ${new Date()}\n${
+				JSON.stringify(pads, null, 2)
+			}`;
+			if (pads.length > 0) {
+				const p0 = pads[0];
+				if (p0.buttons[0].pressed) {
+					p0.vibration.playEffect('dual-rumble', {
+						startDelay: 0,
+						duration: 100,
+						weakMagnitude: 0.0,
+						strongMagnitude: 1.0,
+					});
+				}
+				if (p0.buttons[1].pressed) {
+					p0.vibration.playEffect('dual-rumble', {
+						startDelay: 0,
+						duration: 100,
+						weakMagnitude: 1.0,
+						strongMagnitude: 0.0,
+					});
+				}
+			}
+		}
+	});
+});
+
+module.exports = GamepadTest;
