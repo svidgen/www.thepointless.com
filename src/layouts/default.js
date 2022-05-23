@@ -11,6 +11,7 @@ require('../components/menu');
 require('../components/page-build-time');
 require('../components/result-card');
 require('../components/share');
+require('../components/subscribe');
 require('../components/teaser');
 require('../components/var');
 

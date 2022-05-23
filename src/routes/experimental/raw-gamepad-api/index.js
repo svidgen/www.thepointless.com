@@ -19,13 +19,14 @@ const GamepadTest = DomClass(markup, function _GamepadTest() {
 				.map(pad => ({
 					index: pad.index,
 					id: pad.id,
+					mapping: pad.mapping,
 					axes: pad.axes,
 					buttons: [...pad.buttons].map(b => ({
 						pressed: b.pressed,
 						touched: b.touched,
 						value: b.value
 					})),
-					vibration: pad.vibrationActuator
+					vibrationActuator: pad.vibrationActuator
 				}))
 			;
 		},
@@ -35,16 +36,16 @@ const GamepadTest = DomClass(markup, function _GamepadTest() {
 			}`;
 			if (pads.length > 0) {
 				const p0 = pads[0];
-				if (p0.buttons[0].pressed) {
-					p0.vibration.playEffect('dual-rumble', {
+				if (p0.buttons[2].pressed) {
+					p0.vibrationActuator.playEffect('dual-rumble', {
 						startDelay: 0,
 						duration: 100,
 						weakMagnitude: 0.0,
 						strongMagnitude: 1.0,
 					});
 				}
-				if (p0.buttons[1].pressed) {
-					p0.vibration.playEffect('dual-rumble', {
+				if (p0.buttons[3].pressed) {
+					p0.vibrationActuator.playEffect('dual-rumble', {
 						startDelay: 0,
 						duration: 100,
 						weakMagnitude: 1.0,
