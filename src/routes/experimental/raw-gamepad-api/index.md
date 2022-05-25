@@ -27,7 +27,7 @@ JSON.stringify(
 );
 ```
 
-([source](https://github.com/svidgen/thepointless.com/tree/master/src/routes/experimental/raw-gamepad-api/index.js))
+([source](https://github.com/svidgen/www.thepointless.com/blob/master/src/routes/experimental/raw-gamepad-api/index.js))
 
 It runs on a [loop](https://github.com/svidgen/www.thepointless.com/blob/master/src/lib/loop.js) so I can see gamepad activity in realtime. And I must say, there's something satisfying about just seeing gamepad updated in realtime on a web page, even if it's not doing anything "meaningful" yet.
 
