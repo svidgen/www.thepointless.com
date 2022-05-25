@@ -1,18 +1,27 @@
 const { DomClass } = require('wirejs-dom');
 
+const GH_BASE_URL = 'https://github.com/svidgen/www.thepointless.com';
+
 const markup = `<tpdc:subscribe>
 	<header>🔥 Before you leave! 🔥</header>
-	<p>Don't forget to 
-		<a href='https://github.com/svidgen/www.thepointless.com/subscription'
-			>Subscribe on Github</a> or
-		<a href='https://twitter.com/pointlessdotcom'>Follow us on Twitter</a>!
+	<p><b>Don't forget</b> to stay on top of our <i>shenanigans</i>.</p>
+	<p class='follow-options'>
+		Github (
+			<a href='${GH_BASE_URL}/subscription'>Subscribe</a>
+			| <a href='${GH_BASE_URL}/'>Star</a>
+		) - Twitter (
+			<a href='https://twitter.com/pointlessdotcom'>Follow</a>
+		)
 	</p>
-	<p>Yes, that's right. We're open source! You're welcome to join the discussion,
-		make requests, or even <a
-			href='https://github.com/svidgen/www.thepointless.com/fork'
-		>fork us</a> to contribute your great ideas &mdash; and possibly even
-		earn a little cash! 💰
+	<p>You could even <i>participate</i> or <i>contribute</i>!</p>
+	<p class='follow-options'>
+		Github (
+			<a href='${GH_BASE_URL}/issues'>Issues</a>
+			| <a href='${GH_BASE_URL}/discussions'>Discussions</a>
+			| <a href='${GH_BASE_URL}/fork'>Pull Requests</a>
+		)
 	</p>
+	<footer>😱</footer>
 </tpdc:subscribe>`;
 
 const Subscribe = DomClass(markup);

@@ -215,7 +215,6 @@ tpdc\:subscribe {
 	background-color: lightyellow;
 	margin: 0.5em;
 	padding: 0.5em;
-	font-weight: bold;
 }
 
 tpdc\:subscribe > header {
@@ -223,6 +222,21 @@ tpdc\:subscribe > header {
 	color: green;
 	margin: 0.5em;
 	text-align: center;
+	font-weight: bold;
+}
+
+tpdc\:subscribe > footer {
+	text-align: center;
+	font-size: xx-large;
+	margin: 0.75em;
+}
+
+tpdc\:subscribe .follow-options {
+	text-align: center;
+	font-weight: bold;}
+
+tpdc\:subscribe .follow-options a {
+	font-weight: normal;
 }
 
 @media (max-width:420px)  {
