@@ -35,8 +35,11 @@ ${meta({
 * [Ghost P2P](./apps/experimental/ghost-p2p/)
 	<br />Playing with miscellaneous peer-to-peer PWA concepts.
 
+* 🆕 [Raw GamePad API](./experimental/raw-gamepad-api/)
+	<br />Playing with the Gamepad API available in the browser.
+
 ### Recommendations and Reviews
 
-You can ask for an app review on [Twitter (@pointlessdotcom)](https://twitter.com/intent/tweet?text=@pointlessdotcom%20please%20review%20APP).
+You can ask for an app review on [Github](https://github.com/svidgen/www.thepointless.com/discussions).
 
 (You'll need to provide it to us for free.)

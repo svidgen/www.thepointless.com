@@ -4,7 +4,7 @@ const GH_BASE_URL = 'https://github.com/svidgen/www.thepointless.com';
 
 const markup = `<tpdc:subscribe>
 	<header>🔥 Before you leave! 🔥</header>
-	<p><b>Don't forget</b> to stay on top of our <i>shenanigans</i>.</p>
+	<p><b>Don't forget</b> to stay on top of our <i>shenanigans</i> and possibly some <i>not shenanigans</i> as well.</p>
 	<p class='follow-options'>
 		Github (
 			<a href='${GH_BASE_URL}/subscription'>Subscribe</a>

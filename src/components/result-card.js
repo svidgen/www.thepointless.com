@@ -15,6 +15,8 @@ const template = `<tpdc:resultcard>
 	<h3 class='result-result'><div data-id='result'></div></h3>
 	<div class='result-description'><div data-id='description'></div></div>
 	<tpdc:share data-id='share_buttons'></tpdc:share>
+	<hr />
+	<tpdc:subscribe></tpdc:subscribe>
 </tpdc:resultcard>`;
 
 // temporarily removed until we can update sharing text, etc.

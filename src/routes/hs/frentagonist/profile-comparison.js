@@ -12,6 +12,7 @@ const markup = `<ft:profilecomparison>
 	<h2>You are <ft:percentage data-id='result'></ft:percentage> likely to be friends.</h2>
 	<div data-id='interpretation'></div>
 	<tpdc:share data-id='resultShare' header='Share your result'></tpdc:share>
+	<tpdc:subscribe></tpdc:subscribe>
 </ft:profilecomparison>`;
 
 const ProfileComparison = DomClass(markup, function() {

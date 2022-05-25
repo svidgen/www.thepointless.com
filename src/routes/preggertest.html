@@ -71,6 +71,7 @@ ${meta({
 		var submittimeout = setTimeout(
 			function() {
 				think_div.innerHTML = "No urine detected!<br /><br />Please <a href='javascript:clearresult();'>try again</a>.";
+				document.getElementById('subscribe-cta').style.display = '';
 
 				// plug into new inventory system when available.
 				// TPDC.awardMultiple([
@@ -103,6 +104,7 @@ ${meta({
 </script>
 
 <div>Using the sensors in your keyboard, we are now able to remotely triangulate your hormone levels and detect the faint, early indicators of pregnancy.</div>
+<tpdc:subscribe id="subscribe-cta" style="display: none;"></tpdc:subscribe>
 <div class='testcontainer'>
 	<img src='/images/preggertest.png' style='border: 0px; margin: 0px;' />
 </div>

@@ -6,6 +6,5 @@ module.exports = DomClass(`<tpdc:menu>
 	<a href="/apps-etc.html">apps &amp; games</a>
 	<a href="/books.html">books</a>
 	<a href="/words/index.html">words</a>
-	<a href="https://twitter.com/pointlessdotcom">twitter</a>
 </tpdc:menu>`);
 
