@@ -1,5 +1,7 @@
 const { DomClass } = require('wirejs-dom');
 
+const { trackEvent } = require('../lib/tracking');
+
 const GH_BASE_URL = 'https://github.com/svidgen/www.thepointless.com';
 
 const markup = `<tpdc:subscribe>
