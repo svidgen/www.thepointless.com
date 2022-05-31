@@ -1,0 +1,19 @@
+{
+	"manifest_package": "com.thepointless.experimental.notifier",
+	"short_name": "Notifier Test",
+	"id": "/experimental/notifier/index.html",
+	"name": "Notifier Test",
+	"description": "Just testing periodic sync and notifications",
+	"icons": [
+		{
+			"src": "/experimental/notifier/icon.png",
+			"type": "image/png",
+			"sizes": "512x512"	
+		}
+	],
+	"start_url": "index.html",
+	"scope": "/experimental/notifier/",
+	"display": "minimal-ui",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff"
+}

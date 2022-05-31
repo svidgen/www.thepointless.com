@@ -88,6 +88,11 @@ const SSG = {
 		return '';
 	}
 
+	let manifestlink = '';
+	function manifest() {
+		manifestlink = `<link rel="manifest" href="manifest.json">`;
+	}
+
 	let body;
 	try {
 		if (_path.endsWith('.md')) {
