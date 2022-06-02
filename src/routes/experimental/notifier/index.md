@@ -43,15 +43,48 @@ this.notifyButton.onclick = () => {
 		alert("Notifications can't be tested until you Request + Grant permission.\\n(You can revoke permissions later.)")
 	}
 };
+
+
+this.scheduleButton.onclick = () => {
+	navigator.serviceWorker.ready.then(registration => {
+		registration.periodicSync.register('test-notifications', {
+			minInterval: 12 * 60 * 60 * 1000
+		}).then(() => {
+			alert('scheduled');
+		}).catch(e => {
+			if (e.message.includes('Permission denied')) {
+				alert('You need to install the app first!');
+			} else {
+				alert('Unable to schedule! See console for details.');
+				console.error(e);
+			}
+		});
+	});
+};
+
+this.unscheduleButton.onclick = () => {
+	navigator.serviceWorker.ready.then(registration => {
+		registration.periodicSync.unregister('test-notifications').then(
+			() => {
+				alert('un-scheduled');
+			}
+		);
+	});
+};
 ```
 
-<div>
-	<tpdc:notificationtest></tpdc:notificationtest>
-	<tpdc:subscribe></tpdc:subscribe>
-</div>
+<div><tpdc:notificationtest></tpdc:notificationtest></div>
 
+Before you can issue a notification, the page needs need to request permission. You can see this by clicking **Request Permission** above.
+
+You can then click **Issue Notification** to see a notification looks like in your OS. And finally, if you **Install** the app, you can schedule periodic syncs, which will trigger notifications. These only occur about once per day. So, if you want to manually trigger this. Chrome and Edge [provide a UI in the dev tools](https://devtoolstips.org/tips/en/force-pwa-periodic-sync/) to trigger a periodic sync. (You can leave the \`tag\` as-is.)
+
+That's it for this little experiment. If I circle back to this, I'll build a little notifier app to serve as a news reader.
+
+Or you can stay in touch on Github. 😁
+
+<div><tpdc:subscribe></tpdc:subscribe></div>
 
 Full source for this example is in [the repo on Github](https://github.com/svidgen/www.thepointless.com/blob/master/src/routes/experimental/notifier/).
-
 
 <script src='index.js'></script>

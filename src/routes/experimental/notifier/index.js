@@ -1,5 +1,7 @@
 const { DomClass } = require('wirejs-dom');
 
+require('./index.css');
+
 let worker;
 
 const markup = `<tpdc:notificationtest>
