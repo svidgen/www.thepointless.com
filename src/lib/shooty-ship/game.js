@@ -195,7 +195,7 @@ const Game = DomClass(gameTemplate, function _Board() {
 		this.ship.respawn();
 		this.ship.leapTo(50 - _t.ship.width/2, 50 - _t.ship.height/2);
 
-		trackEvent('play');
+		trackEvent('game', 'play');
 	}; // restart()
 
 	this.interact = function(e) {
@@ -831,7 +831,7 @@ const gameOverSplashTemplate = `<ss:gameoversplash>
 		<ss:bannerad data-id='bannerad'></ss:bannerad>
 		<ss:startbutton data-id='restart'>Restart</ss:startbutton>
 		<div data-id='share'></div>
-		<ss:installlink icon='img/icon.png'></ss:installlink>
+		<ss:installlink category='game' icon='img/icon.png'></ss:installlink>
 		<div class='copyright'><a target='_blank' href='https://www.thepointless.com'>www.thepointless.com</a></div>
 	</div>
 </ss:gameoversplash>`;

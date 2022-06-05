@@ -23,9 +23,9 @@ const InstallLink = DomClass(template, function _InstallLink() {
 		InstallLink.evt.userChoice.then((choiceResult) => {
 			if (choiceResult.outcome === 'accepted') {
 				_t.classList.remove('show');
-				trackEvent('install');
+				trackEvent(_t.category || 'app', 'install');
 			} else {
-				trackEvent('cancelled-install');
+				trackEvent(_t.category || 'app', 'cancelled-install');
 			}
 			InstallLink.evt = null;
 		});
