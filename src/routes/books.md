@@ -6,6 +6,12 @@ ${meta({
 
 Made by us.
 
+* [Really Bad Poetry](https://www.amazon.com/Really-Bad-Poetry-Sadmood-Poet/dp/B0B4C1JYNY) - [Sadmood Poet](https://www.instagram.com/sadmood_poet/)
+	<br />For that special someone in your life. Deep, heartfelt and really bad. Guaranteed to move you.
+
+* [The Eeka](https://www.amazon.com/dp/B0B4NRLL4B/ref=cm_sw_em_r_mt_dp_831RXES9XHDR1V00J553) - [Ley Wire](https://www.leywire.com) (words and concept art) and [Laura Wire](http://madminimalist.com/) (pictures)
+	<br />The Eeka crept in closets, it hid under the stairs. But when Julie looked for it, The Eeka wasn't there.
+
 * [The Red Dot](https://www.amazon.com/red-dot-thepointless-dot-com-presents/dp/B08C96QQPD) - Jon Wire (words and dot)
 	<br />Based on a [true story](./reddot)
 
