@@ -31,9 +31,3 @@ Made by us.
 * [The Battle of Froggy Lake](https://www.amazon.com/Battle-Froggy-Lake-Ley-Wire/dp/B0884FQ7XF) - [Ley Wire](https://www.leywire.com/) (words) and [Michaela Wire](https://www.amazon.com/s?i=stripbooks&rh=p_27%3AMichaela+Wire&s=relevancerank&text=Michaela+Wire&ref=dp_byline_sr_book_2) (pictures)
 
 * [Desert Flowers](https://www.amazon.com/gp/product/B092M36D95) - [Ley Wire](https://www.leywire.com/)
-
-### Our Recommendations and Reviews
-
-You can ask for an book review on [Twitter (@pointlessdotcom)](https://twitter.com/intent/tweet?text=@pointlessdotcom%20please%20review%20BOOK).
-
-(You'll need to provide it to us for free.)

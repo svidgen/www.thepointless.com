@@ -21,7 +21,7 @@ const sitemap = {
 	},
 
 	'features': {
-		'/shooty-ship-pumpkin-smash': 'Shooty Ship Pumpkin Smash',
+		// '/shooty-ship-pumpkin-smash': 'Shooty Ship Pumpkin Smash',
 
 		// not yet updated for latest president.
 		// need to get art for Biden and offer selection screen
@@ -29,11 +29,11 @@ const sitemap = {
 		// '/shooty-ship/presidential-edition': 'Shooty Ship Presidential Edition',
 
 		'/falling-candy-corn': 'falling candy corn',
-		'/w/big-dinosaur-problem-lately': 'big dinosaur problem lately',
+		'/words/unclassified/shorts/big-dinosaur-problem-lately': 'big dinosaur problem lately',
 		// '/features/meme?name=cleaning-with-kittens': 'a kitten meme',
 		// '/features/meme?name=toilet-paper-not-a-turle': 'a toilet paper meme',
-		'/w/dinosaur-people': 'dinosaur people',
-		'/apps/shooty-ship/': 'Shooty Ship (Original!)',
+		'/words/unclassified/shorts/dinosaur-people': 'dinosaur people',
+		// '/apps/shooty-ship/': 'Shooty Ship (Original!)',
 
 		// disabled until server-side modeling and whatnot can be re-done
 		// on AWS Amplify and/or lambda and/or *

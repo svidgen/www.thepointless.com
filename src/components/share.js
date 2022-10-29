@@ -213,8 +213,9 @@ module.exports = DomClass(template, function Share() {
 	this.native_link.firstChild.src = `${imagePath}/native-share.svg`;
 	
 	const possible_methods = 'facebook,twitter,email,copy,qr,native,preview';
+	const default_methods = 'facebook,twitter,email,copy,qr,native';
 	const given_methods = new Set(
-		(this.methods || possible_methods).split(',').map(m => m.trim())
+		(this.methods || default_methods).split(',').map(m => m.trim())
 	);
 	possible_methods.split(',').forEach(method => {
 		if (!given_methods.has(method)) {

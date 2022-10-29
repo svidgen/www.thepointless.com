@@ -6,14 +6,12 @@ This is 💾 `tHe SoUrCe CoDe` 💾 for [thepointless.com](https://www.thepointl
 
 ### But, be warned!
 
-🧙🧙🧙 The codez herein are, in fact, ✨**grand wizardry**✨ at its finest and most potent. 🧙🧙🧙
+The codez herein are, in fact, ✨🧙**grand wizardry**🧙✨ at its finest and most potent.
 
 *(Everybody says so.)*
 
-# 💰 Profit 💰
+**[Contribute](CONTRIBUTING.md)** to our wizardry (🧙) and your name will not be known amongst the grand sorcerers of the interwebs, securing bragging rights for the ages to come.
 
-**[Contribute](CONTRIBUTING.md)** to our 🧙 wizardry 🧙 and your name will not only be known amongst the grand sorcerers of the interwebs, securing bragging rights for ages to come, **but you will also share in our profits.** 💰💰💰
-
-# 😶 Ideas, Comments, and Complaints, etc. 😶
+# Ideas, Comments, and Complaints, etc. 😶
 
 Please [submit an issue](issues). 📜

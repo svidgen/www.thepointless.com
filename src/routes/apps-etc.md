@@ -40,9 +40,3 @@ ${meta({
 
 * 🆕 [Notifier Test](./experimental/notifier/)
 	<br />Playing with the notifications and background sync API's.
-
-### Recommendations and Reviews
-
-You can ask for an app review on [Github](https://github.com/svidgen/www.thepointless.com/discussions).
-
-(You'll need to provide it to us for free.)

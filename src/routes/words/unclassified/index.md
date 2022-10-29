@@ -2,12 +2,26 @@ ${meta({
 	title: "unclassified words"
 })}
 
-As I said before, the words herein may or may not be silly. I prefer them to be ambiguous.
+The words herein may or may not be silly. Consider this an unsolved mystery of sorts. Your opinion of these words is incorrect by default.
 
-### For now, it's just these three words.
+### It was once just these three words.
 
 1. giraffe
 1. zebra
 1. zeraffe
 
-Happy to hear your opinions on whether the words you just read are silly or serious.
+### But it now includes these words as well.
+
+* [Big Dinosaur Problems as of Late](./shorts/big-dinosaur-problem-lately)
+	<br />Synopsis: Dinosaurs are a problem.
+
+* [dinosaur people](./shorts/dinosaur-people)
+	<br />🦖🤷
+
+*Yes*, there are more words out there. *We just have to find them.*
+
+### Before we forget, here is one final word
+
+* [Asparagus](./shorts/asparagus)
+
+<div><tpdc:share header='Discretion is advised.'></tpdc:share></div>

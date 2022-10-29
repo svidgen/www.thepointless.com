@@ -69,7 +69,7 @@ Password: devpassword
 | /amplify | files used by the aws amplify framework for back-end services and hosting |
 | /archive | files from the pre-aws migration, php version of site. pull requests to migrate this content will generally be welcome and appreciated. |
 | /dist | built files. not to be added to the repository. |
-| /node_modules | node modules, managed by npm. not to be added. |
+| /node_modules | node modules, managed by npm; not by you. |
 | /scripts | CLI scripts that may be used during development, building, etc.. |
 | /src | content and script that must be "built" for deployment |
 | /src/components | [wirejs-dom](https://www.npmjs.com/package/wirejs-dom) web components intended to be used across pages |
@@ -92,12 +92,6 @@ But secondly, we try to share the wealth with folks in our git log. (Admittedly,
 
 And so ...
 
-## Monetization (Getting Paid)
-
-We use [ex-gratia](https://www.npmjs.com/package/ex-gratia) to spread the wealth by sharing our Google Ad space with contributors like you. (Also planned: Amazon affiliates link sharing!) Refer to [ex-gratia's Contributor's Guide](https://github.com/svidgen/ex-gratia/blob/HEAD/contributors-guide.md) to get your Google Ads publisher ID into the rotation.
-
-## Other ways to contribute
-
 You can also contribute by [submitting and commenting on issues](https://github.com/svidgen/www.thepointless.com/issues).
 
 * Ideas for new pages / features
@@ -105,4 +99,3 @@ You can also contribute by [submitting and commenting on issues](https://github.
 * Asking for help with the development process
 * Saying "Hi."
 
-And of course, you could also just give us money. (Link pending.)
