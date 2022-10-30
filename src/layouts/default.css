@@ -1,8 +1,8 @@
 @import url('core.css');
 
-/*****************
-    BASIC TAGS
-*****************/
+/**
+ * BASIC TAGS
+ */
 
 body {
 	margin: 0px;
@@ -45,9 +45,68 @@ hr {
 	font-size: 1.6em;
 }
 
-/******************
-  TEMPLATE PARTS
-******************/
+/**
+ * LAYOUT CLASSES
+ */
+
+.marketing-point {
+	margin-bottom: 1.5em;
+	width: 100%;
+	border-bottom: 1px dashed silver;
+}
+
+.marketing-point:nth-child(odd) div:nth-child(2) {
+	display: block;
+	width: 70%;
+	margin: 1em;
+	margin-left: 27%;
+}
+
+.marketing-point:nth-child(even) div:nth-child(2) {
+	display: block;
+	width: 70%;
+	margin: 1em;
+	margin-right: 27%;
+}
+
+.marketing-point:nth-child(odd) div:nth-child(1),
+.marketing-point:nth-child(even) div:nth-child(1) {
+	display: block;
+	float: left;
+	width: 25%;
+	margin: 0;
+	text-align: center;
+}
+
+.marketing-point:nth-child(even) > div:nth-child(1) {
+	float: right;
+}
+
+@media (max-width:420px)  {
+	.marketing-point {
+	}
+
+	.marketing-point:nth-child(odd) div:nth-child(1),
+	.marketing-point:nth-child(even) div:nth-child(1),
+	.marketing-point:nth-child(odd) div:nth-child(2),
+	.marketing-point:nth-child(even) div:nth-child(2)
+	{
+		float: none;
+		display: block;
+		width: auto;
+		margin: 1em;
+	}
+
+	.marketing-point:nth-child(odd) div:nth-child(1),
+	.marketing-point:nth-child(even) div:nth-child(1)
+	{
+		text-align: center;
+	}
+}
+
+/**
+ * TEMPLATE PARTS
+ */
 
 #container {
 	position: relative;
