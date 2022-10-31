@@ -14,6 +14,9 @@ let SHRAPNEL_TYPES;
 let ENEMY_TYPES;
 let GAME_NAME;
 let PATH_NAME;
+let SHARE_TITLE;
+let SHARE_TEXT;
+let SHARE_HEADER;
 
 const gameTemplate = `<ss:game>
 	<ss:gameoversplash data-id='presplash' no-ad='1'></ss:gameoversplash>
@@ -32,11 +35,12 @@ const Game = DomClass(gameTemplate, function _Board() {
 
 	this._enemies = [];
 
-	PATH_NAME = this.path || '/';
-	console.log('PATH_NAME', PATH_NAME);
 	GAME_NAME = this.name || 'Shooty Ship - BETA';
-	this.presplash.heading = GAME_NAME;
-	HIGHSCORE_KEY = this.presplash.heading.replace(/\s+/g, '-') + '.highscore';
+	SHARE_TITLE = this['share-title'] || `Check out ${GAME_NAME}`;
+	SHARE_TEXT = this['share-text'] || `I just scored {SCORE} in ${GAME_NAME}! Can you beat that? #pewpewpew`;
+	SHARE_HEADER = this['share-header'] || 'See how well your friends do!';
+	PATH_NAME = this.path || '/';
+	HIGHSCORE_KEY = GAME_NAME.replace(/\s+/g, '-') + '.highscore';
 
 	SHRAPNEL_TYPES = (this.shrapnel || '').replace('/\s+/g', '')
 		.split(',')
@@ -51,6 +55,9 @@ const Game = DomClass(gameTemplate, function _Board() {
 		.filter(s => s.length > 0)
 	;
 	console.log('enemy types registered', ENEMY_TYPES);
+
+	this.presplash.heading = GAME_NAME;
+
 
 	// hack.
 	// require()'d CSS rewrites url()'s to be relative to the CSS file.
@@ -844,9 +851,9 @@ const GameOverSplash = DomClass(gameOverSplashTemplate, function _GameOverSplash
 	const score = parseInt(this.score) || 0;
 
 	this.share = new ShareLink({
-		title: `Check out ${GAME_NAME}!`,
-		text: `I just scored ${score} in ${GAME_NAME}! Can you beat that? #pewpewpew`,
-		header: 'See how well your friends do!'
+		title: SHARE_TITLE.replace('{SCORE}', score),
+		text: SHARE_TEXT.replace('{SCORE}', score),
+		header: SHARE_HEADER.replace('{SCORE}', score)
 	});
 
 	if (score == 0) {
