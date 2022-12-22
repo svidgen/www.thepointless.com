@@ -4,7 +4,7 @@ const QRCode = require('qrcode');
 
 const template = `<p2p:index>
 	<h2 data-id='title'>
-	<img src='./img/icon.svg'
+	<img src='./img/icon-min.svg'
 		style='height: 1.5em; vertical-align: bottom;' />
 		Ghost P2P
 	</h2>

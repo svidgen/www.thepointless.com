@@ -1,0 +1,22 @@
+tpdc\:featurelink h4 {
+	margin-bottom: 0.5em;
+}
+
+
+tpdc\:featurelink {
+	display: block;
+	width: auto;
+	text-align: left;
+	margin: 2em 1.5em 3em 1.5em;
+}
+
+tpdc\:featurelink img {
+	max-width: 4em;
+	max-height: 4em;
+	float: left;
+}
+
+tpdc\:featurelink [data-id='title'],
+tpdc\:featurelink [data-id='description'] {
+	margin-left: 5em;
+}

@@ -5,7 +5,7 @@
 	"description": "Testing p2p things",
 	"icons": [
 		{
-			"src": "/apps/experimental/ghost-p2p/img/icon.svg",
+			"src": "/apps/experimental/ghost-p2p/img/icon-min.svg",
 			"type": "image/svg+xml",
 			"sizes": "any"	
 		}

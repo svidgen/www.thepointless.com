@@ -14,6 +14,7 @@ require('../components/share');
 require('../components/subscribe');
 require('../components/teaser');
 require('../components/var');
+require('../components/feature-link');
 
 // utils
 const { on, onready, once } = require('../lib/event');

@@ -5,7 +5,8 @@ const CACHE_NAME = 'experimental-p2p-push-' + BUILD_ID;
 const urlsToCache = [
 	'index.html',
 	'manifest.json',
-	'js/index.js'
+	'js/index.js',
+	'img/icon-min.svg'
 ];
 
 
