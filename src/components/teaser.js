@@ -25,18 +25,26 @@ const Teaser = DomClass(template, function _Teaser() {
 		return teasers[index];
 	}
 
+	/**
+	 * @param {*} lastId The index of the last feature teased.
+	 * Increases forever and is modded against feature list.
+	 * @param {*} count The number of times the current feature
+	 * has been teased, so we can limit how many times to tease
+	 * the same feature.
+	 * @returns {[string, string, number, number]} `[link, title, index, newCount]`
+	 */
 	function getFeature(lastId, count) {
 		const features = Object.entries(sitemap.features);
 		const currentPage = document.location.pathname;
 
 		let index = lastId || 0;
-		let newCount = typeof count === 'undefined' ? 1 : count + 1;
-		let featureToTease = features[index];
+		let newCount = typeof count === 'undefined' ? 0 : count + 1;
+		let featureToTease = features[index % features.length];
 
 		if (currentPage == featureToTease[0] || count >= 3) {
-			index = (index + 1) % features.length;
-			featureToTease = features[index];
-			newCount = 1;
+			index += 1;
+			featureToTease = features[index % features.length];
+			newCount = 0;
 		}
 
 		const [link, title] = featureToTease;
