@@ -2,4 +2,6 @@ ${meta({
 	title: "serious words"
 })}
 
-Pending.
+## 404
+
+Serious words **Not Found.**

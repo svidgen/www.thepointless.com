@@ -5,7 +5,7 @@ const template = `<tpdc:fork>
 		<a
 			href='https://github.com/svidgen/www.thepointless.com'
 			target='_blank'
-		>Help!</a>
+		>Make</a>
 	</div>
 </tpdc:fork>`;
 

@@ -1,17 +1,16 @@
 ${meta({
 	title: "Home",
-	author: "svidgen",
+	author: "Jon Wire",
 	description: "This is a site about things and stuff."
 })}
+
 In an internet of darkness there shines forth a **light**.
 
-***Or so we've been told.***
+Miscellaneous "bros" are busy trying to scam you out of your money with Web 3.0 and NFT crypto hax. We're just **M**aking W**E**b 1.0 **G**reat **A**gain.
 
-In the meantime, feel free to look around. **But remember:**
+### Just remember one thing.
 
-1. This is not your home; this is *my* home.
-1. I do what I want; not what you want.
-1. **I will step on any house I choose.**
+## I will step on any house I choose.
 
 <p style='text-align: center'>
 	<img
@@ -21,8 +20,7 @@ In the meantime, feel free to look around. **But remember:**
 	/>
 </p>
 
-And while the rest of the world is figuring out how to make Web3 work, we're
-trying to figure out how *make Web 1.0 great again.*
+It's part of the deal. But, we believe it is an acceptable compromise for greatness.
 
 ## In the meantime,
 
