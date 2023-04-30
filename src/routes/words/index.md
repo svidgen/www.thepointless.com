@@ -2,13 +2,12 @@ ${meta({
 	title: "words and word-like things"
 })}
 
-Words come in all shapes and sizes. They say many different things. At times, you may find words herein that make no sense. When possible, I have tried to categorize these words so that you may less likely accuse me of being a loony.
+I have words for you. I crafted them with letters. I then combined them, in some cases, to form sentences, which in turn have occasionally been placed together to produce paragraphs.
 
-## Choose Your Adventure
+In the rarest of cases, I might even have aggregated paragraphs into a composition.
 
-### [Unclassified words](./unclassified/index.html)
-> These words may or may not be serious. You have been advised.
+### Choose Your Adventure
 
-### [In all seriousness](./serious/index.html)
-> You have been **warned**. ⚠️
+1. [Unclassified Words](./unclassified/index.html)
+1. [In All Seriousness](./serious/index.html)
 

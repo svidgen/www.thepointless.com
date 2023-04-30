@@ -3,7 +3,9 @@ ${meta({
 	description: "We don't have to put up with this nonsense from nostril-less, no-fingered, pokey-backed, gill-ridden reptile-birds!"
 })}
 
-<p>Dinosaurs are getting out of control, my internet best friends. They're getting increasingly more vocal and violent in traffic. They're becoming STEGOSAUROUSLY more impatient with fast food professionals. And they've been totally REPTILLIAN and/or BIRDLIKE in how they steal stuff from our bird feeders.</p>
+I have serious words for you, my mammals.
+
+Dinosaurs are getting out of control. They have become vocal in traffic. They are STEGOSAUROUSLY impatient with fast food professionals, often to the point of speaking unkind words and **throwing** unfriendly glances. And don't even get me started on their completely REPTILLIAN and/or BIRDLIKE public demeanor.
 
 <p style='text-align: center;'>
 	<img
@@ -14,10 +16,17 @@ ${meta({
 	/>
 </p>
 
-<p>We don't have to put up with this nonsense from nostril-less, no-fingered, pokey-backed, gill-ridden reptile-birds! Stand with Humans and fight back! Contact your congress person and legislate these guys into extinction!</p>
+On top of that, as per the photograph (above), these creatures:
+
+1. Have no nostrils
+1. Have no fingers
+1. Have gills
+1. Have pokey back things
+
+Completely unacceptable. Spread the word. We must end this.
 
 <div><tpdc:share
 	url='/big-dinosaur-problem-lately'
-	text="We don't have to put up with this nonsense from nostril-less, no-fingered, pokey-backed, gill-ridden reptile-birds!"
+	text="Please help solve our dinosaur problem."
 	image="/images/dinosaur.png"
 ></tpdc:share></div>
