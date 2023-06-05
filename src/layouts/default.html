@@ -8,21 +8,14 @@
 		<meta name="google-site-verification" content="zYKsu_Prv58mFQyRGJA3j1sDsQzAytFhE2SjFMaQk14" />
 		${metatags}
 		${manifestlink}
-		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-G3MNNLJY8T"></script>
 		<script>
-			if (location.host === 'www.thepointless.com') {
-				const ga_script = document.createElement('script');
-				ga_script.src = "https://www.googletagmanager.com/gtag/js?id=UA-920576-1";
-				document.head.appendChild(ga_script);
-				window.dataLayer = window.dataLayer || [];
-				window.gtag = function(){dataLayer.push(arguments);}
-				gtag('js', new Date());
-				gtag('config', 'UA-920576-1');
-			} else {
-				window.gtag = function(...args) {
-					console.log('gtag()', args);
-				};
-			}
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'G-G3MNNLJY8T');
 		</script>
 		<script src='/layouts/default.js?v=${BUILD_ID}'></script>
 	</head>
@@ -43,11 +36,11 @@
 				<p>This page was constructed in <tpdc:pagebuildtime></tpdc:pagebuildtime>.</p>
 				<p>(Made possible by <i>The Patriarchy</i><sup>&trade;</sup>.)</p>
 				<p>
-					<tpdc:copyright></tpdc:copyright>
-					| <a href='/terms.html'>terms</a>
-					| <a href='/careers.html'>careers</a>
-					| <a href='/contribute.html'>contribute code</a>
-					| <a href='/about.html'>about</a>
+				<tpdc:copyright></tpdc:copyright>
+				| <a href='/terms.html'>terms</a>
+				| <a href='/careers.html'>careers</a>
+				| <a href='/contribute.html'>contribute code</a>
+				| <a href='/about.html'>about</a>
 				</p>
 			</div>
 		</div>
