@@ -2,7 +2,7 @@ ${meta({
 	title: "contribute"
 })}
 
-Please [contribute](https://github.com/svidgen/www.thepointless.com). Help us write professional looking code and content to equal the best on the interwebs.
+Help make a difference, friend. [Contribute](https://github.com/svidgen/www.thepointless.com) your code, your content, and your cookies. Come write the most professional looking code and content of the all the interwebs.
 
 For example:
 
@@ -26,12 +26,10 @@ graph LR;
 		x --> y(y);
 		y --> z(z);
 	end;
-	c --> etc("... 🌪️ ...");
+	c --> etc("🌪️");
 	etc --> x;
 ```
 
 *Beep. Boop. Bop.*
 
-We use [ex-gratia](https://github.com/svidgen/ex-gratia/blob/main/contributors-guide.md) to share our ad space our contributors. So, your contributions can not only give you experience and bragging rights, they can help generate traffic and make you money!
-
-Woohoo!
+More computer noises.

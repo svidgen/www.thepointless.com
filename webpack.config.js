@@ -218,42 +218,63 @@ module.exports = (env, argv) => {
 							subpathIn: 'src/layouts',
 							subpathOut: 'layouts'
 						}),
-						transform: CollectLayouts
+						transform: CollectLayouts,
+						noErrorOnMissing: true,
 					},
 					{
 						from: './src/routes/**/*.md',
 						to: distPath({ subpathIn: 'src/routes' }),
-						transform: SSG
+						transform: SSG,
+						noErrorOnMissing: true,
 					},
 					{
 						from: './src/routes/**/*.html',
 						to: distPath({ subpathIn: 'src/routes' }),
-						transform: SSG
+						transform: SSG,
+						noErrorOnMissing: true,
+					},
+					{
+						from: './src/routes/**/*.xml',
+						to: distPath({ subpathIn: 'src/routes' }),
+						transform: SSG,
+						noErrorOnMissing: true,
+					},
+					{
+						from: './src/routes/**/*.rss',
+						to: distPath({ subpathIn: 'src/routes' }),
+						transform: SSG,
+						noErrorOnMissing: true,
 					},
 					{
 						from: './src/routes/**/*.css',
-						to: distPath({ subpathIn: 'src/routes' })
+						to: distPath({ subpathIn: 'src/routes' }),
+						noErrorOnMissing: true,
 						// trasform: ???
 					},
 					{
 						from: './src/routes/**/*.png',
-						to: distPath({ subpathIn: 'src/routes' })
+						to: distPath({ subpathIn: 'src/routes' }),
+						noErrorOnMissing: true,
 					},
 					{
 						from: './src/routes/**/*.jpg',
-						to: distPath({ subpathIn: 'src/routes' })
+						to: distPath({ subpathIn: 'src/routes' }),
+						noErrorOnMissing: true,
 					},
 					{
 						from: './src/routes/**/*.json',
-						to: distPath({ subpathIn: 'src/routes' })
+						to: distPath({ subpathIn: 'src/routes' }),
+						noErrorOnMissing: true,
 					},
 					{
 						from: './src/routes/**/*.svg',
-						to: distPath({ subpathIn: 'src/routes' })
+						to: distPath({ subpathIn: 'src/routes' }),
+						noErrorOnMissing: true,
 					},
 					{
 						from: './src/routes/**/*.mp3',
-						to: distPath({ subpathIn: 'src/routes' })
+						to: distPath({ subpathIn: 'src/routes' }),
+						noErrorOnMissing: true,
 					},
 				],
 			})
