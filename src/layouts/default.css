@@ -51,6 +51,7 @@ hr {
 
 .marketing-point {
 	margin-bottom: 1.5em;
+	padding-bottom: 2em;
 	width: 100%;
 	border-bottom: 1px dashed silver;
 }
@@ -214,9 +215,10 @@ tpdc\:fork > .banner > a {
 
 tpdc\:resultcard {
 	display: block;
-	border: 15px solid #fce890;
-	padding: 15px;
-	margin: 15px;
+	border: solid #fce890;
+	border-width: 2em 0.25em;
+	padding: 0.5em;
+	/* margin: 0.5em; */
 }
 
 .result-title {

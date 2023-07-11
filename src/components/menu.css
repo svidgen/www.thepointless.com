@@ -4,16 +4,19 @@ tpdc\:menu {
 	padding-bottom: 1em;
 	margin-bottom: 1em;
 	font-family: monospace;
+	width: 100%;
 }
 
 tpdc\:menu a {
 	display: inline-block;
 	border: 1px solid blue;
-	background-color: #eee;
-	padding: 0.15em;
+	background-color: #ddd;
+	padding: 0.5em 0.75em;
 	font-weight: bold;
+	margin-right: -1px;
 }
 
 tpdc\:menu a:hover, tpdc\:menu a:active {
-	border-color: red;
+	background-color: white;
+	color: red;
 }
