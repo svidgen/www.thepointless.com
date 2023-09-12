@@ -15,7 +15,8 @@ const template = `<tpdc:resultcard>
 	<h3 class='result-result'><div data-id='result'></div></h3>
 	<div class='result-description'><div data-id='description'></div></div>
 	<tpdc:share data-id='share_buttons'></tpdc:share>
-	<hr />
+	<hr /> 
+	<div data-id='call_to_action'></div>
 	<tpdc:subscribe></tpdc:subscribe>
 </tpdc:resultcard>`;
 
