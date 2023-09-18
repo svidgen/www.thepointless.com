@@ -1,6 +1,0 @@
-graph LR
-    Site -- build --> RSS
-    Browser -- install --> app("Reader App")
-    app -- periodic sync --> RSS
-    app -- notify --> Browser
-    Browser -- display --> Notification
