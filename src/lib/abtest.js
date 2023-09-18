@@ -56,11 +56,6 @@ class ABTest {
 	async getVariant() {
 		const key = this.getVariantKey();
 		this.track(key);
-		console.log({
-			key,
-			control: this.control,
-			options: this.options
-		});
 		return key === '' ? this.control : this.options[key];
 	}
 }

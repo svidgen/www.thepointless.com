@@ -33,7 +33,6 @@ const variations = new ABTest(
 		for (const tag of tags) {
 			tag.onclick = () => {
 				gtag('event', 'subscribe', {
-					// TODO: is this right?
 					channel: tag.attributes.get('channel')
 				});
 			}
@@ -50,7 +49,6 @@ const markup = `<tpdc:subscribe>
 
 const Subscribe = DomClass(markup, function() {
 	variations.getVariant().then(v => {
-		console.log({v});
 		this.variant = new v()
 	});
 });
