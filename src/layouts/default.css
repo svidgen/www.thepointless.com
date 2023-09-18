@@ -278,7 +278,7 @@ tpdc\:subscribe {
 	padding: 0.5em;
 }
 
-tpdc\:subscribe > header {
+tpdc\:subscribe header {
 	font-size: x-large;
 	color: green;
 	margin: 0.5em;
@@ -286,7 +286,7 @@ tpdc\:subscribe > header {
 	font-weight: bold;
 }
 
-tpdc\:subscribe > footer {
+tpdc\:subscribe footer {
 	text-align: center;
 	font-size: xx-large;
 	margin: 0.75em;
