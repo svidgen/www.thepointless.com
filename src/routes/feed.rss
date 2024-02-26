@@ -9,12 +9,14 @@ ${meta({
   <description>Well. I mean. We're pretty awesome. So, there's that.</description>
   ${(() => {
     const news = require(__dirname + '/src/news');
-    return news.map(({title, link, body, description, pubDate}) => `<item>
+    return news.map(({title, link, body, description, pubDate, guid}) => `
+    <item>
       <title>${title}</title>
       <link>${link}</link>
       <description>${description}</description>
       <pubDate>${pubDate}</pubDate>
-    </item>`)
+      <guid isPermaLink="false">${guid}</guid>
+    </item>`).join('\n')
   })()}
 </channel>
 

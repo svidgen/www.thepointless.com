@@ -26,6 +26,7 @@ We believe this is an acceptable compromise for greatness.
 
 ## The News
 
+<div class='news'>
 ${(() => {
 	const news = require(__dirname + '/src/news');
 	return news.map(({title, link, body, description, pubDate}) => `
@@ -33,5 +34,6 @@ ${(() => {
 		*${pubDate}*
 
 		${body}
-	`)
+	`).join('\n')
 })()}
+</div>
