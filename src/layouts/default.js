@@ -22,8 +22,6 @@ window.on = on;
 window.onready = onready;
 window.once = once;
 
-const GoogleAds = require('ex-gratia/google');
-
 // no ads at "home".
 if (!location.hostname.match(/^localhost|127\.0\.0\.\d+|192\.168\.\d+\.\d+$/)) {
 	// delayed in an attempt to prevent ads from block rendering of
