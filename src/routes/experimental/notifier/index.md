@@ -1,7 +1,6 @@
 ${meta({
 	title: "Notifier Test",
 })}
-${manifest()}
 
 This page is a test of the [Notifications API](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API) and [Periodic Sync API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Periodic_Background_Synchronization_API) as a possible mechanism for our visitors to subscribe to news and updates from us. The idea would be to publish an RSS feed and supply a little RSS reader app that subscribes to our own feed by default. And of course, the feed could subscribe to any app that supports CORS out of the box &mdash; and probably non-CORS feeds for a small fee. 💸
 
