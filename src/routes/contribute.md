@@ -14,22 +14,6 @@ const content = write({
 });
 ```
 
-*Not to mention fancy diagrams like this:*
-
-```mermaid
-graph LR;
-	subgraph The Beginning;
-		a(a) --> b(b);
-		b --> c(c);
-	end;
-	subgraph The End;
-		x --> y(y);
-		y --> z(z);
-	end;
-	c --> etc("🌪️");
-	etc --> x;
-```
-
 *Beep. Boop. Bop.*
 
 More computer noises.
