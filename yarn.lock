@@ -2534,10 +2534,10 @@ wirejs-dom@^1.0.4, wirejs-dom@^1.0.7:
   resolved "https://registry.yarnpkg.com/wirejs-dom/-/wirejs-dom-1.0.7.tgz#23baeda390a0bcd32ca85a0c631d04886fb94b31"
   integrity sha512-3rEdfXCJVKgrqsjb/bqcSmUZDrsJ8cmUYN2BbEEfetJE+nRjtayFotRN1sKMHjy/aUWrnx2O3QBa0AXE5snEXQ==
 
-wirejs-scripts@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/wirejs-scripts/-/wirejs-scripts-2.0.4.tgz#442f6d758a387648038e68581810e1afb77f1f12"
-  integrity sha512-stj27O09qi1bjdh9zTd9jIC61kJlEWqTrYjf7+ezzI71F6QF/eZ1BcP4QJ0ULIQ3SfDflmjfrQfCcr3RAMO7+g==
+wirejs-scripts@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/wirejs-scripts/-/wirejs-scripts-2.0.5.tgz#81c549c777bf6548c30c020044f66eeaa6b16a70"
+  integrity sha512-2dK1g/47ZC/9SbWFUggS2EBFRYVWbuqt2r5Y152lDtpRfWiqQUedKwC24NlZ2ORmCcn5ibAoI2FuOX1ZIbzuOg==
   dependencies:
     copy-webpack-plugin "^10.2.4"
     css-loader "^5.2.0"
