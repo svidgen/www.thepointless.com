@@ -4,7 +4,7 @@ ${meta({
 This is all the stuff.
 
 <ul class='link-list'>
-${Object.entries(sitemap.features).map(([url, title]) => {
+${Object.entries(require('../sitemap.js').features).map(([url, title]) => {
 	return `<li><a href="${url}" title="${title}">${title}</a></li>`;
 }).join('')}
 </ul>
