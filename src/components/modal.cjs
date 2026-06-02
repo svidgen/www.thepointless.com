@@ -1,5 +1,5 @@
 const { DomClass } = require('wirejs-dom');
-const KeyCode = require('../lib/keycode');
+const KeyCode = require('../lib/keycode.cjs');
 
 require('./modal.css');
 

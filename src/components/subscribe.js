@@ -1,8 +1,8 @@
 const { DomClass } = require('wirejs-dom');
-const ABTest = require('../lib/abtest');
+const ABTest = require('../lib/abtest.cjs');
 const MailingListSubscribe = require('./mailing-list-subscribe');
 
-const { trackEvent } = require('../lib/tracking');
+const { trackEvent } = require('../lib/tracking.cjs');
 
 const GH_BASE_URL = 'https://github.com/svidgen/www.thepointless.com';
 

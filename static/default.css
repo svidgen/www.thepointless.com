@@ -1,0 +1,245 @@
+:root {
+	--color-muted: #888;
+	--color-subtle: #bbb;
+	--color-error: #c33;
+	--color-action: #533;
+	--border-color-muted: #777;
+	--border-color-subtle: #aaa;
+}
+
+html {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: Cambria Math, math, serif;
+	font-size: 13pt;
+	/* padding: 0;
+	margin: 0; */
+	color: #333;
+}
+
+body > .main {
+	border-width: 0 1px;
+	border-color: silver;
+	border-style: solid;
+	max-width: 950px; /* 1200px; */
+	min-height: 100vh;
+	padding: 0 1rem;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+a {
+	font-weight: bold;
+	color: var(--color-action);
+	cursor: pointer;
+}
+
+menu {
+	padding-inline-start: 0;
+}
+
+li {
+	margin: 1rem;
+}
+
+menu li {
+	list-style: none;
+	margin: 1rem;
+}
+
+menu li a {
+	text-decoration: underline;
+}
+
+form.standard {
+	margin: 1rem;
+}
+
+form.standard div {
+	margin-bottom: 1rem;
+}
+
+form.standard label, form.standard input, form.standard button {
+	display: inline-block;
+	width: 9rem;
+	margin: 0.25rem;
+	border-radius: 0.125rem;
+}
+
+form.standard label {
+	font-weight: bold;
+	color: var(--color-muted);
+}
+
+form.standard input {
+	width: 20rem;
+	border: 1px solid var(--border-color-muted);
+	margin-bottom: 0.5rem;
+	padding: 0.5rem;
+}
+
+form.standard textarea {
+	width: calc(100% - 2rem);
+	height: 15rem;
+}
+
+form.standard button {
+	font-family: math;
+	font-size: medium;
+	border: 1px solid var(--border-color-muted);
+	padding: 0.5rem;
+}
+
+form.standard span.status {
+	display: inline-block;
+	color: var(--color-muted);
+	margin-left: 0.5rem;
+}
+
+.error form.standard span.status {
+	color: var(--color-error);
+}
+
+.section {
+	border-bottom: 1px dashed var(--border-color-subtle);
+	margin-bottom: 1.5rem;
+	padding-bottom: 1.5rem;
+}
+
+header {
+	display: flex;
+	width: 100%;
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid var(--border-color-muted, #777);
+	margin-bottom: 1rem;
+}
+
+header img.logo {
+	margin-top: 1.4rem;
+	margin-right: 0.5rem;
+	height: 6.5rem;
+}
+
+header > div {
+	flex-basis: 0;
+	flex-grow: 5;
+}
+
+header h1 {
+	font-variant: small-caps;
+	text-shadow: silver 2px 2px 2px;
+}
+
+header h1 a {
+	color: var(--color-strong, #000);
+}
+
+header .tagline {
+	margin-top: -1rem;
+	color: var(--color-muted, #888);
+}
+
+header .nav {
+	margin-top: 0.5rem;
+}
+
+footer {
+	margin-top: 1rem;
+	border-top: 1px solid var(--border-color-muted);
+	color: var(--color-muted);
+}
+
+footer a {
+	color: var(--color-muted);
+	font-weight: bold;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 1rem;
+	background: #fff;
+}
+
+table th,
+table td {
+	padding: 0.5rem 1rem;
+	border: 1px solid var(--border-color-subtle);
+	text-align: left;
+}
+
+table th {
+	background-color: #f5f8fa;
+	font-weight: bold;
+	color: #333;
+}
+
+table tr:nth-child(even) {
+	background-color: #f7fbff;
+}
+
+table tr:nth-child(odd) {
+	background-color: #fff;
+}
+
+table tr:hover {
+	background-color: #e6f2ff;
+}
+
+table td {
+	vertical-align: top;
+}
+
+@media print {
+	body {
+		font-family: Georgia, 'Times New Roman', Times, serif;
+	}
+	string, b {
+		font-weight: 700;
+		font-synthesis: weight;
+	}
+	em, i {
+		font-style: italic;
+		font-synthesis: style;
+	}
+}
+
+/** text classes that can be applied to divs, spans, etc. */
+
+.muted {
+	color: var(--color-muted);
+}
+
+.muted .muted, footer .muted {
+	color: var(--color-subtle)
+}
+
+.muted a {
+	color: var(--color-muted);
+}
+
+/** specific components */
+
+.summary {
+	border-top: 1px dashed silver;
+}
+
+.summary > h4 {
+	margin-bottom: 0;
+}
+
+.summary > p {
+	margin: 0.25rem 0;
+}
+
+pre.code-block {
+	margin: 1rem;
+	padding: 1rem;
+	border: 1px dashed var(--border-color-muted);
+	font-size: 12pt;
+	tab-size: 4;
+	overflow-x: scroll;
+}

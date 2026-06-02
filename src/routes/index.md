@@ -28,7 +28,7 @@ We believe this is an acceptable compromise for greatness.
 
 <div class='news'>
 ${(() => {
-	const news = require('../news');
+	const news = require('../news.cjs');
 	return news.map(({title, link, body, description, pubDate}) => `
 		### [${title}](${link})
 		*${pubDate}*

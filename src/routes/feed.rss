@@ -8,7 +8,7 @@ ${meta({
   <link>https://www.thepointless.com</link>
   <description>Well. I mean. We're pretty awesome. So, there's that.</description>
   ${(() => {
-    const news = require('../news');
+    const news = require('../news.cjs');
     return news.map(({title, link, body, description, pubDate, guid}) => `
     <item>
       <title>${title}</title>

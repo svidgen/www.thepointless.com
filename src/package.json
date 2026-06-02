@@ -1,0 +1,14 @@
+{
+	"name": "src",
+	"version": "2.0.0",
+	"private": true,
+	"type": "module",
+	"dependencies": {
+		"wirejs-dom": "*",
+		"my-api": "*"
+	},
+	"scripts": {
+		"build": "cd .. && wirejs-scripts build",
+		"start": "cd .. && wirejs-scripts start"
+	}
+}

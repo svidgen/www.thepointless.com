@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+	  "module": "ESNext",
+	  "target": "ESNext",
+	  "moduleResolution": "bundler",
+      "allowJs": true,
+	  "esModuleInterop": true,
+	  "strict": true,
+	  "noImplicitAny": true,
+	  "skipLibCheck": true,
+	  "declaration": true,
+	  "lib": ["DOM", "ES2024", "WebWorker"]
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules"]
+}

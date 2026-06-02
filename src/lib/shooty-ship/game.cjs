@@ -1,11 +1,11 @@
 const { DomClass, setType, isa, getNodes } = require('wirejs-dom');
-const { MouseCoords, NodeBox } = require('/src/lib/coords');
-const { MainLoop } = require('/src/lib/loop');
-const { on, onready } = require('/src/lib/event');
-const { trackEvent } = require('/src/lib/tracking');
-const { InstallLink } = require('/src/components/install-link');
-const ShareLink = require('/src/components/share');
-require('./game.css');
+const { MouseCoords, NodeBox } = require('../coords.cjs');
+const { MainLoop } = require('../loop.cjs');
+const { on, onready } = require('../event.cjs');
+const { trackEvent } = require('../tracking.cjs');
+const { InstallLink } = require('../../components/install-link.cjs');
+const ShareLink = require('../../components/share.cjs');
+// require('./game.css');
 
 global.MainLoop = MainLoop;
 
@@ -928,5 +928,6 @@ module.exports = {
 	MainLoop,
 	on, onready,
 	trackEvent,
-	InstallLink
+	InstallLink,
+	Game
 };

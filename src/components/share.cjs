@@ -1,5 +1,4 @@
 const { DomClass } = require('wirejs-dom');
-const QRCode = require('qrcode');
 
 const Modal = require('./modal');
 require('./share.css');
@@ -153,19 +152,20 @@ module.exports = DomClass(template, function Share() {
 		});
 	};
 
-	this.qr_link.onclick = function() {
-		_t.track('qr');
-
-		// will need to flag on presence of "data", which may indicate
-		// a slightly different sharing scheme.
-		const { title, text, url } = _t.getObject();
-		QRCode.toCanvas(url, {}, (err, canvas) => {
-			if (err) throw err;
-			canvas.style.width = 'min(90vw, 90vh)';
-			canvas.style.height = 'min(90vw, 90vh)';
-			new Modal({ content: canvas }).open();
-		});
-	};
+	// TODO: how do we work around the dynamic import of node modules
+	// in QRcode during bundling. ... 🤔 ... 
+	// this.qr_link.onclick = function() {
+	// 	_t.track('qr');
+	// 	// will need to flag on presence of "data", which may indicate
+	// 	// a slightly different sharing scheme.
+	// 	const { title, text, url } = _t.getObject();
+	// 	QRCode.toCanvas(url, {}, (err, canvas) => {
+	// 		if (err) throw err;
+	// 		canvas.style.width = 'min(90vw, 90vh)';
+	// 		canvas.style.height = 'min(90vw, 90vh)';
+	// 		new Modal({ content: canvas }).open();
+	// 	});
+	// };
 
 	this.native_link.onclick = function () {
 		_t.track('native');

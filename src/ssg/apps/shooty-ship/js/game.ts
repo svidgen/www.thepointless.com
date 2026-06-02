@@ -1,4 +1,4 @@
-const {
+export {
 	DomClass, setType, isa, getNodes,
 	MouseCoords, NodeBox,
 	MainLoop,
@@ -6,4 +6,4 @@ const {
 	trackEvent,
 	InstallLink,
 	Game
-} = require('/src/lib/shooty-ship/game');
+} from '../../../../lib/shooty-ship/game.cjs';

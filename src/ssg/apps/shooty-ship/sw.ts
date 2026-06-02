@@ -1,6 +1,6 @@
-const BUILD_ID = require('/src/build_id.json');
+const BUILD_ID = '00002';
 
-const CACHE_NAME = 'shooty-ship-cache-' + BUILD_ID;
+const CACHE_NAME = `shooty-ship-cache-${BUILD_ID}`;
 
 const urlsToCache = [
 	'index.html',

@@ -1,5 +1,5 @@
 const { DomClass } = require('wirejs-dom');
-const { Share } = require('../share');
+const { Share } = require('../share.cjs');
 
 const template = `<tpdc:prompt>
 	<h3 data-id='header'></h3>

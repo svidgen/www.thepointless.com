@@ -1,5 +1,5 @@
 const { DomClass } = require('wirejs-dom');
-const { trackEvent } = require('../lib/tracking');
+const { trackEvent } = require('../lib/tracking.cjs');
 require('./install-link.css');
 
 const template = `<ss:installlink>

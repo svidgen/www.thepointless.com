@@ -11,11 +11,11 @@ const sitemap = {
 		/*
 		 * do we even still want these links here???
 		 *
-				'https://www.facebook.com/thepointless' => '@Facebook',
-				'http://www.twitter.com/pointlessdotcom' => '@Twitter',
-				'http://cafepress.com/thepointless' => '@Cafepress',
-				'http://angrystickman.blogspot.com/' => '@Blogger',
-				*/
+			'https://www.facebook.com/thepointless' => '@Facebook',
+			'http://www.twitter.com/pointlessdotcom' => '@Twitter',
+			'http://cafepress.com/thepointless' => '@Cafepress',
+			'http://angrystickman.blogspot.com/' => '@Blogger',
+		*/
 		'https://www.facebook.com/thepointless': '@Facebook',
 		'https://www.angrystickman.net/': '@AngryStickman.net',
 	},

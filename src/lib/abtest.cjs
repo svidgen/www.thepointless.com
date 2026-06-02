@@ -1,5 +1,5 @@
-const trackEvent = require('./tracking');
-const State = require('./state');
+const trackEvent = require('./tracking.cjs');
+const State = require('./state.cjs');
 
 class ABTest {
 	/**
