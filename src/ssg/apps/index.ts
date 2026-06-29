@@ -1,0 +1,29 @@
+import { html } from 'wirejs-dom/v2';
+import { Main } from '../../layouts';
+
+export async function generate() {
+	return Main({
+		title: 'Apps & Games',
+		content: html`
+			<h2>Games</h2>
+
+			<tpdc:featurelink href='apps/shooty-ship/' icon='apps/shooty-ship/img/icon.png' title='Shooty Ship (Original)' description='Pew pew pew! Need I say more?' target='_blank'></tpdc:featurelink>
+
+			<tpdc:featurelink href='apps/shooty-ship-pumpkin-smash/' icon='apps/shooty-ship-pumpkin-smash/img/icon.png' title='Shooty Ship - Pumpkin Smash' description='Pew pew pew! But with pumpkins and stuff!' target='_blank'></tpdc:featurelink>
+
+			<h3>And Other Clicky Things</h3>
+
+			<tpdc:featurelink href='reddot.html' icon='/images/reddot.jpg' title="The <i>Infamous</i> Red Dot" description='Infamous, I said. <b><i>Infamous.</i></b>'></tpdc:featurelink>
+
+			<tpdc:featurelink href='greendot.html' icon='/images/greendot.jpg' title="The <i>somewhat less famous</i> Green Dot" description="Don't even bother. Seriously."></tpdc:featurelink>
+
+			<tpdc:featurelink href='zebra-awareness.html' icon='images/zebratest/zebra.png' title="Zebra Awareness" description='Because, who else brings black and white together like a zebra?'></tpdc:featurelink>
+
+			<tpdc:featurelink href='preggertest.html' icon='images/preggertest.png' title="Online Pregnancy Testing" description="Don't get caught unawares, ladies! (And now gentlemen, I guess.)"></tpdc:featurelink>
+
+			<tpdc:featurelink href='clickometer.html' icon='images/75px_cracked_mouse.png' title="The Clickometer" description='Test your clicking <b>prowess</b>.'></tpdc:featurelink>
+
+			<tpdc:featurelink href='hs/frentagonist/' icon='images/frentagonist-icon.png' title="Frentagonist Profile" description="Generate a <code>frentagonist profile</code> to help people\n\t\tdecide whether to be your <b>friend</b> or </b>archrival</b>." ></tpdc:featurelink>
+		`
+	});
+}

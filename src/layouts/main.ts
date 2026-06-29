@@ -93,6 +93,13 @@ export async function Main(slots: {
 							<div class='nav'>
 								<a href='/'>Home</a>
 								| <a href='/about.html'>About</a>
+						| <a href='/features/index.html'>Pointless Things</a>
+						| <a href='/apps/index.html'>Apps &amp; Games</a>
+						| <a href='/books.html'>Books</a>
+						| <a href='/words/index.html'>Words</a>
+						| <a href='/hs/index.html'>Horoscopes</a>
+						| <a href='/careers.html'>Careers</a>
+						| <a href='/terms.html'>Terms</a>
 								| <a href='/feed.rss' target='_blank' title='RSS feed'><img src='https://wp-assets.rss.com/blog/wp-content/uploads/2019/10/10111557/social_style_3_rss-512-1.png' style='height:0.9em; vertical-align:middle; margin-right:0.25em' alt='RSS'/>RSS</a>
 							</div>
 						</div>
