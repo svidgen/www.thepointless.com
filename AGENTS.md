@@ -73,7 +73,7 @@ This file describes the current repository layout and migration state for coding
 
 ## How to run
 - Install dependencies: `npm install`
-- Start dev server: `npm run start`
+- Start dev server (background): run `npm run start` in a background job and record the node PID for later termination. Example: `npm run start & echo $! > .devserver.pid` or `nohup npm run start > logs/devserver.log 2>&1 & echo $! > .devserver.pid`. To stop the server: `kill $(cat .devserver.pid)` and then `rm .devserver.pid`.
 - Build production code: `npm run build`
 
 ## Notes for agents
@@ -83,6 +83,15 @@ This file describes the current repository layout and migration state for coding
 - If asked to migrate content, map legacy files from `archive/` into `src/` rather than editing the legacy site in place.
 - If asked to improve build tooling, check `package.json`, `src/package.json`, and `api/package.json` for current workspace and script setup.
 
+Important: keep the migration summary up to date
+- When you (the agent) discover a new migration-relevant observation (build failure, dev-server behaviour, missing SSG output, etc.), immediately append a concise note to MIGRATION_SUMMARY.md describing:
+  1. What you observed (one line).
+  2. Where you observed it (file, log, URL, or command output).
+  3. Proposed next action (one line).
+- Commit the update with a message like: `migration: update summary — <short description>`.
+- If the user then instructs a decision (e.g. apply a fix), update MIGRATION_SUMMARY.md again to record the decision and the change made.
+
+This simple loop (observe → document → commit → act → document) keeps a single authoritative migration log other agents and humans can follow. Keep entries brief and factual; do not remove prior entries unless instructed.
 ## Quick structural map
 - `api/`
   - `index.ts`

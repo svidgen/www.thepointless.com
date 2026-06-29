@@ -13,3 +13,6 @@ pre-dist
 src/build_id.json
 
 api/dist
+
+# Local dev server PID file
+.devserver.pid
