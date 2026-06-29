@@ -80,13 +80,13 @@ export async function Main(slots: {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				${metaDescription}
 				<title>${browserBarTitle}</title>
-				<link rel='icon' type='image/svg+xml' href='/images/favicon.ico' />
-				<link rel='stylesheet' type='text/css' href='/default.css' />
+				<link rel='icon' type='image/svg+xml' href='/static/images/favicon.ico' />
+				<link rel='stylesheet' type='text/css' href='/static/default.css' />
 			</head>
 			<body>
 				<div class='main'>
 					<header>
-						<img class='logo' src='/images/big_giant.png' />
+						<img class='logo' src='/static/images/big_giant.png' />
 						<div>
 							<h1><a href='/'>${slots.siteTitle || TITLE}</a></h1>
 							<div class='tagline'>${slots.siteSubTitle ?? SUBTITLE}</div>

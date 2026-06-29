@@ -1,4 +1,4 @@
-export {
+import {
 	DomClass, setType, isa, getNodes,
 	MouseCoords, NodeBox,
 	MainLoop,
@@ -7,3 +7,7 @@ export {
 	InstallLink,
 	Game
 } from '../../../../lib/shooty-ship/game.cjs';
+
+export function hydrate() {
+	const x = [DomClass];
+}

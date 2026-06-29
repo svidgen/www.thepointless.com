@@ -6,9 +6,10 @@
     "src",
     "api"
   ],
+  "sideEffects": [],
   "scripts": {
-	  "start": "wirejs-scripts start",
-	  "build": "wirejs-scripts build"
+    "start": "wirejs-scripts start",
+    "build": "wirejs-scripts build"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,8 @@
   },
   "homepage": "https://github.com/svidgen/www.thepointless.com#readme",
   "devDependencies": {
-    "wirejs-scripts": "^3.0.188"
+    "@types/web-app-manifest": "^1.0.9",
+    "wirejs-scripts": "file:/Users/jonwire/repos/create-wirejs-app/packages/wirejs-scripts"
   },
   "dependencies": {
     "qrcode": "^1.5.0",

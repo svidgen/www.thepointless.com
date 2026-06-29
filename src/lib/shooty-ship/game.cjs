@@ -7,7 +7,7 @@ const { InstallLink } = require('../../components/install-link.cjs');
 const ShareLink = require('../../components/share.cjs');
 // require('./game.css');
 
-global.MainLoop = MainLoop;
+globalThis.MainLoop = MainLoop;
 
 let HIGHSCORE_KEY = 'shooty-ship-beta.highscore';
 let SHRAPNEL_TYPES;
