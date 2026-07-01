@@ -40,8 +40,9 @@ This file describes the current repository layout and migration state for coding
 - `src/ssg/` - static site generation entrypoints and generation utilities.
 
 ### Notable files
-- `src/layouts/main.ts` - shared main page layout used by routes.
-- `src/ssg/index.ts` - SSG entry and content generation utilities.
+- `src/layouts/main.ts` - shared main page layout used by all SSG pages, including the home page.
+- `src/ssg/index.ts` - SSG entry for the home page; uses `Main()` from `src/layouts/main.ts` like all other SSG pages.
+- `src/ssg/*.ts` - other SSG page generators; each uses `Main()` from `src/layouts`.
 - `src/package.json` - workspace package metadata for the source package.
 
 ## `api/` package
