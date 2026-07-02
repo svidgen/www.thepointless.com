@@ -85,14 +85,13 @@ This file describes the current repository layout and migration state for coding
 - If asked to improve build tooling, check `package.json`, `src/package.json`, and `api/package.json` for current workspace and script setup.
 
 Important: keep the migration summary up to date
-- When you (the agent) discover a new migration-relevant observation (build failure, dev-server behaviour, missing SSG output, etc.), immediately append a concise note to MIGRATION_SUMMARY.md describing:
+- When you (the agent) discover a new migration-relevant observation (build failure, dev-server behaviour, missing SSG output, etc.), append a concise note to MIGRATION_SUMMARY.md describing:
   1. What you observed (one line).
   2. Where you observed it (file, log, URL, or command output).
   3. Proposed next action (one line).
-- Commit the update with a message like: `migration: update summary — <short description>`.
 - If the user then instructs a decision (e.g. apply a fix), update MIGRATION_SUMMARY.md again to record the decision and the change made.
 
-This simple loop (observe → document → commit → act → document) keeps a single authoritative migration log other agents and humans can follow. Keep entries brief and factual; do not remove prior entries unless instructed.
+This simple loop (observe → document → act → document) keeps a single authoritative migration log other agents and humans can follow. Keep entries brief and factual; do not remove prior entries unless instructed.
 ## Quick structural map
 - `api/`
   - `index.ts`
