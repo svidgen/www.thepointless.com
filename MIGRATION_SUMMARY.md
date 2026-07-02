@@ -89,3 +89,8 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Observed: Built `dist/index.html` contains only the first paragraph from `src/ssg/index.ts` main content, despite `pre-dist/ssg/index.js` containing the full template.
 - Where: `dist/index.html`; source `src/ssg/index.ts`; compiled intermediate `pre-dist/ssg/index.js`.
 - Proposed next action: Wrap home page content in a single container element or adjust WireJS `html`/SSG handling of multi-root fragments, then rebuild.
+
+## Observation — nav-linked SSG pages need legacy route content (2026-07-02)
+- Observed: Several SSG pages linked from top/footer nav are abbreviated versus legacy `src/routes` content; `contribute.html` is linked but not emitted in `dist`.
+- Where: `src/ssg/books.ts`, `src/ssg/careers.ts`, `src/ssg/terms.ts`, `src/routes/*.md|html`, `dist/`.
+- Proposed next action: Port full route content into `src/ssg`, add `src/ssg/contribute.ts`, remove About from top nav only, and wrap multi-root SSG content in one container.
