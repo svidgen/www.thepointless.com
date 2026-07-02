@@ -173,3 +173,38 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Observed: Boom effect works after migration, and broken result shows super-clickometer messaging, but the follow-up link does not yet launch an actual sooper Clickometer mode.
 - Where: Manual browser/console test on `/clickometer.html` and `/clickometer-result.html`; migrated sources `src/ssg/clickometer.ts`, `src/ssg/clickometer-result.ts`, `static/apps/clickometer/clickometer.js`.
 - Proposed next action: Add `level=2`/sooper mode support to migrated Clickometer page and result flow.
+
+## Decision — restore Clickometer sooper mode (2026-07-02)
+- Decision/change: Added `level=2` support to migrated Clickometer; broken normal Clickometer results link to `/clickometer.html?level=2`, sooper mode does not break, submits level to results, doubles displayed click power, and uses legacy sooper result copy/images.
+- Where: `src/ssg/clickometer.ts`, `src/ssg/clickometer-result.ts`, `static/apps/clickometer/clickometer.js`.
+- Build/check result: `npm run build` and `npm test` pass; manual probe confirms broken link, sooper page label, hidden level, doubled score, and sooper mouse image.
+
+## Decision — reusable social/share and signup components for Clickometer result (2026-07-02)
+- Decision/change: Kept restored sooper Clickometer behavior, added lightweight WireJS v2 `SocialShare` and `MailingListSignup` SSG components, and wired Clickometer result sharing text/links dynamically from the score.
+- Where: `src/components/social-share.ts`, `src/components/mailing-list-signup.ts`, `src/ssg/clickometer-result.ts`, `static/default.css`.
+- Build/check result: `npm run build` passes; manual Playwright probe confirms no page errors and generated Twitter/email share URLs include the click power result.
+
+## Decision — capture site creative direction/persona (2026-07-02)
+- Decision/change: Added an open-source-friendly creative direction note documenting the desired pointlessness, visitor persona, and qualities to preserve; added “a professionally maintained waste of time” to the README.
+- Where: `docs/pointlessness.md`, `README.md`.
+- Next action: Use this guidance when migrating remaining legacy content so the site becomes better built without becoming too useful or important.
+
+## Decision — fold pointlessness guidance into public About page (2026-07-02)
+- Decision/change: Removed the direct internal `docs/pointlessness.md` note after flipping its important creative guidance into the public About page as denied allegations.
+- Where: removed `docs/pointlessness.md`; public copy lives in `src/ssg/about.ts`.
+- Next action: Continue preserving pointlessness through in-world copy instead of direct explanatory documentation where possible.
+
+## Decision — scalable award certificate URL (2026-07-02)
+- Decision/change: Moved the Pointless Award certificate to a certificate-numbered URL and updated the badge link; kept the old descriptive award URL as a canonical meta-refresh page.
+- Where: `src/ssg/awards/certificates/TPDC-PMWOT-0000000001.ts`, `src/ssg/awards/professionally-maintained-waste-of-time.ts`, `src/components/pointless-award.ts`.
+- Build/check result: `npm run build` succeeds and emits both the numbered certificate page and legacy descriptive URL page. Legacy event warning remains accepted debt.
+
+## Decision — make award certificate route SSR/data-backed (2026-07-02)
+- Decision/change: Converted numbered Pointless Award certificate from SSG to an SSR wildcard route backed by hard-coded JSON data, keeping the first certificate number `TPDC-PMWOT-0000000001` and preserving the descriptive URL as a canonical meta-refresh page.
+- Where: `src/ssr/awards/certificates/%.ts`, `src/lib/pointless-awards.json`, `src/lib/pointless-awards.ts`, `src/ssg/awards/professionally-maintained-waste-of-time.ts`, `src/components/pointless-award.ts`.
+- Build/check result: `npm run build` and `npm test` pass; local SSR probe returned certificate page for `/awards/certificates/TPDC-PMWOT-0000000001.html` and a not-found certificate shell for unknown certificate numbers.
+
+## Decision — add repo discovery docs for WireJS/content migration (2026-07-02)
+- Decision/change: Added concise technical docs for WireJS SSG/SSR/static/PWA conventions and content migration/tone notes, then updated `AGENTS.md` to point agents to those docs and the tongue-in-cheek About page.
+- Where: `docs/wirejs-structure.md`, `docs/content-migration.md`, `AGENTS.md`.
+- Next action: Keep these docs updated when adding new SSR patterns, PWA asset conventions, or migration decisions that future agents need for efficient discovery.

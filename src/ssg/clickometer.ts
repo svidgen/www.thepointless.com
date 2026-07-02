@@ -6,7 +6,7 @@ export async function generate() {
 		title: 'The Clickometer',
 		content: html`<div>
 			<div>
-				Our Clickometer is the most sophisticated click-analysis tool on the net.
+				<span id='clickometer-name'>Our Clickometer</span> is the most sophisticated click-analysis tool on the net.
 				<ol>
 					<li>Click or Tap the <b>Clickometer</b> as many times as you can in <span style='color: #993333; font-weight: bold; text-decoration: underline; font-style: italic;'>five seconds</span>.</li>
 					<li>Brace yourself.</li>
@@ -28,9 +28,19 @@ export async function generate() {
 				</div>
 				<form style='text-align: center;' id='clickometer_form' name='clickometer' action='/clickometer-result.html' method='GET'>
 					<input type='hidden' id='clickpower' name='p' />
+					<input type='hidden' id='clickometer_level' name='level' value='1' />
 					<input id='submit_button' type='submit' class='toggleable_button' value='Get Your Results' disabled='disabled' />
 				</form>
 			</div>
+			<script>
+				(function() {
+					var level = Math.max(1, Math.min(2, parseInt(new URL(location.href).searchParams.get('level') || '1')));
+					document.getElementById('clickometer_level').value = level;
+					if (level === 2) {
+						document.getElementById('clickometer-name').textContent = 'Our s00p3r cLiCkOmEtEr';
+					}
+				}());
+			</script>
 			<script src='/static/apps/clickometer/clickometer.js'></script>
 		</div>`
 	});

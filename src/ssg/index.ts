@@ -1,5 +1,6 @@
 import { html } from 'wirejs-dom/v2';
 import type { Context } from 'wirejs-resources';
+import { PointlessAwardBadge } from '../components/pointless-award';
 import { Main } from '../layouts';
 
 export async function generate(context?: Context) {
@@ -27,6 +28,8 @@ export async function generate(context?: Context) {
 			</p>
 
 			<p>We believe this is an acceptable compromise for greatness.</p>
+
+			${PointlessAwardBadge()}
 
 			<hr />
 

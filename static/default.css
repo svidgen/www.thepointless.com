@@ -244,6 +244,107 @@ pre.code-block {
 	overflow-x: scroll;
 }
 
+.pointless-award-badge {
+	max-width: 32rem;
+	margin: 1.5rem auto;
+}
+
+.pointless-award-badge a {
+	display: flex;
+	align-items: center;
+	gap: 0.85rem;
+	padding: 0.85rem 1rem;
+	border: 1px dashed #b99b3d;
+	border-radius: 0.5rem;
+	background: #fffdf3;
+	box-shadow: 0 1px 4px #ddd;
+	color: #533;
+	text-decoration: none;
+}
+
+.pointless-award-badge a:hover,
+.pointless-award-badge a:focus {
+	background: #fff8d8;
+}
+
+.award-star {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	border: 2px solid #b99b3d;
+	background: #ffe68a;
+	color: #7a5312;
+	font-size: 2rem;
+	line-height: 1;
+	text-shadow: #fff 1px 1px 0;
+}
+
+.pointless-award-badge span span,
+.pointless-award-badge strong {
+	display: block;
+}
+
+.award-kicker {
+	font-size: 0.85rem;
+	color: var(--color-muted);
+}
+
+.pointless-certificate {
+	max-width: 44rem;
+	margin: 2rem auto;
+	padding: 2rem;
+	border: 0.35rem double #b99b3d;
+	background: #fffdf3;
+	text-align: center;
+	box-shadow: 0 2px 8px #ddd;
+}
+
+.certificate-seal {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 5rem;
+	height: 5rem;
+	margin-bottom: 1rem;
+	border-radius: 50%;
+	border: 3px solid #b99b3d;
+	background: #ffe68a;
+	color: #7a5312;
+	font-size: 3rem;
+}
+
+.pointless-certificate h2 {
+	font-size: 2.5rem;
+	font-variant: small-caps;
+	margin-bottom: 0.25rem;
+}
+
+.pointless-certificate h3 {
+	font-size: 1.5rem;
+	margin-top: 0.25rem;
+}
+
+.pointless-certificate blockquote {
+	font-size: 1.4rem;
+	font-style: italic;
+	margin: 1.5rem;
+}
+
+.certificate-kicker,
+.certificate-fine-print,
+.certificate-number {
+	color: var(--color-muted);
+}
+
+.certificate-number {
+	font-size: 0.9rem;
+	margin-top: 1.5rem;
+}
+
 .dot-form {
 	text-align: center;
 	margin: 1.5rem 0;
@@ -316,4 +417,105 @@ input[type='submit']:disabled {
 
 .clickometer-scoreline .dot-result {
 	margin: 0;
+}
+
+.social-share {
+	margin: 1.5rem 0;
+	padding: 1rem 0;
+	text-align: center;
+	color: var(--color-muted);
+}
+
+.social-share-header {
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+	color: #c00;
+}
+
+.social-share-links {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+}
+
+.social-share-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
+	margin: 0;
+	padding: 0.35rem 0.55rem;
+	border: 0;
+	box-shadow: none;
+	background: transparent;
+	color: var(--color-action);
+	font-family: inherit;
+	font-size: 1rem;
+	font-weight: bold;
+	line-height: 22px;
+	text-decoration: none;
+	vertical-align: middle;
+	cursor: pointer;
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+.social-share-link:hover,
+.social-share-link:focus {
+	background: transparent;
+	text-decoration: underline;
+}
+
+.social-share-link img {
+	height: 22px;
+	width: auto;
+}
+
+.mailing-list-signup {
+	max-width: 28rem;
+	margin: 1.5rem auto;
+	padding: 1rem;
+	background: #fff;
+}
+
+.mailing-list-signup h3 {
+	margin-top: 0;
+}
+
+.mailing-list-signup label,
+.mailing-list-signup label span,
+.mailing-list-signup input[type='email'] {
+	display: block;
+}
+
+.mailing-list-signup label span {
+	font-weight: bold;
+	color: var(--color-muted);
+	margin-bottom: 0.25rem;
+}
+
+.mailing-list-signup input[type='email'] {
+	box-sizing: border-box;
+	width: 100%;
+	border: 1px solid var(--border-color-muted);
+	border-radius: 0.25rem;
+	padding: 0.5rem;
+	margin-bottom: 0.75rem;
+	font-family: inherit;
+	font-size: 1rem;
+}
+
+.mailchimp-branding {
+	margin: 0.75rem 0 0;
+	text-align: center;
+}
+
+.mailchimp-branding img {
+	display: inline-block;
+	width: 180px;
+	max-width: 100%;
+	height: auto;
+	opacity: 0.75;
 }

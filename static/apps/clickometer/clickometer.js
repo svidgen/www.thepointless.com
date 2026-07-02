@@ -9,8 +9,8 @@ var clicks = 0;
 // game confirmation variables
 var time = 5;
 
-// get the level and breakability from the form
-var level = 1;
+// get the level and breakability from the URL/form
+var level = Math.max(1, Math.min(2, parseInt(new URL(location.href).searchParams.get('level') || '1')));
 var breakable = level === 1;
 
 // bounds in clicks/second
@@ -116,6 +116,8 @@ function finishEvent() {
 
 		event_finished = true;
 		document.getElementById('clickpower').value = tval.toFixed(2);
+		var levelInput = document.getElementById('clickometer_level');
+		if (levelInput) levelInput.value = level;
 		document.getElementById('timer').innerHTML = 'STOP!';
 		document.getElementById('meter_bar').style.width = tval + '%';
 
