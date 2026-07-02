@@ -5,7 +5,8 @@ export async function generate() {
 	return Main({
 		title: 'Apps & Games',
 		content: html`
-			<h2>Games</h2>
+			<div>
+				<h2>Games</h2>
 
 			<tpdc:featurelink href='apps/shooty-ship/' icon='apps/shooty-ship/img/icon.png' title='Shooty Ship (Original)' description='Pew pew pew! Need I say more?' target='_blank'></tpdc:featurelink>
 
@@ -23,7 +24,8 @@ export async function generate() {
 
 			<tpdc:featurelink href='clickometer.html' icon='images/75px_cracked_mouse.png' title="The Clickometer" description='Test your clicking <b>prowess</b>.'></tpdc:featurelink>
 
-			<tpdc:featurelink href='hs/frentagonist/' icon='images/frentagonist-icon.png' title="Frentagonist Profile" description="Generate a <code>frentagonist profile</code> to help people\n\t\tdecide whether to be your <b>friend</b> or </b>archrival</b>." ></tpdc:featurelink>
+				<tpdc:featurelink href='hs/frentagonist/' icon='images/frentagonist-icon.png' title="Frentagonist Profile" description="Generate a <code>frentagonist profile</code> to help people\n\t\tdecide whether to be your <b>friend</b> or </b>archrival</b>." ></tpdc:featurelink>
+			</div>
 		`
 	});
 }

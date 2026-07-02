@@ -100,7 +100,6 @@ export async function Main(slots: {
 							<div class='tagline'>${slots.siteSubTitle ?? SUBTITLE}</div>
 							<div class='nav'>
 								<a href='/'>Home</a>
-								| <a href='/about.html'>About</a>
 								| <a href='/apps/index.html'>Apps &amp; Games</a>
 								| <a href='/books.html'>Books</a>
 								| <a href='/words/index.html'>Words</a>

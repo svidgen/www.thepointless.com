@@ -94,3 +94,8 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Observed: Several SSG pages linked from top/footer nav are abbreviated versus legacy `src/routes` content; `contribute.html` is linked but not emitted in `dist`.
 - Where: `src/ssg/books.ts`, `src/ssg/careers.ts`, `src/ssg/terms.ts`, `src/routes/*.md|html`, `dist/`.
 - Proposed next action: Port full route content into `src/ssg`, add `src/ssg/contribute.ts`, remove About from top nav only, and wrap multi-root SSG content in one container.
+
+## Decision — nav page content port (2026-07-02)
+- Decision/change: Removed About from the top nav, kept it in footer nav, ported fuller legacy route content into SSG nav pages, added `src/ssg/contribute.ts`, and wrapped multi-root content to avoid truncation.
+- Where: `src/layouts/main.ts`, `src/ssg/index.ts`, `src/ssg/books.ts`, `src/ssg/careers.ts`, `src/ssg/terms.ts`, `src/ssg/contribute.ts`, related SSG pages.
+- Build result: `npm run build` succeeds and now emits `dist/contribute.html`; build still warns about suspicious `!o[eventName] instanceof Event` in `src/lib/event.cjs:76`.

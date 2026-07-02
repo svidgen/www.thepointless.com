@@ -15,7 +15,7 @@ export async function generate(context?: Context) {
 	`).join('\n');
 
 	return Main({
-		content: html`
+		content: html`<div>
 			<p>In an internet of darkness there shines forth a <strong>light</strong>.</p>
 
 			<p>Miscellaneous "bros" are trying to scam you out of your money with Web 3.0 and NFT crypto hax. But, here we are, just <strong>M</strong>aking <strong>W</strong>eb 1.0 <strong>G</strong>reat <strong>A</strong>gain. (<strong>MEGA</strong>)</p>
@@ -32,6 +32,6 @@ export async function generate(context?: Context) {
 
 			<h2>The News</h2>
 			<div class='news'>${newsItemsHtml}</div>
-		`
+		</div>`
 	});
 }

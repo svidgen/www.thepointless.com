@@ -6,6 +6,7 @@ export async function generate(context?: Context) {
 	return Main({
 		title: 'About',
 		content: html`
+			<div>
 			<div class='marketing-point'>
 				<div>
 					<img alt='factory' title='our dot-com. image stolen from http://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Factory_icon.svg/75px-Factory_icon.svg.png' src='/static/images/75px_Factory.png' />
@@ -37,6 +38,7 @@ export async function generate(context?: Context) {
 			</div>
 
 			<div><tpdc:share header="Proclaim the good news."></tpdc:share></div>
+			</div>
 		`
 	});
 }
