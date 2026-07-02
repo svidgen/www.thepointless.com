@@ -14,6 +14,7 @@ export async function generate() {
 				<ul>
 					<li><a href='/words/unclassified/index.html'>Unclassified Words</a></li>
 					<li><a href='/words/serious/index.html'>In All Seriousness</a></li>
+					<li><a href='/words/silly/index.html'>Silly Words</a></li>
 				</ul>
 			</div>
 		`

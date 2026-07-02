@@ -29,7 +29,7 @@ export async function generate() {
 
 				<tpdc:featurelink href='https://www.amazon.com/red-dot-thepointless-dot-com-presents/dp/B08C96QQPD' icon='/images/books/the-red-dot.jpg' title='The Red Dot' target='_blank'>
 					<div data-id='description'>
-						Based on a <a href='./reddot'>true story</a>.
+						Based on a <a href='/reddot.html'>true story</a>.
 						<p>By <a href='https://www.thepointless.com'>Jon Wire</a> (words and dot).</p>
 					</div>
 				</tpdc:featurelink>

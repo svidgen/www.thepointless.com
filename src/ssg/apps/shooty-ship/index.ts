@@ -10,8 +10,11 @@ export async function generate() {
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 				<meta name='theme-color' content='#422' />
 				<link rel='manifest' href='manifest.json' crossorigin="use-credentials" />
-				<link rel="shortcut icon" type="image/png" href="img/icon.png" />
-				<link rel="apple-touch-icon" type="image/png" href="img/icon-180.png" />
+				<link rel="shortcut icon" type="image/png" href="/static/apps/shooty-ship/img/icon.png" />
+				<link rel="apple-touch-icon" type="image/png" href="/static/apps/shooty-ship/img/icon-180.png" />
+				<link rel="stylesheet" href="/static/apps/shooty-ship/css/sheet-old.css" />
+				<link rel="stylesheet" href="js/game.css" />
+				<script>globalThis.SHOOTY_SHIP_ASSET_BASE = '/static/apps/shooty-ship/';</script>
 			</head>
 			<body id="thebody">
 				<!-- Google tag (gtag.js) -->

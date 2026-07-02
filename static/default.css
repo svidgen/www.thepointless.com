@@ -243,3 +243,38 @@ pre.code-block {
 	tab-size: 4;
 	overflow-x: scroll;
 }
+
+.dot-form {
+	text-align: center;
+	margin: 1.5rem 0;
+}
+
+.dot-done-button {
+	font-family: inherit;
+	font-size: 1rem;
+	font-weight: bold;
+	color: #533;
+	background: #fff;
+	border: 1px solid var(--border-color-muted);
+	border-radius: 0.25rem;
+	padding: 0.55rem 0.9rem;
+	box-shadow: silver 1px 1px 2px;
+	cursor: pointer;
+}
+
+.dot-done-button:hover,
+.dot-done-button:focus {
+	background: #f8f5f5;
+}
+
+.dot-result-card {
+	border: 1px dashed var(--border-color-subtle);
+	padding: 1rem;
+	margin: 1rem 0;
+}
+
+.dot-result {
+	text-align: center;
+	font-size: 1.25rem;
+	font-weight: bold;
+}

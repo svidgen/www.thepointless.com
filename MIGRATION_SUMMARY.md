@@ -99,3 +99,57 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Removed About from the top nav, kept it in footer nav, ported fuller legacy route content into SSG nav pages, added `src/ssg/contribute.ts`, and wrapped multi-root content to avoid truncation.
 - Where: `src/layouts/main.ts`, `src/ssg/index.ts`, `src/ssg/books.ts`, `src/ssg/careers.ts`, `src/ssg/terms.ts`, `src/ssg/contribute.ts`, related SSG pages.
 - Build result: `npm run build` succeeds and now emits `dist/contribute.html`; build still warns about suspicious `!o[eventName] instanceof Event` in `src/lib/event.cjs:76`.
+
+## Observation — event helper warning impact (2026-07-02)
+- Observed: Build warning comes from `src/lib/event.cjs` condition `!o[eventName] instanceof Event`; due to operator precedence it never tests the intended negated `instanceof`, and the same branch references undefined `TG.Event`.
+- Where: `src/lib/event.cjs:77-78`; used by `src/lib/shooty-ship/game.cjs` and imported by `src/ssg/apps/shooty-ship/js/game.ts`; legacy variants also exist under archived/static Shooty Ship app bundles.
+- Proposed next action: Fix the condition to `!(o[eventName] instanceof Event)` and replace `new TG.Event(...)` with `new Event(...)`, then smoke-test Shooty Ship initialization/readiness flows.
+
+## Decision — leave legacy Shooty Ship event helper unchanged (2026-07-02)
+- Decision/change: Do not modify `src/lib/event.cjs` for the current build warning because Shooty Ship is long-running legacy behavior and there is no confirmed observable bug.
+- Where: `src/lib/event.cjs:77-78`; build warning from `npm run build`.
+- Next action: Revisit only if Shooty Ship readiness/event behavior breaks in testing; otherwise treat as legacy-warning debt.
+
+## Observation — live vs local content crawl (2026-07-02)
+- Observed: Quick crawl compared `https://www.thepointless.com/` with `http://localhost:3000/`; local nav/footer pages mostly match core text, but `/reddot` is 404 locally, `/words/unclassified/index.html` and `/words/serious/index.html` are linked locally and 404, and `/apps/index.html` is a skeletal page with no app links/content.
+- Where: curl/python crawl of live and localhost:3000; legacy sources under `src/routes/reddot.html`, `src/routes/words/*`, and app/game assets under `src/ssg/apps/*`.
+- Proposed next action: Prioritize migrating linked missing pages and obvious skeletal pages before style polish: add Red Dot SSG route/assets, add Words subcategory SSG pages, flesh out Apps & Games index, then rerun link/image crawl.
+
+## Decision — migrated first crawl content gaps (2026-07-02)
+- Decision/change: Added SSG Red Dot page, added Words subcategory pages, replaced skeletal Apps & Games content with visible lists, changed homepage news links to local anchors, and avoided linking still-pending app/word pages that would 404.
+- Where: `src/ssg/reddot.ts`, `src/ssg/words/index.ts`, `src/ssg/words/{unclassified,serious,silly}/index.ts`, `src/ssg/apps/index.ts`, `src/news.cjs`, `src/ssg/books.ts`.
+- Build/check result: `npm run build` succeeds; local crawl from `/` through internal links/images found no 404s. Build still emits the accepted legacy Shooty Ship event warning.
+
+## Decision — Red Dot result flow and Shooty Ship smoke tests (2026-07-02)
+- Decision/change: Added `dotresults` SSG page, normalized Red Dot submit button styling, linked Shooty Ship generated CSS, copied Shooty Ship app assets into `dist/apps/shooty-ship`, and added Playwright smoke tests via `npm run test`.
+- Where: `src/ssg/dotresults.ts`, `src/ssg/reddot.ts`, `static/default.css`, `src/ssg/apps/shooty-ship/index.ts`, `scripts/copy-ssg-static-assets.js`, `playwright.config.ts`, `tests/migration-smoke.spec.ts`, `package.json`.
+- Build/check result: `npm run build` succeeds and copies Shooty Ship audio/css/img assets; `npm test` passes 3 Chromium smoke tests for Red Dot scoring/button styling and Shooty Ship asset/page initialization. Legacy Shooty Ship event warning remains accepted debt.
+
+## Observation/decision — Shooty Ship static asset paths and service worker (2026-07-02)
+- Observed: Shooty Ship initialized, but share icon requests went to `/images/...` and 404ed locally; the app service worker cached relative app assets but its fetch handler always returned network fetches, so it was not actually serving cached fallbacks.
+- Decision/change: Changed shared share-component default assets to `/static/images`, set Shooty Ship share icons to app-relative `img`, added `qr-code.svg` to Shooty Ship img assets, expanded Shooty Ship SW cache list, and changed SW fetch to network-first/cache-fallback.
+- Where: `src/components/share.cjs`, `src/lib/shooty-ship/game.cjs`, `src/ssg/apps/shooty-ship/sw.ts`, `src/ssg/apps/shooty-ship/img/qr-code.svg`.
+- Build/check result: `npm run build` and `npm test` pass; Playwright network probe found no localhost 404s on `/apps/shooty-ship/index.html`. Legacy event warning remains accepted debt.
+
+## Observation/decision — manual live/local Shooty Ship comparison (2026-07-02)
+- Observed: Manual Playwright comparison showed live Shooty Ship had full-screen game CSS and working app assets, while local dev had app-relative 404s after dev-server startup and missing legacy game layout CSS; local game rendered as normal document flow instead of full-screen until fixed.
+- Decision/change: Linked `css/sheet-old.css` from Shooty Ship HTML, added it to the SW cache list, and changed the dev `start` script to run an asset-copy watcher so `dist/apps/shooty-ship/{audio,css,img}` is restored after the dev server recreates `dist`.
+- Where: `src/ssg/apps/shooty-ship/index.ts`, `src/ssg/apps/shooty-ship/sw.ts`, `scripts/copy-ssg-static-assets.js`, `package.json`.
+- Build/check result: Restarted dev server; `/apps/shooty-ship/img/icon.png` and `/apps/shooty-ship/css/sheet-old.css` now return 200 locally; live/local layout bounding boxes now match the full-screen square game area; `npm test` passes.
+
+## Decision — PWA assets belong under static CDN paths (2026-07-02)
+- Decision/change: Moved Shooty Ship runtime assets into `static/apps/shooty-ship`, removed build/start dist-copy workaround, and changed Shooty Ship HTML/game code to load images/audio/CSS from `/static/apps/shooty-ship/...` on first load.
+- Where: `static/apps/shooty-ship/**`, `src/ssg/apps/shooty-ship/index.ts`, `src/ssg/apps/shooty-ship/manifest.json.ts`, `src/lib/shooty-ship/game.cjs`, `package.json`.
+- Service worker: `src/ssg/apps/shooty-ship/sw.ts` now caches static CDN URLs and proxies legacy app-relative `img/`, `audio/`, and `css/` requests to `/static/apps/shooty-ship/...` as a compatibility fallback.
+- Build/check result: `npm run build` and `npm test` pass; manual local probe shows Shooty Ship first-load assets now use `/static/apps/shooty-ship/...` and no localhost app-asset 404s remain.
+
+## Decision — Shooty Ship root-domain link (2026-07-02)
+- Decision/change: Changed the Shooty Ship `thepointless.com` copyright/home link from hard-coded `https://www.thepointless.com` to `location.origin + '/'`, while keeping `/` as the static fallback href.
+- Where: `src/lib/shooty-ship/game.cjs`.
+- PWA note: For an installed same-origin PWA, `location.origin` should still be the installed app's served origin, so the link points back to that deployment's root domain; offline behavior still depends on whether the root page is cached/available.
+- Build/check result: `npm run build` and `npm test` pass.
+
+## Decision — remove duplicated Shooty Ship runtime assets from SSG tree (2026-07-02)
+- Decision/change: Removed duplicated Shooty Ship `audio/`, `css/`, and `img/` runtime asset folders from `src/ssg/apps/shooty-ship`; canonical copies now live under `static/apps/shooty-ship` and are referenced/cached from there.
+- Where: removed `src/ssg/apps/shooty-ship/{audio,css,img}`; retained app source/generators under `src/ssg/apps/shooty-ship`.
+- Build/check result: Initial build failed with `ENOTEMPTY` while dev server held `pre-dist`; after stopping dev server and clearing `dist`/`pre-dist`, `npm run build` and `npm test` pass. Legacy event warning remains accepted debt.

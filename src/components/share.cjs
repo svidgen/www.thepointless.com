@@ -205,7 +205,7 @@ module.exports = DomClass(template, function Share() {
 	// hmm ... i don't like this.
 	// but, it let's us share the share code between the main site
 	// and our individual PWA's.
-	const imagePath = this.imagePath || '/images';
+	const imagePath = this.imagePath || '/static/images';
 	this.facebook_link.firstChild.src = `${imagePath}/fb_icon_22px.png`;
 	this.twitter_link.firstChild.src = `${imagePath}/twitter_logo_22px.png`;
 	this.email_link.firstChild.src = `${imagePath}/email_logo_22px_h.png`;

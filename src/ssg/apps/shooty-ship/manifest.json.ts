@@ -8,7 +8,7 @@ export function generate(): WebAppManifest {
 		description: "Pew pew pew!",
 		icons: [
 			{
-				src: "/apps/shooty-ship/img/shooty-ship-icon-512.png",
+				src: "/static/apps/shooty-ship/img/shooty-ship-icon-512.png",
 				type: "image/png",
 				sizes: "512x512"	
 			}

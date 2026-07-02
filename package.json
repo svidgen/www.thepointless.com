@@ -9,7 +9,8 @@
   "sideEffects": [],
   "scripts": {
     "start": "wirejs-scripts start",
-    "build": "wirejs-scripts build"
+    "build": "wirejs-scripts build",
+    "test": "playwright test"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/svidgen/www.thepointless.com#readme",
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@types/web-app-manifest": "^1.0.9",
     "wirejs-scripts": "file:/Users/jonwire/repos/create-wirejs-app/packages/wirejs-scripts"
   },

@@ -1,7 +1,7 @@
 const news = [
 	{
 		title: "What's taking so long? And where is my fungible dot token!?",
-		link: "https://www.thepointless.com/#whats-taking-so-long-and-where-is-my-fungible-dot-token",
+		link: "/#whats-taking-so-long-and-where-is-my-fungible-dot-token",
 		description: `It isn't easy when a dot-com as reputable and beloved as the one and only pointless dot-com falls short of its dedicated patrons' expecations. And indeed, we have fallen short. As you can plainly see, our last public update was a whopping eight months ago when we promised semi-fungible red dot tokens. "And where are they?" you ask.
 		
 		And boy, are you ever right to ask. But boy, do we ever have some answer. Read it over at thepointless.com.`.replace(/\t+/, ''),
@@ -11,7 +11,7 @@ const news = [
 
 		You see, it all started six months ago. We had millions of these virtual red dots just laying around, awaiting token fungitization. And we said, "Hey, let's fungitize these dots." But see, that's where things got hairy &mdash; really, literally hairy.
 
-		For reasons unbeknownst to me, the dots started sprouting beard hairs. You can't even make this stuff up. They grew giant beards, formed a biker gang, and literally rode off. Red dots, which you normally expect to be doing literally nothing ([at least around here](/reddot)), grew beards, and rode into the freaking sunset.
+		For reasons unbeknownst to me, the dots started sprouting beard hairs. You can't even make this stuff up. They grew giant beards, formed a biker gang, and literally rode off. Red dots, which you normally expect to be doing literally nothing ([at least around here](/reddot.html)), grew beards, and rode into the freaking sunset.
 
 		It was majestic. It was a little scary. And in the end, it's actually pretty infuriating. We had big plans for these dots, their tokenization, their fungitization, etc.. They were going to be famous. And now where are they?
 
@@ -28,7 +28,7 @@ const news = [
 	},
 	{
 		title: "Red Dot Fungible Token?",
-		link: "https://www.thepointless.com/#red-dot-fungible-token",
+		link: "/#red-dot-fungible-token",
 		description: "It has been suggested that thepointless.com launch its very own Red Dot Fungible Token. We don't necessarily disagree. But, what does that mean? Read more at thepointless.com.",
 		body: `It has been suggested that thepointless.com launch
 			<b>its very own</b> <a href="https://github.com/svidgen/www.thepointless.com/issues/12">Red Dot Fungible Token</a>.

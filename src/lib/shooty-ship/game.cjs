@@ -9,6 +9,8 @@ const ShareLink = require('../../components/share.cjs');
 
 globalThis.MainLoop = MainLoop;
 
+const getAssetUrl = (path) => `${globalThis.SHOOTY_SHIP_ASSET_BASE || './'}${path}`;
+
 let HIGHSCORE_KEY = 'shooty-ship-beta.highscore';
 let SHRAPNEL_TYPES;
 let ENEMY_TYPES;
@@ -63,7 +65,7 @@ const Game = DomClass(gameTemplate, function _Board() {
 	// require()'d CSS rewrites url()'s to be relative to the CSS file.
 	// normally, that's what you'd want. but, it's not what we want, especially
 	// with a common sheet across PWA's.
-	this.style.backgroundImage = "url('./img/shiny.jpg')";
+	this.style.backgroundImage = `url('${getAssetUrl('img/shiny.jpg')}')`; 
 
 	this.enable = function() {
 		if (!this.enabled) {
@@ -386,7 +388,7 @@ const Ship = DomClass('<ss:ship></ss:ship>', function Ship() {
 	this.x = this.x || 0;
 	this.y = this.y || 0;
 
-	this.style.backgroundImage = "url(./img/shooty-ship.png)";
+	this.style.backgroundImage = `url(${getAssetUrl('img/shooty-ship.png')})`; 
 
 	MagicallySizedObject.apply(this);
 
@@ -601,7 +603,7 @@ const Bullet = DomClass('<ss:bullet></ss:bullet>', function _Bullet() {
 	Projectile.apply(this);
 	setType(this, 'SS.Bullet');
 }); // Bullet
-Bullet.sound = "audio/pew-128.mp3";
+Bullet.sound = getAssetUrl('audio/pew-128.mp3');
 AudioPool.prepare(Bullet.sound);
 
 
@@ -675,7 +677,7 @@ const BigEnemy = DomClass('<ss:bigenemy></ss:bigenemy>', function _BigEnemy() {
 			_t.style.width = img.width * _t.scale + 'vmin';
 			_t.style.height = img.height * _t.scale + 'vmin';
 		};
-		img.src = 'img/' + this.subtype + ".png";
+		img.src = getAssetUrl('img/' + this.subtype + ".png");
 		this.style.backgroundImage = "url('" + img.src + "')";
 	}
 
@@ -747,7 +749,7 @@ const Shrapnel = DomClass('<ss:shrapnel></ss:shrapnel>', function Shrapnel() {
 			_t.style.width = img.width * _t.scale + 'vmin';
 			_t.style.height = img.height * _t.scale + 'vmin';
 		};
-		img.src = 'img/' + this.subtype + ".png";
+		img.src = getAssetUrl('img/' + this.subtype + ".png");
 		this.style.backgroundImage = "url('" + img.src + "')";
 	}
 
@@ -801,7 +803,7 @@ const Explosion = DomClass(explosionTemplate, function _Explosion() {
 
 	setType(this, 'SS.Explosion');
 }); // Explosion
-Explosion.sound = 'audio/pkewh.mp3';
+Explosion.sound = getAssetUrl('audio/pkewh.mp3');
 AudioPool.prepare(Explosion.sound);
 
 
@@ -838,8 +840,8 @@ const gameOverSplashTemplate = `<ss:gameoversplash>
 		<ss:bannerad data-id='bannerad'></ss:bannerad>
 		<ss:startbutton data-id='restart'>Restart</ss:startbutton>
 		<div data-id='share'></div>
-		<ss:installlink category='game' icon='img/icon.png'></ss:installlink>
-		<div class='copyright'><a target='_blank' href='https://www.thepointless.com'>www.thepointless.com</a></div>
+		<ss:installlink category='game' icon='/static/apps/shooty-ship/img/icon.png'></ss:installlink>
+		<div class='copyright'><a data-id='homeLink' target='_blank' href='/'>thepointless.com</a></div>
 	</div>
 </ss:gameoversplash>`;
 
@@ -847,13 +849,15 @@ const GameOverSplash = DomClass(gameOverSplashTemplate, function _GameOverSplash
 	var _t = this;
 
 	this.delay = this.delay || 1000;
+	this.homeLink.href = location.origin + '/';
 
 	const score = parseInt(this.score) || 0;
 
 	this.share = new ShareLink({
 		title: SHARE_TITLE.replace('{SCORE}', score),
 		text: SHARE_TEXT.replace('{SCORE}', score),
-		header: SHARE_HEADER.replace('{SCORE}', score)
+		header: SHARE_HEADER.replace('{SCORE}', score),
+		imagePath: getAssetUrl('img')
 	});
 
 	if (score == 0) {
