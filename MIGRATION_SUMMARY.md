@@ -85,3 +85,7 @@ This file captures what has been changed in the cdk-migration branch relative to
 - 2026-06-29: Dev-server directory handling remains: directory requests like `/apps/shooty-ship/` do not automatically resolve to `index.html` (explicit `/index.html` works). This still needs addressing in the dev-hosting layer.
 
 If you want, I'll generate the file-level audit lists now and append them under this file (or create separate CSV/TSV outputs). Which do you want me to run next?
+## Observation — landing page content truncation (2026-07-02)
+- Observed: Built `dist/index.html` contains only the first paragraph from `src/ssg/index.ts` main content, despite `pre-dist/ssg/index.js` containing the full template.
+- Where: `dist/index.html`; source `src/ssg/index.ts`; compiled intermediate `pre-dist/ssg/index.js`.
+- Proposed next action: Wrap home page content in a single container element or adjust WireJS `html`/SSG handling of multi-root fragments, then rebuild.
