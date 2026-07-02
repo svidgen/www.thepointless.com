@@ -153,3 +153,23 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Removed duplicated Shooty Ship `audio/`, `css/`, and `img/` runtime asset folders from `src/ssg/apps/shooty-ship`; canonical copies now live under `static/apps/shooty-ship` and are referenced/cached from there.
 - Where: removed `src/ssg/apps/shooty-ship/{audio,css,img}`; retained app source/generators under `src/ssg/apps/shooty-ship`.
 - Build/check result: Initial build failed with `ENOTEMPTY` while dev server held `pre-dist`; after stopping dev server and clearing `dist`/`pre-dist`, `npm run build` and `npm test` pass. Legacy event warning remains accepted debt.
+
+## Decision — migrate Apps & Games clicky pages (2026-07-02)
+- Decision/change: Migrated Green Dot, Pregnancy Test, Zebra Awareness/test/result, Clickometer/result into SSG and linked them from Apps & Games; Clickometer script is served as a static app asset.
+- Where: `src/ssg/greendot.ts`, `src/ssg/preggertest.ts`, `src/ssg/zebra-awareness*.ts`, `src/ssg/clickometer*.ts`, `static/apps/clickometer/clickometer.js`, `src/ssg/apps/index.ts`, `src/ssg/dotresults.ts`.
+- Build/check result: `npm run build` and `npm test` pass; crawl from `/apps/index.html` found no internal page/image/script 404s. Manual smoke caught and fixed legacy `global` usage in Clickometer script by switching to `globalThis`.
+
+## Decision — normalize migrated button styling (2026-07-02)
+- Decision/change: Added global default styling for `button`, submit/button inputs, and `.button` so migrated legacy forms do not render with browser-default ugly buttons.
+- Where: `static/default.css`; affects Zebra Awareness test, Clickometer, dot forms, and future migrated legacy forms.
+- Build/check result: `npm run build` passes; Playwright style probe confirms Zebra submit button now uses site font, border radius, padding, and pointer cursor.
+
+## Decision — fix Clickometer migration regressions (2026-07-02)
+- Decision/change: Restored Clickometer boom-stage behavior by guarding the removed legacy `#container` reference, centered the countdown inside the meter with flex positioning, and restored mouse icons on result pages including cracked mouse for broken scores.
+- Where: `static/apps/clickometer/clickometer.js`, `src/ssg/clickometer.ts`, `src/ssg/clickometer-result.ts`, `static/default.css`.
+- Build/check result: `npm run build` and `npm test` pass; manual probe confirms result page shows `/static/images/75px_cracked_mouse.png` for broken score.
+
+## Observation — Clickometer sooper mode pending (2026-07-02)
+- Observed: Boom effect works after migration, and broken result shows super-clickometer messaging, but the follow-up link does not yet launch an actual sooper Clickometer mode.
+- Where: Manual browser/console test on `/clickometer.html` and `/clickometer-result.html`; migrated sources `src/ssg/clickometer.ts`, `src/ssg/clickometer-result.ts`, `static/apps/clickometer/clickometer.js`.
+- Proposed next action: Add `level=2`/sooper mode support to migrated Clickometer page and result flow.

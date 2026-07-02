@@ -249,6 +249,10 @@ pre.code-block {
 	margin: 1.5rem 0;
 }
 
+button,
+input[type='button'],
+input[type='submit'],
+.button,
 .dot-done-button {
 	font-family: inherit;
 	font-size: 1rem;
@@ -262,9 +266,27 @@ pre.code-block {
 	cursor: pointer;
 }
 
+button:hover,
+button:focus,
+input[type='button']:hover,
+input[type='button']:focus,
+input[type='submit']:hover,
+input[type='submit']:focus,
+.button:hover,
+.button:focus,
 .dot-done-button:hover,
 .dot-done-button:focus {
 	background: #f8f5f5;
+}
+
+button:disabled,
+input[type='button']:disabled,
+input[type='submit']:disabled {
+	color: var(--color-muted);
+	background: #eee;
+	border-color: var(--border-color-subtle);
+	box-shadow: none;
+	cursor: default;
 }
 
 .dot-result-card {
@@ -277,4 +299,21 @@ pre.code-block {
 	text-align: center;
 	font-size: 1.25rem;
 	font-weight: bold;
+}
+
+.clickometer-scoreline {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 1rem;
+	margin: 1rem 0;
+}
+
+.clickometer-scoreline img {
+	width: 75px;
+	height: 103px;
+}
+
+.clickometer-scoreline .dot-result {
+	margin: 0;
 }

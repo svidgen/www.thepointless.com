@@ -19,8 +19,8 @@ export async function generate() {
 			<div>
 				<h2>Well</h2>
 				<p>We have other things to do too, you know. It's not all just <b>red dots</b> and <b>tom foolery</b>.</p>
-				<p>For instance. <b>You might be pregnant.</b> And as it happens we've developed a foolproof online test for <i>precisely that.</i> <em>(migration pending)</em></p>
-				<p>On second thought. There may be more tom foolery than I had originally considered. But, the pregnancy test is totally legit. For serious.</p>
+				<p>For instance. <b>You might be pregnant.</b> And as it happens we've developed a <a href='/preggertest.html'>foolproof online test</a> for <i>precisely that.</i></p>
+				<p>On second thought. There may be more tom foolery than I had originally considered. But, the pregnancy test is totally legit. For serious. <a href='/preggertest.html'>Try it</a>.</p>
 			</div>
 
 			<p style='text-align: center;'><b><i>Psssst!</i></b></p>
