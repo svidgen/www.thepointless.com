@@ -253,3 +253,83 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Adjusted the small Pointless Award badge to behave like an inline text badge and placed it on the footer copyright line instead of the footer link row.
 - Where: `src/components/pointless-award.ts`, `src/layouts/main.ts`, `static/default.css`.
 - Build/check result: `npm run build` and `npm test` pass with 12 Playwright tests.
+
+## Observation — Shooty variant migration build/style issues (2026-07-02)
+- Observed: Initial Shooty Ship Pumpkin/Presidential migration produced manifest generation errors and hidden `ss:game` boards in tests.
+- Where: `npm run build` output for variant `manifest.json.ts`; Playwright failures in `tests/shooty-ship-variants.spec.ts`.
+- Proposed next action: Return manifest objects directly like the original Shooty Ship manifest and use variant CSS adapted from legacy `ss:board` selectors to `ss:game`.
+
+## Fix — Shooty variant manifest and board CSS (2026-07-02)
+- Decision/change: Updated variant manifests to return `WebAppManifest` objects and added `sheet-old.css` files with `ss:game` selectors for the migrated WireJS game component.
+- Where: `src/ssg/apps/shooty-ship-{pumpkin-smash,presidential}/manifest.json.ts`, `static/apps/shooty-ship-{pumpkin-smash,presidential}/css/sheet-old.css`.
+- Build/check result: Pending full build/test rerun after variant migration adjustments.
+
+## Observation — Shooty variant share asset missing (2026-07-02)
+- Observed: Variant pages loaded but share UI requested missing `/static/apps/<variant>/img/qr-code.svg`.
+- Where: `npm test` failures in `tests/shooty-ship-variants.spec.ts` response tracking.
+- Proposed next action: Copy the shared QR asset into each variant static asset directory and include it in service-worker caches.
+
+## Fix — add Shooty variant QR asset (2026-07-02)
+- Decision/change: Added `qr-code.svg` to Pumpkin Smash and Presidential static assets and service-worker cache lists.
+- Where: `static/apps/shooty-ship-{pumpkin-smash,presidential}/img/qr-code.svg`, variant `sw.ts` files.
+- Build/check result: Pending full test rerun.
+
+## Decision — migrate Shooty Ship variants (2026-07-02)
+- Decision/change: Added WireJS SSG pages, manifests, service workers, static runtime assets, and Apps index links for Shooty Ship Pumpkin Smash and Presidential variants using the shared migrated Shooty Ship game bundle.
+- Where: `src/ssg/apps/shooty-ship-pumpkin-smash/`, `src/ssg/apps/shooty-ship-presidential/`, `static/apps/shooty-ship-pumpkin-smash/`, `static/apps/shooty-ship-presidential/`, `src/ssg/apps/index.ts`, `tests/shooty-ship-variants.spec.ts`.
+- Build/check result: `npm run build` and `npm test` pass with 14 Playwright tests.
+
+## Observation — Frentagonist radio test interaction (2026-07-02)
+- Observed: Frentagonist radio inputs are intentionally hidden by legacy-style CSS, so Playwright `check()` against inputs failed even though labels are the user-visible controls.
+- Where: `tests/frentagonist.spec.ts` failures after initial Frentagonist migration.
+- Proposed next action: Exercise visible radio labels in tests, matching user interaction.
+
+## Decision — migrate Frentagonist Profile (2026-07-02)
+- Decision/change: Added a WireJS SSG Frentagonist page plus self-contained static app script/style for profile creation, local persistence, share links, glyph output, and shared-profile comparison.
+- Where: `src/ssg/hs/frentagonist/index.ts`, `static/apps/frentagonist/`, `src/ssg/apps/index.ts`, `tests/frentagonist.spec.ts`.
+- Build/check result: `npm run build` passed before tests; `npm test` passes with 17 Playwright tests.
+
+## Observation — Shooty variant start blocked by missing analytics (2026-07-02)
+- Observed: Pumpkin Smash and Presidential start buttons left the splash/modal visible while ship/bullets rendered behind it; browser console showed `ReferenceError: Can't find variable: gtag`.
+- Where: Manual browser review of variant pages and stack trace in `src/lib/tracking.cjs` via `game.js`.
+- Proposed next action: Make `trackEvent` a no-op when analytics is unavailable and add automated start-flow coverage for variants.
+
+## Fix — Shooty variant start flow without analytics (2026-07-02)
+- Decision/change: Made `trackEvent` safely no-op when `globalThis.gtag` is unavailable and extended Shooty variant tests to click Start, verify the splash is removed, and confirm the ship is visible.
+- Where: `src/lib/tracking.cjs`, `tests/shooty-ship-variants.spec.ts`.
+- Build/check result: `npm run build` and `npm test` pass with 17 Playwright tests.
+
+## Observation — Shooty Ship audio lag after shared migration (2026-07-02)
+- Observed: User reported hard audio lag across all Shooty Ship versions after variant migration; original and variants all use the shared migrated game bundle.
+- Where: Manual browser review reported by user; shared audio code in `src/lib/shooty-ship/game.cjs` preloads WebAudio before interaction.
+- Proposed next action: Resume/unlock the WebAudio context on Start/play so browser-suspended audio contexts do not delay playback.
+
+## Fix — resume Shooty Ship WebAudio context on play (2026-07-02)
+- Decision/change: Added `AudioPool.resume()` and call it before audio playback and during game start to unlock browser-suspended WebAudio contexts after user interaction.
+- Where: `src/lib/shooty-ship/game.cjs`.
+- Build/check result: `npm run build` and `npm test` pass with 17 Playwright tests; subjective audio timing still needs manual browser confirmation.
+
+## Observation — Shooty variant enemies not visible (2026-07-02)
+- Observed: Pumpkin Smash and Presidential start but no enemies appear; ship/bullets exist after start.
+- Where: Manual browser review; variant CSS in `static/apps/shooty-ship-{pumpkin-smash,presidential}/css/sheet-old.css` styled legacy `ss:enemy`/variant tags but not shared migrated `ss:bigenemy` elements.
+- Proposed next action: Add `ss:bigenemy` to variant enemy CSS selectors and test visible enemy spawn after Start.
+
+## Fix — Shooty variant enemy CSS selectors (2026-07-02)
+- Decision/change: Added `ss:bigenemy` to Pumpkin Smash and Presidential variant enemy CSS selectors and extended variant tests to assert a visible enemy spawns after Start.
+- Where: `static/apps/shooty-ship-{pumpkin-smash,presidential}/css/sheet-old.css`, `tests/shooty-ship-variants.spec.ts`.
+- Build/check result: `npm run build` and `npm test` pass with 17 Playwright tests.
+
+## Decision — revert speculative Shooty audio hardening (2026-07-02)
+- Decision/change: Removed the speculative WebAudio resume patch because Chrome audio works and Safari/new-tab behavior points to a tab-local/browser state issue rather than a confirmed migration regression.
+- Where: `src/lib/shooty-ship/game.cjs` remains at pre-audio-patch behavior.
+- Build/check result: `npm run build` and `npm test` pass; Safari audio to be revisited only if the issue persists.
+
+## Observation — Shooty variant big/small enemy roles blurred (2026-07-02)
+- Observed: Pumpkin Smash and Presidential were spawning mixed big enemies and shrapnel because migrated `enemies` and `shrapnel` lists included the wrong asset groups.
+- Where: Manual browser review; `src/ssg/apps/shooty-ship-pumpkin-smash/index.ts`, `src/ssg/apps/shooty-ship-presidential/index.ts`.
+- Proposed next action: Keep `enemies` limited to big incoming enemies and `shrapnel` limited to small explosion pieces/words; add tests for attributes and spawned enemy image.
+
+## Fix — restore Shooty variant big/small enemy separation (2026-07-02)
+- Decision/change: Pumpkin Smash now spawns only pumpkins as big enemies and explodes into non-pumpkin candy/mummy/candle shrapnel; Presidential now spawns only big face images and explodes into word/phrase shrapnel.
+- Where: `src/ssg/apps/shooty-ship-pumpkin-smash/index.ts`, `src/ssg/apps/shooty-ship-presidential/index.ts`, `tests/shooty-ship-variants.spec.ts`.
+- Build/check result: `npm run build` and `npm test` pass with 17 Playwright tests; tests now assert big/shrapnel attributes and spawned enemy background images.

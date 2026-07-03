@@ -1,0 +1,81 @@
+/***************************/
+/*                         */
+/*     Core styling        */
+/*                         */
+/***************************/
+
+ft\:app {
+	display: block;
+}
+
+ft\:app > [data-id="editControl"] {
+	margin: 1em 0;
+}
+
+
+
+/***************************/
+/*                         */
+/*     Profile viewing     */
+/*                         */
+/***************************/
+
+ft\:profileview > [data-id='actions'] {
+	margin: 1em 0;
+	display: table;
+}
+
+ft\:dimensionview {
+	display: table-row;
+}
+
+ft\:dimensionview > * {
+	display: table-cell;
+	padding: 0.25em 0.5em;
+}
+
+
+/***************************/
+/*                         */
+/*     Profile editing     */
+/*                         */
+/***************************/
+
+ft\:editdimension {
+	display: block;
+	margin: 1em;
+}
+
+ft\:editdimension > [data-id='label'] {
+	font-weight: bold;
+}
+
+ft\:editdimension > [data-id='options'] {
+	display: table-row;
+}
+
+ft\:radio {
+	display: inline-block;
+	margin: 0.5em 0.25em;
+}
+
+ft\:radio > input[type='radio'] {
+	display: none;
+}
+
+ft\:radio > label {
+	padding: 0.25em;
+	border: 0.15em solid lightblue;
+	border-radius: 0.15em;
+	background-color: white;
+	color: gray;
+	cursor: pointer;
+}
+
+ft\:radio > input[type='radio']:checked ~ label {
+	border-style: solid;
+	border-color: green;
+	background-color: lightyellow;
+	color: black;
+	font-weight: bold;
+}
