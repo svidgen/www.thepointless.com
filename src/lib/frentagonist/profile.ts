@@ -27,8 +27,7 @@ export function compatibility(theirs: Profile, yours: Profile) {
 
 export function shareString(profile: Profile) {
 	return Object.entries(dimensions).map(([dimension, values]) => {
-		if (dimension === 'Name') return profile.Name;
-		if (!Array.isArray(values)) return '';
+		if (dimension === 'Name' || !Array.isArray(values)) return '';
 		let found = false;
 		return values.map(value => {
 			if (value === profile[dimension as keyof Profile]) {
@@ -38,4 +37,14 @@ export function shareString(profile: Profile) {
 			return found ? '🟦' : '🟥';
 		}).join('');
 	}).filter(Boolean).join('\n');
+}
+
+export function shareText(profile: Profile) {
+	return [
+		'My Frentagonist Profile',
+		'',
+		shareString(profile),
+		'',
+		'See if we should 🍻 or ⚔️.',
+	].join('\n');
 }

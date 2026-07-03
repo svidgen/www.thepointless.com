@@ -1,4 +1,5 @@
-import { html } from 'wirejs-dom/v2';
+import { html, hydrate as wireHydrate } from 'wirejs-dom/v2';
+import { ShareWidget } from '../components/share-widget';
 import { Main } from '../layouts';
 
 export async function generate() {
@@ -15,6 +16,15 @@ export async function generate() {
 					<p style='font-size: xx-large;'>😁</p>
 				</div>
 			</div>
+
+			${ShareWidget({
+				id: 'dot-result-share',
+				header: 'Share to find out.',
+				title: 'For the Love of the Dot!',
+				text: 'I clicked this thing. Why are people even doing this? It does not even do anything!!!',
+				url: '/reddot.html'
+			})}
+			<script src='/dotresults.js'></script>
 
 			<div>
 				<h2>Well</h2>
@@ -33,8 +43,25 @@ export async function generate() {
 					var clicks = Number(query.get('clicks') || 0);
 					var units = clicks === 1 ? 'time' : 'times';
 					document.getElementById('dot-result').textContent = 'You clicked the ' + dot + ' dot ' + clicks + ' ' + units + '!';
+					var share = document.querySelector('[data-share-id="dot-result-share"]');
+					if (share) {
+						share.dataset.url = location.origin + '/' + dot + 'dot.html';
+						share.dataset.text = 'I clicked this thing ' + clicks + ' ' + units + '. Why are people even doing this? It does not even do anything!!!';
+						if (window.tpdcInitShareWidget) window.tpdcInitShareWidget(share);
+						if (share.refreshSharePreview) share.refreshSharePreview();
+					}
 				}());
 			</script>
 		</div>`
 	});
+}
+
+export function hydrate() {
+	wireHydrate('dot-result-share', () => ShareWidget({
+		id: 'dot-result-share',
+		header: 'Share to find out.',
+		title: 'For the Love of the Dot!',
+		text: 'I clicked this thing. Why are people even doing this? It does not even do anything!!!',
+		url: '/reddot.html'
+	}));
 }

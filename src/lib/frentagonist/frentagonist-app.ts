@@ -1,7 +1,7 @@
 import { html, id } from 'wirejs-dom/v2';
 import { dimensions, STORAGE_KEY, type Profile } from './dimensions';
-import { compatibility, decode, encode, shareString } from './profile';
-import { FrentagonistShareWidgets } from './share-widgets';
+import { compatibility, decode, encode, shareText } from './profile';
+import { FrentagonistShareWidget } from './share-widgets';
 
 function linkedProfile() {
 	return decode(new URL(location.href).searchParams.get('s'));
@@ -41,7 +41,7 @@ function ProfileView(profile: Profile, edit: () => void) {
 				: html`<div>
 					<h3>${profile.Name}'s Frentagonist Profile</h3>
 					${ProfileRows(profile)}
-					${FrentagonistShareWidgets({ link: shareUrl(profile), glyphs: shareString(profile) })}
+					${FrentagonistShareWidget({ text: shareText(profile), url: shareUrl(profile) })}
 				</div>`}
 		</ft:profileview>
 	</div>`;

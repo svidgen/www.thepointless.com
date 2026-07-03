@@ -1,4 +1,5 @@
-import { html } from 'wirejs-dom/v2';
+import { html, hydrate as wireHydrate } from 'wirejs-dom/v2';
+import { ShareWidget } from '../components/share-widget';
 import { Main } from '../layouts';
 
 export async function generate() {
@@ -47,7 +48,25 @@ export async function generate() {
 				</ol>
 			</div>
 			<div style='text-align: center;'><div class='testbutton' onclick='dotest();'>Am I Preggerz?</div></div>
+			${ShareWidget({
+				id: 'preggertest-share',
+				header: 'Make sure everyone gets tested.',
+				title: 'Online Pregnancy Test',
+				text: "It's never too soon (or LATE) to know if you're preggerz. Get tested online TODAY.",
+				url: '/preggertest.html'
+			})}
+			<script src='/preggertest.js'></script>
 			<div id='footnote_1' style='color: gray; font-size: small;'><b>*</b> If it is physically difficult for you to urinate on your keyboard or mobile device, you may also submerge it in a urine-filled toilet.</div>
 		</div>`
 	});
+}
+
+export function hydrate() {
+	wireHydrate('preggertest-share', () => ShareWidget({
+		id: 'preggertest-share',
+		header: 'Make sure everyone gets tested.',
+		title: 'Online Pregnancy Test',
+		text: "It's never too soon (or LATE) to know if you're preggerz. Get tested online TODAY.",
+		url: '/preggertest.html'
+	}));
 }

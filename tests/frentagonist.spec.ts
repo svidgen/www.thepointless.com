@@ -33,8 +33,7 @@ test('frentagonist profile saves locally and generates a share link', async ({ p
 
 	await expect(page.locator('ft\\:profileview')).toBeVisible();
 	await expect(page.locator('ft\\:profileview')).toContainText("Test Goblin's Frentagonist Profile");
-	await expect(page.locator('[data-share-link]')).toHaveValue(/\/hs\/frentagonist\/index\.html\?s=/);
-	await expect(page.locator('[data-share-string]')).toContainText('Test Goblin');
+	await expect(page.locator('[data-share-preview]')).toContainText(/My Frentagonist Profile[\s\S]*✅[\s\S]*See if we should 🍻 or ⚔️\.[\s\S]*\/hs\/frentagonist\/index\.html\?s=/);
 
 	await page.reload();
 	await expect(page.locator('ft\\:profileview')).toContainText("Test Goblin's Frentagonist Profile");
@@ -43,7 +42,8 @@ test('frentagonist profile saves locally and generates a share link', async ({ p
 test('frentagonist shared profile compares against local profile', async ({ page }) => {
 	await page.goto(path);
 	await fillProfile(page, 'First Goblin', 0);
-	const shareUrl = await page.locator('[data-share-link]').inputValue();
+	const shareText = await page.locator('[data-share-preview]').textContent() || '';
+	const shareUrl = shareText.split('\n').find(line => line.includes('/hs/frentagonist/index.html?s='))!;
 
 	await page.evaluate(() => localStorage.clear());
 	await page.goto(path);

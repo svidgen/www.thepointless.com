@@ -1,8 +1,10 @@
 import { html } from 'wirejs-dom/v2';
-import { FeatureLink } from '../components/feature-link';
+import { FeatureLink, type FeatureLinkProps } from '../components/feature-link';
 import { Main } from '../layouts';
 
-const books = [
+type BookListing = Omit<FeatureLinkProps, 'target' | 'className'>;
+
+const books: BookListing[] = [
 	{
 		title: 'Really Bad Poetry',
 		href: 'https://www.amazon.com/Really-Bad-Poetry-Sadmood-Poet/dp/B0B4C1JYNY',

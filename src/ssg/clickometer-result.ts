@@ -1,6 +1,6 @@
-import { html } from 'wirejs-dom/v2';
+import { html, hydrate as wireHydrate } from 'wirejs-dom/v2';
 import { MailingListSignup } from '../components/mailing-list-signup';
-import { SocialShare } from '../components/social-share';
+import { ShareWidget } from '../components/share-widget';
 import { Main } from '../layouts';
 
 export async function generate() {
@@ -15,13 +15,14 @@ export async function generate() {
 				</div>
 				<div id='click-description'></div>
 			</div>
-			${SocialShare({
+			${ShareWidget({
 				id: 'clickometer-result-share',
 				header: 'You think your friends can beat you in all your glory? Huh!?? DO YA!?',
 				url: '/clickometer.html',
 				title: 'Click Power!',
 				text: 'I have click power! BEAT THAT.'
 			})}
+			<script src='/clickometer-result.js'></script>
 			${MailingListSignup()}
 			<div id='clickometer-action'><a href='/clickometer.html'>Try again</a></div>
 			<script>
@@ -68,25 +69,20 @@ export async function generate() {
 					share.dataset.text = shareText;
 					share.dataset.title = shareTitle;
 					share.dataset.url = shareUrl;
-					const encodedText = encodeURIComponent(shareText);
-					const encodedTitle = encodeURIComponent(shareTitle);
-					const encodedUrl = encodeURIComponent(shareUrl);
-					share.querySelector('[data-provider="facebook"]').href = 'https://www.facebook.com/sharer.php?u=' + encodedUrl + '&quote=' + encodedText;
-					share.querySelector('[data-provider="twitter"]').href = 'https://twitter.com/share?url=' + encodedUrl + '&text=' + encodedText;
-					share.querySelector('[data-provider="email"]').href = 'mailto:?subject=' + encodedTitle + '&body=' + encodedText + '%0A%0A' + encodedUrl;
-					const nativeButton = share.querySelector('[data-provider="native"]');
-					if (navigator.share) {
-						nativeButton.onclick = function() { navigator.share({ title: shareTitle, text: shareText, url: shareUrl }); };
-					} else {
-						nativeButton.style.display = 'none';
-					}
-					share.querySelector('[data-provider="copy"]').onclick = function() {
-						navigator.clipboard.writeText(shareText + '\\n\\n' + shareUrl);
-						this.textContent = '✔️ Copied';
-						setTimeout(() => this.textContent = '📋 Copy', 1000);
-					};
+					if (window.tpdcInitShareWidget) window.tpdcInitShareWidget(share);
+					if (share.refreshSharePreview) share.refreshSharePreview();
 				}
 			</script>
 		</div>`
 	});
+}
+
+export function hydrate() {
+	wireHydrate('clickometer-result-share', () => ShareWidget({
+		id: 'clickometer-result-share',
+		header: 'You think your friends can beat you in all your glory? Huh!?? DO YA!?',
+		url: '/clickometer.html',
+		title: 'Click Power!',
+		text: 'I have click power! BEAT THAT.'
+	}));
 }

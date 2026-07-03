@@ -244,16 +244,17 @@ table td {
 	box-shadow: silver 1px 1px 3px;
 }
 
+.feature-link-body {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
 .feature-link-body h4 {
 	margin: 0 0 0.5rem;
 }
 
 .feature-link-description p {
 	margin: 0.75rem 0 0;
-}
-
-.book-list {
-	max-width: 42rem;
 }
 
 .book-feature {
@@ -610,6 +611,56 @@ input[type='submit']:disabled {
 
 .clickometer-scoreline .dot-result {
 	margin: 0;
+}
+
+.share-widget {
+	margin: 1.5rem 0;
+	padding: 1rem 0;
+	border-top: 1px dashed var(--border-color-subtle);
+	border-bottom: 1px dashed var(--border-color-subtle);
+	text-align: center;
+}
+
+.share-widget-header {
+	margin-bottom: 0.75rem;
+	font-weight: bold;
+	color: #c00;
+}
+
+.share-widget-preview {
+	box-sizing: border-box;
+	max-width: 44rem;
+	width: calc(100% - 2rem);
+	margin: 0 auto 0.75rem;
+	padding: 0.75rem;
+	border: 1px solid var(--border-color-subtle);
+	border-radius: 0.25rem;
+	background: #fff;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 0.85rem;
+	line-height: 1.45;
+	text-align: left;
+	white-space: pre;
+	overflow-x: auto;
+	overflow-y: visible;
+}
+
+.share-widget-actions {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
+.share-widget-actions button {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+}
+
+.share-widget-actions img {
+	height: 1rem;
+	width: auto;
 }
 
 .social-share {

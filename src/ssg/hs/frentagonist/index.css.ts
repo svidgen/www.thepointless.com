@@ -1,3 +1,126 @@
 export function generate() {
-	return "/***************************/\n/*                         */\n/*     Core styling        */\n/*                         */\n/***************************/\n\nft\\:app {\n\tdisplay: block;\n}\n\nft\\:app > [data-id=\"editControl\"] {\n\tmargin: 1em 0;\n}\n\n/***************************/\n/*                         */\n/*     Profile viewing     */\n/*                         */\n/***************************/\n\nft\\:profileview > [data-id='actions'] {\n\tmargin: 1em 0;\n}\n\n.frentagonist-share-widgets {\n\tdisplay: grid;\n\tgrid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));\n\tgap: 1rem;\n\tmargin: 1.25rem 0;\n\tpadding: 1rem;\n\tborder-top: 1px dashed var(--border-color-subtle, #aaa);\n\tborder-bottom: 1px dashed var(--border-color-subtle, #aaa);\n}\n\n.frentagonist-share-widget {\n\tdisplay: grid;\n\tgrid-template-columns: 1fr auto;\n\tgap: 0.5rem;\n\talign-items: end;\n\tpadding: 0.85rem;\n\tborder: 1px solid var(--border-color-subtle, #aaa);\n\tborder-radius: 0.4rem;\n\tbackground: #fffdf3;\n\tbox-shadow: 0 1px 4px #ddd;\n}\n\n.frentagonist-share-widget span {\n\tgrid-column: 1 / -1;\n\tfont-weight: bold;\n\tcolor: var(--color-muted, #888);\n}\n\n.frentagonist-share-widget input,\n.frentagonist-share-widget textarea {\n\tbox-sizing: border-box;\n\twidth: 100%;\n\tmin-width: 0;\n\tborder: 1px solid var(--border-color-subtle, #aaa);\n\tborder-radius: 0.25rem;\n\tpadding: 0.5rem;\n\tfont-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;\n\tfont-size: 0.85rem;\n\tbackground: #fff;\n}\n\n.frentagonist-share-widget textarea {\n\tmin-height: 7rem;\n\tresize: vertical;\n}\n\n.frentagonist-share-widget button {\n\talign-self: stretch;\n\tpadding-inline: 0.75rem;\n}\n\n@media (max-width: 35rem) {\n\t.frentagonist-share-widget {\n\t\tgrid-template-columns: 1fr;\n\t}\n}\n\nft\\:dimensionview {\n\tdisplay: table-row;\n}\n\nft\\:dimensionview > * {\n\tdisplay: table-cell;\n\tpadding: 0.25em 0.5em;\n}\n\n/***************************/\n/*                         */\n/*     Profile editing     */\n/*                         */\n/***************************/\n\nft\\:editdimension {\n\tdisplay: block;\n\tmargin: 1em;\n}\n\nft\\:editdimension > [data-id='label'] {\n\tfont-weight: bold;\n}\n\nft\\:editdimension > [data-id='options'] {\n\tdisplay: table-row;\n}\n\nft\\:radio {\n\tdisplay: inline-block;\n\tmargin: 0.5em 0.25em;\n}\n\nft\\:radio > input[type='radio'] {\n\tdisplay: none;\n}\n\nft\\:radio > label {\n\tpadding: 0.25em;\n\tborder: 0.15em solid lightblue;\n\tborder-radius: 0.15em;\n\tbackground-color: white;\n\tcolor: gray;\n\tcursor: pointer;\n}\n\nft\\:radio > input[type='radio']:checked ~ label {\n\tborder-style: solid;\n\tborder-color: green;\n\tbackground-color: lightyellow;\n\tcolor: black;\n\tfont-weight: bold;\n}\n";
+	return String.raw`/***************************/
+/*                         */
+/*     Core styling        */
+/*                         */
+/***************************/
+
+ft\:app {
+	display: block;
+}
+
+ft\:app > [data-id="editControl"] {
+	margin: 1em 0;
+}
+
+/***************************/
+/*                         */
+/*     Profile viewing     */
+/*                         */
+/***************************/
+
+ft\:profileview > [data-id='actions'] {
+	margin: 1em 0;
+}
+
+.frentagonist-share-widgets {
+	margin: 1.25rem 0;
+	padding: 1rem 0;
+	border-top: 1px dashed var(--border-color-subtle, #aaa);
+	border-bottom: 1px dashed var(--border-color-subtle, #aaa);
+}
+
+.frentagonist-share-widget {
+	box-sizing: border-box;
+	width: calc(100% - 2rem);
+	max-width: 44rem;
+	margin: 0 auto;
+	padding: 0.85rem;
+	border: 1px solid var(--border-color-subtle, #aaa);
+	border-radius: 0.4rem;
+	background: #fffdf3;
+	box-shadow: 0 1px 4px #ddd;
+}
+
+.frentagonist-share-heading {
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+	color: darkgreen;
+}
+
+.frentagonist-share-preview {
+	box-sizing: border-box;
+	width: 100%;
+	margin: 0;
+	padding: 0.75rem;
+	border: 1px solid var(--border-color-subtle, #aaa);
+	border-radius: 0.25rem;
+	background: #fff;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 0.85rem;
+	line-height: 1.45;
+	white-space: pre;
+	overflow-x: auto;
+	overflow-y: visible;
+}
+
+.frentagonist-share-widget button {
+	display: block;
+	margin: 0.75rem auto 0;
+}
+
+ft\:dimensionview {
+	display: table-row;
+}
+
+ft\:dimensionview > * {
+	display: table-cell;
+	padding: 0.25em 0.5em;
+}
+
+/***************************/
+/*                         */
+/*     Profile editing     */
+/*                         */
+/***************************/
+
+ft\:editdimension {
+	display: block;
+	margin: 1em;
+}
+
+ft\:editdimension > [data-id='label'] {
+	font-weight: bold;
+}
+
+ft\:editdimension > [data-id='options'] {
+	display: table-row;
+}
+
+ft\:radio {
+	display: inline-block;
+	margin: 0.5em 0.25em;
+}
+
+ft\:radio > input[type='radio'] {
+	display: none;
+}
+
+ft\:radio > label {
+	padding: 0.25em;
+	border: 0.15em solid lightblue;
+	border-radius: 0.15em;
+	background-color: white;
+	color: gray;
+	cursor: pointer;
+}
+
+ft\:radio > input[type='radio']:checked ~ label {
+	border-style: solid;
+	border-color: green;
+	background-color: lightyellow;
+	color: black;
+	font-weight: bold;
+}
+`;
 }

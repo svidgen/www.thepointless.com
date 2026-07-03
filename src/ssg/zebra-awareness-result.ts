@@ -1,4 +1,5 @@
-import { html } from 'wirejs-dom/v2';
+import { html, hydrate as wireHydrate } from 'wirejs-dom/v2';
+import { ShareWidget } from '../components/share-widget';
 import { Main } from '../layouts';
 
 export async function generate() {
@@ -17,6 +18,14 @@ export async function generate() {
 			</div>
 			<h3 id='zebra-result' style='color: purple; text-align: center;'></h3>
 			<div id='zebra-explanation' class='padded'></div>
+			${ShareWidget({
+				id: 'zebra-result-share',
+				header: 'Help spread Zebra Awareness.',
+				title: 'Zebra Awareness',
+				text: 'Zebras are all around us and we do not even acknowledge them. Raise awareness, and GET TESTED.',
+				url: '/zebra-awareness.html'
+			})}
+			<script src='/zebra-awareness-result.js'></script>
 			<script>
 				const red_x_url = '/static/images/zebratest/red_x.png';
 				const checkmark_url = '/static/images/zebratest/green_check.png';
@@ -42,7 +51,24 @@ export async function generate() {
 				document.getElementById('zebra-result').innerHTML = result;
 				document.getElementById('zebra-overlay').src = overlay;
 				document.getElementById('zebra-explanation').innerHTML = explanation;
+				const share = document.querySelector('[data-share-id="zebra-result-share"]');
+				if (share) {
+					share.dataset.text = (score <= 1 ? 'Uh oh. I might be a zebra.' : 'Woot! I am not a zebra. (No offense to zebras!!!)') + ' Raise zebra awareness and get tested.';
+					share.dataset.url = location.origin + '/zebra-awareness.html';
+					if (window.tpdcInitShareWidget) window.tpdcInitShareWidget(share);
+					if (share.refreshSharePreview) share.refreshSharePreview();
+				}
 			</script>
 		</div>`
 	});
+}
+
+export function hydrate() {
+	wireHydrate('zebra-result-share', () => ShareWidget({
+		id: 'zebra-result-share',
+		header: 'Help spread Zebra Awareness.',
+		title: 'Zebra Awareness',
+		text: 'Zebras are all around us and we do not even acknowledge them. Raise awareness, and GET TESTED.',
+		url: '/zebra-awareness.html'
+	}));
 }

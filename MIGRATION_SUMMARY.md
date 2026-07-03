@@ -348,3 +348,25 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Replaced unmigrated custom `tpdc:featurelink` markup with a WireJS v2 `FeatureLink` component, corrected book cover URLs to `/static/images/books/...`, and added global feature-link styling that preserves the legacy left-cover/right-description layout while fitting the new site style.
 - Where: `src/components/feature-link.ts`, `src/ssg/books.ts`, `static/default.css`.
 - Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; generated Books page references existing static book images.
+
+## Decision — typed feature listings for Books and Apps (2026-07-03)
+- Decision/change: Exported `FeatureLinkProps`, typed Books listings against the component contract, and converted Apps & Games from plain lists to the same `FeatureLink` component with legacy-style icons and typed listing data.
+- Where: `src/components/feature-link.ts`, `src/ssg/books.ts`, `src/ssg/apps/index.ts`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; generated Books and Apps pages reference existing static images.
+
+## Fix — Frentagonist single share block and Apps link (2026-07-03)
+- Decision/change: Restored Frentagonist Profile to Apps & Games using the shared `FeatureLink`, and changed Frentagonist sharing to one copyable block containing the legacy-style title, glyph summary, CTA, and profile URL.
+- Where: `src/ssg/apps/index.ts`, `src/lib/frentagonist/profile.ts`, `src/lib/frentagonist/share-widgets.ts`, `src/lib/frentagonist/frentagonist-app.ts`, `tests/frentagonist.spec.ts`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; `npx playwright test tests/frentagonist.spec.ts` passes.
+
+## Fix/observation — Frentagonist share preview and result-page sharing review (2026-07-03)
+- Decision/change: Changed Frentagonist share output from a scrollable textarea/code pane to a non-scroll preview with a normal copy button below it.
+- Where: `src/lib/frentagonist/share-widgets.ts`, `src/ssg/hs/frentagonist/index.css.ts`, `tests/frentagonist.spec.ts`.
+- Observation: Legacy/main result pages used `tpdc:share` broadly on dot results, Clickometer results, Zebra results, and the Pregnancy Test page; migrated Clickometer has social share, but migrated dot results, Zebra results, and Pregnancy Test do not yet have equivalent share UI.
+- Proposed next action: Standardize on a concise share component: native Web Share API when available plus copy link/text fallback, with optional targeted channel links only where they are demonstrably useful.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; `npx playwright test tests/frentagonist.spec.ts` passes.
+
+## Decision — shared concise share widget for result/share pages (2026-07-03)
+- Decision/change: Added a reusable `ShareWidget` with native OS/device share when supported plus copy fallback, optional non-vertical-scroll preview, and applied it to Frentagonist, Dot results, Zebra results, Pregnancy Test, and Clickometer results. Shooty Ship share UI was intentionally left unchanged.
+- Where: `src/components/share-widget.ts`, `static/default.css`, `src/lib/frentagonist/share-widgets.ts`, `src/ssg/{dotresults,zebra-awareness-result,preggertest,clickometer-result}.ts`, `tests/frentagonist.spec.ts`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; `npx playwright test tests/frentagonist.spec.ts` passes.
