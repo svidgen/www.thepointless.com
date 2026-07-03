@@ -2,100 +2,59 @@
 
 Pull the package down. Forgive the cruft. Make awesome new things!
 
-"New things" could be:
-
-1. An "article" that is on-topic. Or off topic? We don't know.
-1. A poem or other collection of adjacent words.
-1. A game!
-1. A quiz!
-1. Clickbait!
-1. A pyramid scheme!
-1. A site forum.
-1. Upgraded old content (from the `archive` folder)
-1. **Things you just want to try, but don't have any other good place to try them!**
-1. ***And almost literally anything you can think of.***
+"New things" could be articles, poems, games, quizzes, clickbait, upgraded old content, or almost literally anything else.
 
 ## Basics
 
-### Get the code
+Fork the repo, install dependencies, and start the local dev server:
 
-You're lookin' at it. Just [fork](https://github.com/svidgen/www.thepointless.com/fork) it and go `git` your fork.
-
-### Try it out
-
-If you don't have `node`, (including `npm`), you'll need to [install it](https://nodejs.org/en/).
-
-To install deps and start your local dev server:
-
-```
-npm i && npm run start
+```sh
+npm install
+npm run start
 ```
 
-*Or*, if you have `yarn` installed:
+Build and test before submitting substantial changes:
 
-```
-yarn && yarn start
-```
-
-This should start the site on [localhost:9999](http://localhost:9999) and automatically open it in your default browser. Changes you make to the source (in `src`) will automatically trigger a rebuild. There's no auto-refresh in the browser. (Click the refresh button to see your changes.)
-
-When you're satisfied with your work, commit it, push it, and submit a PR.
-
-### Backend development
-
-We're deployed and hosted with [AWS Amplify](https://docs.amplify.aws/), and built on [wirejs-dom](https://www.npmjs.com/package/wirejs-dom). We use [yarn](https://www.npmjs.com/package/yarn) to get things done. And [webpack](https://www.npmjs.com/package/webpack) for builds.
-
-We don't have any of Amplify's wonderful backend integrations enabled yet. But, the plan *is* to do so. We'll get there when we get there.
-
-If you have an idea that depends on some backend stuff and can explain what resources you need, [submit an issue](https://github.com/svidgen/www.thepointless.com/issues). If your idea isn't *terrible*, we'll try to make time to get your resources set up.
-
-## Viewing Your Work
-
-You're welcome to submit small or isolated changes against `master`.
-
-Large, complex, or "risky" pull requests can be submitted against the `dev` branch. The `dev` branch is published to [dev.thepointless.com](https://dev.thepointless.com). This allows for some testing extended QA prior to promotion to production.
-
-You can log into [dev.thepointless.com](https://dev.thepointless.com) with:
-
-```yaml
-Username: dev
-Password: devpassword
+```sh
+npm run build
+npm test
 ```
 
-## Package Structure 
+## WireJS project shape
+
+This site is a WireJS migration. Keep the details in the WireJS docs rather than this file:
+
+- Human/contributor reference: `node_modules/wirejs-scripts/README.md`
+- Agent repo guidance: `AGENTS.md`, especially `docs/wirejs-structure.md` and `docs/content-migration.md`
+
+Short version:
+
+- `src/ssg/` contains statically generated pages/artifacts.
+- `src/ssr/` contains request-time routes.
+- Shared components belong in `src/components/`.
+- Page-specific decomposed code can live next to the page that uses it.
+- `static/` is only for public assets intentionally served under `/static/*`.
+- Do not edit generated `dist/` or `pre-dist/` directly.
+
+For interactive SSG pages, prefer WireJS's `generate()` + `hydrate()` pattern so markup and browser behavior can share decomposed TypeScript modules without inventing separate static asset bundles.
+
+## Package structure
 
 | Folder | Purpose |
 |---|---|
-| /amplify | files used by the aws amplify framework for back-end services and hosting |
-| /archive | files from the pre-aws migration, php version of site. pull requests to migrate this content will generally be welcome and appreciated. |
-| /dist | built files. not to be added to the repository. |
-| /node_modules | node modules, managed by npm; not by you. |
-| /scripts | CLI scripts that may be used during development, building, etc.. |
-| /src | content and script that must be "built" for deployment |
-| /src/components | [wirejs-dom](https://www.npmjs.com/package/wirejs-dom) web components intended to be used across pages |
-| /src/layouts | top-level layouts into which route content (.md and .html files) are embedded. |
-| /src/lib | common javascript modules that are *not* `wirejs-dom` components |
-| /src/routes | routable paths. `.md` and `.html` files herein produce human-navigable URLs. |
-| /src/routes/apps | Stand-alone apps. Generally inteded for installable PWA's, specifically. |
-| /src/routes/hs | Horoscopes and other interactive-ish things that a *High School girl* might be inerested in, like personally tests. |
-| /src/routes/words | Words-focused stuff. Writing. Silly or not. |
-| /static | content that will be deployed as-is. |
-| /static/images | images that are deployed statically, as-is. |
+| `api/` | API/resource workspace. |
+| `archive/` | Legacy pre-migration reference content. |
+| `docs/` | Lightweight repo-specific migration notes. |
+| `src/ssg/` | Static routes and generated artifacts. |
+| `src/ssr/` | Server-rendered/request-time routes. |
+| `src/components/` | Reusable WireJS components. |
+| `src/layouts/` | Shared page shells. |
+| `src/lib/` | Shared non-component code/data. |
+| `static/` | Public static files served as `/static/*`. |
+| `tests/` | Playwright regression/smoke tests. |
 
-## A Note on Code Quality
+## A note on code quality
 
-We don't have any documented rules just yet. Just try to follow the patterns from the non-archived content, components, and service wrappers. Be receptive to feedback during PR's. We will try not to be terrible, but we reserve the right to steal ideas from your PR's and publish them as our own if you're unable to *reasonably* closely conform our patterns, etc..
+Try to follow nearby patterns. Keep pointlessness intact. Be receptive to PR feedback. We will try not to be terrible.
 
-And, that's important or two reasons. Firstly, we are potentially the most important dot-com on the planet. Having your name in our git log is super cool.
-
-But secondly, we try to share the wealth with folks in our git log. (Admittedly, not much wealth at the moment ... but, we're getting there!)
-
-And so ...
-
-You can also contribute by [submitting and commenting on issues](https://github.com/svidgen/www.thepointless.com/issues).
-
-* Ideas for new pages / features
-* Bug reports
-* Asking for help with the development process
-* Saying "Hi."
-
+You can also contribute by submitting and commenting on issues: ideas, bugs, questions, or just saying “Hi.”

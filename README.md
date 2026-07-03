@@ -14,6 +14,8 @@ The code herein is 🧙 **grand wizardry** ✨ at its *finest* and *most potent*
 
 Your contributions are welcome and encouraged. But, the bar is high, my friends.
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) before changing code. This is a WireJS migration; new interactive pages should use WireJS source, SSG/SSR, and hydration patterns rather than ad-hoc static browser bundles.
+
 # Ideas, Comments, and Complaints, etc.
 
 Please [submit an issue](issues).

@@ -333,3 +333,13 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Pumpkin Smash now spawns only pumpkins as big enemies and explodes into non-pumpkin candy/mummy/candle shrapnel; Presidential now spawns only big face images and explodes into word/phrase shrapnel.
 - Where: `src/ssg/apps/shooty-ship-pumpkin-smash/index.ts`, `src/ssg/apps/shooty-ship-presidential/index.ts`, `tests/shooty-ship-variants.spec.ts`.
 - Build/check result: `npm run build` and `npm test` pass with 17 Playwright tests; tests now assert big/shrapnel attributes and spawned enemy background images.
+
+## Decision — Frentagonist uses WireJS hydrate/decomposed modules (2026-07-03)
+- Decision/change: Reworked Frentagonist away from static asset bundles and inline script/style toward WireJS SSG patterns: `generate()` renders the page shell, `hydrate()` emits the client bundle, reusable Frentagonist modules live outside `src/ssg`, and the page CSS is generated with a pre-extension SSG file.
+- Where: `src/ssg/hs/frentagonist/index.ts`, `src/ssg/hs/frentagonist/index.css.ts`, `src/lib/frentagonist/*`, `CONTRIBUTING.md`, `docs/wirejs-structure.md`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; `npx playwright test tests/frentagonist.spec.ts` passes.
+
+## Decision — clarify WireJS migration guidance in contributor docs (2026-07-03)
+- Decision/change: Updated contributor/agent entry points to steer future interactive migrations toward WireJS `generate()` + `hydrate()` and decomposed source modules, and away from ad-hoc static JS bundles.
+- Where: `CONTRIBUTING.md`, `README.md`, `AGENTS.md`, with supporting details in `docs/wirejs-structure.md`.
+- Build/check result: Documentation-only follow-up; previous Frentagonist build/test remained passing.

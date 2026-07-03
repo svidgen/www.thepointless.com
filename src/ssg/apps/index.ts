@@ -19,7 +19,6 @@ export async function generate() {
 				<li><a href='/zebra-awareness.html'>Zebra Awareness</a><br />Because, who else brings black and white together like a zebra?</li>
 				<li><a href='/preggertest.html'>Online Pregnancy Testing</a><br />Don't get caught unawares, ladies! (And now gentlemen, I guess.)</li>
 				<li><a href='/clickometer.html'>The Clickometer</a><br />Test your clicking <strong>prowess</strong>.</li>
-				<li><a href='/hs/frentagonist/index.html'>Frentagonist Profile</a><br />Generate a <code>frentagonist profile</code> to help people decide whether to be your <strong>friend</strong> or <strong>archrival</strong>.</li>
 			</ul>
 		</div>`
 	});

@@ -19,7 +19,8 @@ Read these before making substantive changes:
 - New/migrated pages should generally go in `src/ssg/` or `src/ssr/`, not `archive/`.
 - Reusable UI belongs in `src/components/`.
 - Shared page shells belong in `src/layouts/`.
-- Static/CDN-style assets belong in `static/`; PWA runtime assets should generally use `static/apps/<app-name>/`.
+- Use WireJS `generate()` + `hydrate()` for interactive SSG pages; keep decomposed TypeScript modules in `src/components/`, `src/lib/`, or another source-adjacent module location instead of inventing static JS bundles.
+- Static/CDN-style assets belong in `static/`; PWA runtime assets should generally use `static/apps/<app-name>/`. Do not put page behavior in `static/` just because it runs in the browser.
 - Do not edit generated `dist/` or `pre-dist/` directly.
 
 ## Commands
