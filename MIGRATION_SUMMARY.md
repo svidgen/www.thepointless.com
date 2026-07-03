@@ -343,3 +343,8 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Updated contributor/agent entry points to steer future interactive migrations toward WireJS `generate()` + `hydrate()` and decomposed source modules, and away from ad-hoc static JS bundles.
 - Where: `CONTRIBUTING.md`, `README.md`, `AGENTS.md`, with supporting details in `docs/wirejs-structure.md`.
 - Build/check result: Documentation-only follow-up; previous Frentagonist build/test remained passing.
+
+## Fix — Books page cover images and feature layout (2026-07-03)
+- Decision/change: Replaced unmigrated custom `tpdc:featurelink` markup with a WireJS v2 `FeatureLink` component, corrected book cover URLs to `/static/images/books/...`, and added global feature-link styling that preserves the legacy left-cover/right-description layout while fitting the new site style.
+- Where: `src/components/feature-link.ts`, `src/ssg/books.ts`, `static/default.css`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; generated Books page references existing static book images.

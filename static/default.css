@@ -223,6 +223,54 @@ table td {
 
 /** specific components */
 
+.feature-link {
+	display: flex;
+	align-items: flex-start;
+	gap: 1rem;
+	margin: 2rem 1rem 3rem;
+	text-align: left;
+}
+
+.feature-link-image {
+	flex: 0 0 auto;
+}
+
+.feature-link-image img {
+	display: block;
+	width: 4rem;
+	max-width: 4rem;
+	max-height: 6rem;
+	object-fit: contain;
+	box-shadow: silver 1px 1px 3px;
+}
+
+.feature-link-body h4 {
+	margin: 0 0 0.5rem;
+}
+
+.feature-link-description p {
+	margin: 0.75rem 0 0;
+}
+
+.book-list {
+	max-width: 42rem;
+}
+
+.book-feature {
+	padding-bottom: 1.5rem;
+	border-bottom: 1px dashed var(--border-color-subtle);
+}
+
+.book-feature:last-child {
+	border-bottom: 0;
+}
+
+@media (max-width: 35rem) {
+	.feature-link {
+		margin-inline: 0;
+	}
+}
+
 .summary {
 	border-top: 1px dashed silver;
 }
