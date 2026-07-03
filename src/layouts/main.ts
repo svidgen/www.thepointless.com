@@ -1,5 +1,6 @@
 import { html, node, hydrate } from 'wirejs-dom/v2';
 import type { AuthenticationState } from 'wirejs-resources';
+import { PointlessAwardBadge } from '../components/pointless-award';
 
 const TITLE = 'thepointless.com';
 const SUBTITLE = 'In an internet of darkness, there shines forth a light.';
@@ -12,7 +13,7 @@ const DISCLAIMER = html`
 			| <a href='/contribute.html'>contribute code</a>
 			| <a href='/about.html'>about</a>
 		</p>
-		<p>© ${new Date().getFullYear()} thepointless.com</p>
+		<p>© ${new Date().getFullYear()} thepointless.com - ${PointlessAwardBadge({ size: 'small' })}</p>
 	</div>
 `;
 

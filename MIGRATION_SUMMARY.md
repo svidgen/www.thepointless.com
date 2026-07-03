@@ -208,3 +208,48 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Added concise technical docs for WireJS SSG/SSR/static/PWA conventions and content migration/tone notes, then updated `AGENTS.md` to point agents to those docs and the tongue-in-cheek About page.
 - Where: `docs/wirejs-structure.md`, `docs/content-migration.md`, `AGENTS.md`.
 - Next action: Keep these docs updated when adding new SSR patterns, PWA asset conventions, or migration decisions that future agents need for efficient discovery.
+
+## Decision — add award badge embed options (2026-07-02)
+- Decision/change: Added shared Pointless Award badge helpers for large/small display plus self-contained HTML and Markdown embed snippets; certificate SSR page now shows a small badge preview and copy controls for HTML, Markdown, and canonical URL.
+- Where: `src/components/pointless-award.ts`, `src/ssr/awards/certificates/%.ts`, `static/default.css`.
+- Build/check result: `npm run build` and `npm test` pass; local SSR probe confirms embed textareas render and page has no browser errors.
+
+## Decision — reorganize award certificate embed controls (2026-07-02)
+- Decision/change: Moved certificate URL copy control near the certificate, kept return link directly below certificate, and reorganized badge embed controls with large/small badge previews plus HTML/Markdown tabs.
+- Where: `src/ssr/awards/certificates/%.ts`, `src/components/pointless-award.ts`, `static/default.css`.
+- Build/check result: `npm run build` and `npm test` pass; local SSR probe confirms large/small previews and snippets render without browser errors.
+
+## Decision — simplify award embed chooser (2026-07-02)
+- Decision/change: Consolidated award badge size/format toggles above a single preview, single snippet field, and single copy button; adjusted large HTML embed styling to align with the on-site badge component.
+- Where: `src/ssr/awards/certificates/%.ts`, `src/components/pointless-award.ts`, `static/default.css`.
+- Build/check result: `npm run build` and `npm test` pass; local SSR probe confirms only one visible snippet/copy control and large/small HTML/Markdown toggles update correctly.
+
+## Fix — restore award embed toggles after layout rearrangement (2026-07-02)
+- Decision/change: Restored hidden snippet sources used by the award embed chooser, guarded the tab refresh script, and updated the large HTML embed text/alignment to match the on-site badge copy.
+- Where: `src/ssr/awards/certificates/%.ts`, `src/components/pointless-award.ts`.
+- Build/check result: `npm run build` and `npm test` pass; local SSR probe confirms HTML/Markdown and Large/Small toggles update active state and snippet text.
+
+## Fix — remove extra award embed code blocks (2026-07-02)
+- Decision/change: Replaced hidden snippet textareas with one inline snippet map so the certificate page shows only the single active snippet/code block.
+- Where: `src/ssr/awards/certificates/%.ts`.
+- Build/check result: `npm run build` and `npm test` pass; local SSR probe confirms one visible textarea and no hidden snippet textareas.
+
+## Decision — promote award certificate probes to Playwright specs (2026-07-02)
+- Decision/change: Added dedicated award certificate regression tests for URL copy placement, single preview/snippet behavior, active embed toggles, snippet switching, and preview height stability.
+- Where: `tests/award-certificate.spec.ts`.
+- Build/check result: `npm test` passes with 7 Playwright tests.
+
+## Decision — test shared award badge markup and footer badge (2026-07-02)
+- Decision/change: Added small award badge to the shared footer and added dedicated tests ensuring home/about large badges, certificate large preview, and footer small badge stay synchronized through the shared badge component contract.
+- Where: `src/layouts/main.ts`, `tests/award-badge.spec.ts`.
+- Build/check result: `npm run build` and `npm test` pass with 11 Playwright tests.
+
+## Decision — test embed badge styling without site CSS (2026-07-02)
+- Decision/change: Added a Playwright regression that renders generated large/small HTML badge snippets into a blank document and asserts key computed styles, proving copied badges are self-contained rather than dependent on site CSS.
+- Where: `tests/award-certificate.spec.ts`.
+- Build/check result: `npm test` passes with 12 Playwright tests.
+
+## Decision — inline footer award badge (2026-07-02)
+- Decision/change: Adjusted the small Pointless Award badge to behave like an inline text badge and placed it on the footer copyright line instead of the footer link row.
+- Where: `src/components/pointless-award.ts`, `src/layouts/main.ts`, `static/default.css`.
+- Build/check result: `npm run build` and `npm test` pass with 12 Playwright tests.
