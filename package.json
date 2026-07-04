@@ -25,11 +25,11 @@
   "devDependencies": {
     "@playwright/test": "^1.61.1",
     "@types/web-app-manifest": "^1.0.9",
-    "wirejs-scripts": "^3.0.190"
+    "wirejs-scripts": "file:/Users/jonwire/repos/create-wirejs-app/packages/wirejs-scripts"
   },
   "dependencies": {
     "qrcode": "^1.5.0",
     "wirejs-dom": "^1.0.44",
-    "wirejs-resources": "^0.1.192"
+    "wirejs-resources": "file:/Users/jonwire/repos/create-wirejs-app/packages/wirejs-resources"
   }
 }

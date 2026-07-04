@@ -1,4 +1,4 @@
-import { html, hydrate as wireHydrate } from 'wirejs-dom/v2';
+import { html, hydrate } from 'wirejs-dom/v2';
 import { Main } from '../../../layouts';
 import { FrentagonistApp } from '../../../lib/frentagonist/frentagonist-app';
 
@@ -19,6 +19,6 @@ export async function generate() {
 	});
 }
 
-export function hydrate() {
-	wireHydrate('frentagonist-app', () => FrentagonistApp());
+export function onload() {
+	hydrate('frentagonist-app', () => FrentagonistApp());
 }

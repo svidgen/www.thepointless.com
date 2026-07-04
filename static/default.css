@@ -598,6 +598,19 @@ input[type='submit']:disabled {
 	cursor: default;
 }
 
+.button-pregnancy {
+	color: #533;
+	background: linear-gradient(90deg, #fff7fb 0%, #fff7fb 50%, #f5fbff 50%, #f5fbff 100%);
+	border-color: #b8d7eb;
+	box-shadow: #ddd 1px 1px 2px;
+}
+
+.button-pregnancy:hover,
+.button-pregnancy:focus {
+	background: linear-gradient(90deg, #fff1f8 0%, #fff1f8 50%, #edf8ff 50%, #edf8ff 100%);
+	border-color: #94c3de;
+}
+
 .dot-result-card {
 	border: 1px dashed var(--border-color-subtle);
 	padding: 1rem;

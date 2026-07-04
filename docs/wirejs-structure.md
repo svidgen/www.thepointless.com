@@ -57,7 +57,7 @@ import { html } from 'wirejs-dom/v2';
 
 When returning multi-element content from SSG pages, wrap content in a single root container such as `<div>...</div>`. Earlier migration work observed truncation with multi-root fragments.
 
-For interactive SSG pages, follow the WireJS `generate()` + `hydrate()` pattern documented in `node_modules/wirejs-scripts/README.md`. Keep reusable/decomposed TypeScript outside `src/ssg/` unless it is itself a generated route/artifact; page-specific generated non-HTML files can use pre-extension SSG filenames such as `index.css.ts -> index.css`.
+For interactive SSG pages, follow the WireJS `generate()` + `onload()` pattern: export `generate()` for server/build rendering and export `onload()` as the browser entrypoint. Use `wirejs-dom/v2`'s `hydrate()` inside `onload()` when a rendered component needs to be rebound. Keep reusable/decomposed TypeScript outside `src/ssg/` unless it is itself a generated route/artifact; page-specific generated non-HTML files can use pre-extension SSG filenames such as `index.css.ts -> index.css`.
 
 ## SSR pages
 

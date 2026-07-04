@@ -3,6 +3,7 @@ import { html } from 'wirejs-dom/v2';
 export type PointlessCertificateFields = {
 	kicker?: unknown;
 	recipient: unknown;
+	recipientLink?: string;
 	recipientLabel?: unknown;
 	title: unknown;
 	quote?: unknown;
@@ -15,6 +16,7 @@ export type PointlessCertificateFields = {
 export function PointlessCertificate({
 	kicker,
 	recipient,
+	recipientLink,
 	recipientLabel,
 	title,
 	quote,
@@ -26,13 +28,15 @@ export function PointlessCertificate({
 	return html`<section class='pointless-certificate'>
 		<div class='certificate-seal' aria-hidden='true'>★</div>
 		${kicker ? html`<p class='certificate-kicker'>${kicker}</p>` : ''}
-		<h2>${recipient}</h2>
+		<h2>${recipientLink ? html`<a href=${recipientLink}>${recipient}</a>` : recipient}</h2>
 		${recipientLabel ? html`<p>${recipientLabel}</p>` : ''}
 		<h3>${title}</h3>
 		${media ? html`<div class='certificate-media'>${media}</div>` : ''}
 		${quote ? html`<blockquote>“${quote}”</blockquote>` : ''}
 		${finePrint ? html`<p class='certificate-fine-print'>${finePrint}</p>` : ''}
-		${unminted ? html`<p class='certificate-minting-status'>This ceremonial acknowledgement is currently unminted and carries no certificate number, pending the future establishment of the official minting desk.</p>` : ''}
+		${unminted ? html`<p class='certificate-minting-status'>
+			This ceremonial acknowledgement is currently unminted and carries no certificate number,
+			pending the future establishment of the official minting desk.</p>` : ''}
 		${certificateNumber ? html`<p class='certificate-number'>Certificate No. ${certificateNumber}</p>` : ''}
 	</section>`;
 }

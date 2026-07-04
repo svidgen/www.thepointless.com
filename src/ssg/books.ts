@@ -90,12 +90,9 @@ const books: BookListing[] = [
 
 export async function generate() {
 	return Main({
-		title: 'Books',
+		title: 'Our Books',
 		content: html`<div>
-			<h3>Our Books</h3>
-
-			<p>Not strictly relevant to our mission. But, made by <b>us.</b> So, you should buy them.</p>
-
+			<p>Buy one or three to support our mission.</p>
 			<div class='feature-link-list book-list'>
 				${books.map(book => FeatureLink({ ...book, target: '_blank', className: 'book-feature' }))}
 			</div>

@@ -405,3 +405,13 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Moved the Clickometer mouse image into the certificate media slot, changed the long click-power synopsis to certificate fine print, added a shorter ceremonial quote, and removed the mailing-list signup from the result page for now.
 - Where: `src/ssg/clickometer-result.ts`.
 - Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; `npm test` passes 17 Playwright tests.
+
+## Decision — certificate copy and result-page hydration cleanup (2026-07-04)
+- Decision/change: Updated unmigrated/anonymous result certificates that previously named the recipient "You" to use "our prestigious unidentified guest" with third-person certificate labels, and moved result/certificate page behavior out of inline scripts into WireJS `hydrate()` exports/client bundles.
+- Where: `src/ssg/dotresults.ts`, `src/ssg/clickometer-result.ts`, `src/ssg/zebra-awareness-result.ts`, `src/ssr/awards/certificates/%.ts`.
+- Build result: `npm run build` succeeds; the known legacy `src/lib/event.cjs` suspicious `! ... instanceof Event` warning remains.
+
+## Decision — WireJS client entrypoint rename to onload (2026-07-04)
+- Decision/change: Updated interactive SSG/SSR modules from exported `hydrate()` entrypoints to exported `onload()` entrypoints, and imported `hydrate` from `wirejs-dom/v2` directly where component rebinding is needed.
+- Where: result pages, Pregger Test, Frentagonist, Shooty Ship generated assets, award certificate SSR route, and `docs/wirejs-structure.md`.
+- Build/check result: `npm run build` succeeds; the known legacy `src/lib/event.cjs` suspicious `! ... instanceof Event` warning remains.

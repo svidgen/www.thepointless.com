@@ -11,8 +11,8 @@ import { Main } from '../../../layouts';
 
 function CertificateNotFound({ certificateNumber }: { certificateNumber: string }) {
 	return html`<div>
-		<p>No certificate bearing the number <code>${certificateNumber}</code> was found in our highly rigorous filing cabinet.</p>
-		<p>This does not mean the certificate is invalid. It may simply be too important for you to see.</p>
+		<p>No certificate bearing the number <code>${certificateNumber}</code> was found in our rigorously maintained files.</p>
+		<p>This does not strictly indicate the certificate is invalid. It may simply be moving through the final stages of approval before publication.</p>
 	</div>`;
 }
 
@@ -56,6 +56,7 @@ export async function generate(context: Context) {
 			${PointlessCertificate({
 				kicker: 'The Pointless Award Committee for Recognition of Recognitions hereby recognizes',
 				recipient: award.recipient,
+				recipientLink: '/',
 				recipientLabel: 'as a certified recipient of the',
 				title: award.awardName,
 				quote: award.quote,
@@ -68,11 +69,7 @@ export async function generate(context: Context) {
 				<button type='button' data-copy-value='${canonicalUrl}'>Copy certificate URL</button>
 			</div>
 
-			<p style='text-align: center;'>
-				<a href='/'>Return to the aforementioned dot-com</a>
-			</p>
-
-			<section class='award-embed-options'>
+			<section class='award-embed-options' data-award-snippets='${embedSnippets}'>
 				<h3>Display this award elsewhere</h3>
 				<p>Recipients may display this badge in other jurisdictions, provided those jurisdictions support HTML and a basic sense of ceremony.</p>
 
@@ -104,66 +101,60 @@ export async function generate(context: Context) {
 				<button type='button' data-copy-award-snippet>Copy HTML</button>
 			</section>
 
-			<script>
-				var awardSnippets = ${embedSnippets};
-
-				function copyText(value, button) {
-					navigator.clipboard.writeText(value).then(function() {
-						var original = button.textContent;
-						button.textContent = 'Copied';
-						setTimeout(function() { button.textContent = original; }, 1000);
-					});
-				}
-
-				document.querySelectorAll('[data-copy-previous]').forEach(function(button) {
-					button.addEventListener('click', function() {
-						var textarea = button.previousElementSibling;
-						textarea.select();
-						copyText(textarea.value, button);
-					});
-				});
-
-				document.querySelectorAll('[data-copy-value]').forEach(function(button) {
-					button.addEventListener('click', function() {
-						copyText(button.dataset.copyValue, button);
-					});
-				});
-
-				var awardSize = 'large';
-				var awardFormat = 'html';
-				function refreshAwardEmbedTabs() {
-					var key = awardSize + '-' + awardFormat;
-					var source = awardSnippets[key];
-					var field = document.querySelector('[data-award-snippet-field]');
-					var label = document.querySelector('[data-award-snippet-label]');
-					var copyButton = document.querySelector('[data-copy-award-snippet]');
-					document.querySelectorAll('[data-award-preview]').forEach(function(el) {
-						el.hidden = el.dataset.awardPreview !== awardSize;
-					});
-					if (!source || !field || !label || !copyButton) return;
-					field.value = source;
-					label.textContent = (awardSize === 'large' ? 'Large' : 'Small') + ' ' + (awardFormat === 'html' ? 'HTML badge' : 'Markdown badge');
-					copyButton.textContent = 'Copy ' + (awardFormat === 'html' ? 'HTML' : 'Markdown');
-					document.querySelectorAll('[data-award-size]').forEach(function(el) {
-						el.classList.toggle('active', el.dataset.awardSize === awardSize);
-					});
-					document.querySelectorAll('[data-award-format]').forEach(function(el) {
-						el.classList.toggle('active', el.dataset.awardFormat === awardFormat);
-					});
-				}
-				document.querySelectorAll('[data-award-size]').forEach(function(button) {
-					button.addEventListener('click', function() { awardSize = button.dataset.awardSize; refreshAwardEmbedTabs(); });
-				});
-				document.querySelectorAll('[data-award-format]').forEach(function(button) {
-					button.addEventListener('click', function() { awardFormat = button.dataset.awardFormat; refreshAwardEmbedTabs(); });
-				});
-				document.querySelector('[data-copy-award-snippet]').addEventListener('click', function() {
-					var field = document.querySelector('[data-award-snippet-field]');
-					field.select();
-					copyText(field.value, this);
-				});
-				refreshAwardEmbedTabs();
-			</script>
 		</div>`
 	});
+}
+
+function copyText(value: string, button: HTMLButtonElement) {
+	navigator.clipboard.writeText(value).then(() => {
+		const original = button.textContent;
+		button.textContent = 'Copied';
+		setTimeout(() => { button.textContent = original; }, 1000);
+	});
+}
+
+export function onload() {
+	const root = document.querySelector('[data-award-snippets]') as HTMLElement | null;
+	if (!root) return;
+
+	const awardSnippets = JSON.parse(root.dataset.awardSnippets || '{}') as Record<string, string>;
+	let awardSize = 'large';
+	let awardFormat = 'html';
+
+	const refreshAwardEmbedTabs = () => {
+		const source = awardSnippets[`${awardSize}-${awardFormat}`];
+		const field = root.querySelector('[data-award-snippet-field]') as HTMLTextAreaElement | null;
+		const label = root.querySelector('[data-award-snippet-label]');
+		const copyButton = root.querySelector('[data-copy-award-snippet]');
+		root.querySelectorAll<HTMLElement>('[data-award-preview]').forEach(el => {
+			el.hidden = el.dataset.awardPreview !== awardSize;
+		});
+		if (!source || !field || !label || !copyButton) return;
+		field.value = source;
+		label.textContent = `${awardSize === 'large' ? 'Large' : 'Small'} ${awardFormat === 'html' ? 'HTML badge' : 'Markdown badge'}`;
+		copyButton.textContent = `Copy ${awardFormat === 'html' ? 'HTML' : 'Markdown'}`;
+		root.querySelectorAll<HTMLElement>('[data-award-size]').forEach(el => {
+			el.classList.toggle('active', el.dataset.awardSize === awardSize);
+		});
+		root.querySelectorAll<HTMLElement>('[data-award-format]').forEach(el => {
+			el.classList.toggle('active', el.dataset.awardFormat === awardFormat);
+		});
+	};
+
+	document.querySelectorAll<HTMLButtonElement>('[data-copy-value]').forEach(button => {
+		button.addEventListener('click', () => copyText(button.dataset.copyValue || '', button));
+	});
+	root.querySelectorAll<HTMLButtonElement>('[data-award-size]').forEach(button => {
+		button.addEventListener('click', () => { awardSize = button.dataset.awardSize || 'large'; refreshAwardEmbedTabs(); });
+	});
+	root.querySelectorAll<HTMLButtonElement>('[data-award-format]').forEach(button => {
+		button.addEventListener('click', () => { awardFormat = button.dataset.awardFormat || 'html'; refreshAwardEmbedTabs(); });
+	});
+	root.querySelector<HTMLButtonElement>('[data-copy-award-snippet]')?.addEventListener('click', event => {
+		const field = root.querySelector('[data-award-snippet-field]') as HTMLTextAreaElement | null;
+		if (!field) return;
+		field.select();
+		copyText(field.value, event.currentTarget as HTMLButtonElement);
+	});
+	refreshAwardEmbedTabs();
 }

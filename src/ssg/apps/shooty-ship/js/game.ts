@@ -8,6 +8,6 @@ import {
 	Game
 } from '../../../../lib/shooty-ship/game.cjs';
 
-export function hydrate() {
+export function onload() {
 	const x = [DomClass];
 }

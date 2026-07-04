@@ -40,7 +40,7 @@ function staticUrlFor(request: Request) {
 	}
 }
 
-export function hydrate() {
+export function onload() {
 	self.addEventListener('install', event => {
 		event.waitUntil(caches.open(CACHE_NAME).then(cache => Promise.all(urlsToCache.map(url => fetch(url, { cache: 'no-cache', credentials: 'include' }).then(response => cache.put(url, response))))));
 	});
