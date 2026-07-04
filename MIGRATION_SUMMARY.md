@@ -370,3 +370,38 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Added a reusable `ShareWidget` with native OS/device share when supported plus copy fallback, optional non-vertical-scroll preview, and applied it to Frentagonist, Dot results, Zebra results, Pregnancy Test, and Clickometer results. Shooty Ship share UI was intentionally left unchanged.
 - Where: `src/components/share-widget.ts`, `static/default.css`, `src/lib/frentagonist/share-widgets.ts`, `src/ssg/{dotresults,zebra-awareness-result,preggertest,clickometer-result}.ts`, `tests/frentagonist.spec.ts`.
 - Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; `npx playwright test tests/frentagonist.spec.ts` passes.
+
+## Decision — reusable award certificate component (2026-07-03)
+- Decision/change: Extracted the award certificate markup from the SSR certificate route into a reusable WireJS v2 component so certificate displays can be reused outside the current route.
+- Where: `src/components/pointless-certificate.ts`, `src/ssr/awards/certificates/%.ts`, `docs/wirejs-structure.md`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning.
+
+## Fix — keep certificate copy in certificate route (2026-07-03)
+- Decision/change: Narrowed the reusable certificate component to provide only the reusable certificate shell/seal styling hook; the award-specific certificate wording now remains in the SSR certificate page.
+- Where: `src/components/pointless-certificate.ts`, `src/ssr/awards/certificates/%.ts`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning.
+
+## Fix — reusable certificate fields API (2026-07-03)
+- Decision/change: Adjusted the reusable certificate component to take structured certificate fields rather than either hard-coded award copy or an unstructured content blob.
+- Where: `src/components/pointless-certificate.ts`, `src/ssr/awards/certificates/%.ts`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning.
+
+## Decision — certificate-style result pages (2026-07-03)
+- Decision/change: Reframed Dot, Zebra Awareness, and Clickometer result pages as cordial certificate-style summaries using the shared certificate component, without certificate numbers for these unminted informal results; removed the extra Red Dot cross-promo/print-book copy and softened result-share headings.
+- Where: `src/ssg/dotresults.ts`, `src/ssg/zebra-awareness-result.ts`, `src/ssg/clickometer-result.ts`, `src/ssg/preggertest.ts`, `src/components/pointless-certificate.ts`, `tests/migration-smoke.spec.ts`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; `npm test` passes 17 Playwright tests.
+
+## Decision — certificate media slot and Zebra result note placement (2026-07-03)
+- Decision/change: Added an optional media slot to the reusable certificate component and moved the Zebra image/overlay into the certificate at a smaller scale; moved the longer Zebra result explanation below the certificate so the certificate fine print can remain reserved for minting/certificate-number status.
+- Where: `src/components/pointless-certificate.ts`, `src/ssg/zebra-awareness-result.ts`, `static/default.css`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; `npm test` passes 17 Playwright tests.
+
+## Fix — certificate minting-status flag (2026-07-03)
+- Decision/change: Added an `unminted` flag to the reusable certificate component so result-specific fine print can remain inside the certificate while the standard pending-official-minting-desk message is rendered separately by the component.
+- Where: `src/components/pointless-certificate.ts`, `src/ssg/dotresults.ts`, `src/ssg/zebra-awareness-result.ts`, `src/ssg/clickometer-result.ts`, `static/default.css`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; `npm test` passes 17 Playwright tests.
+
+## Fix — Clickometer certificate content placement (2026-07-03)
+- Decision/change: Moved the Clickometer mouse image into the certificate media slot, changed the long click-power synopsis to certificate fine print, added a shorter ceremonial quote, and removed the mailing-list signup from the result page for now.
+- Where: `src/ssg/clickometer-result.ts`.
+- Build/check result: `npm run build` succeeds with the accepted legacy Shooty Ship event warning; `npm test` passes 17 Playwright tests.

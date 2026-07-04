@@ -128,6 +128,7 @@ Prefer new TypeScript / `wirejs-dom/v2` components for SSG-friendly reusable mar
 Current examples:
 
 - `src/components/pointless-award.ts`
+- `src/components/pointless-certificate.ts`
 - `src/components/social-share.ts`
 - `src/components/mailing-list-signup.ts`
 

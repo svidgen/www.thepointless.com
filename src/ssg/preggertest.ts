@@ -50,9 +50,9 @@ export async function generate() {
 			<div style='text-align: center;'><div class='testbutton' onclick='dotest();'>Am I Preggerz?</div></div>
 			${ShareWidget({
 				id: 'preggertest-share',
-				header: 'Make sure everyone gets tested.',
+				header: 'Share this screening opportunity.',
 				title: 'Online Pregnancy Test',
-				text: "It's never too soon (or LATE) to know if you're preggerz. Get tested online TODAY.",
+				text: 'A fully online pregnancy screening opportunity is available for your consideration.',
 				url: '/preggertest.html'
 			})}
 			<script src='/preggertest.js'></script>
@@ -64,9 +64,9 @@ export async function generate() {
 export function hydrate() {
 	wireHydrate('preggertest-share', () => ShareWidget({
 		id: 'preggertest-share',
-		header: 'Make sure everyone gets tested.',
+		header: 'Share this screening opportunity.',
 		title: 'Online Pregnancy Test',
-		text: "It's never too soon (or LATE) to know if you're preggerz. Get tested online TODAY.",
+		text: 'A fully online pregnancy screening opportunity is available for your consideration.',
 		url: '/preggertest.html'
 	}));
 }

@@ -7,6 +7,9 @@
 site_config.inc
 test-stdout.log
 
+test-results/
+playwright-report/
+
 node_modules
 dist
 pre-dist

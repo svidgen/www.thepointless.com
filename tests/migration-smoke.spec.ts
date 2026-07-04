@@ -7,7 +7,9 @@ test('red dot click count posts to the scoring page', async ({ page }) => {
 	await dot.click();
 	await page.getByRole('button', { name: "I'm done harassing the dot." }).click();
 	await expect(page).toHaveURL(/\/dotresults\.html\?clicks=2&dot=red/);
-	await expect(page.locator('#dot-result')).toHaveText('You clicked the red dot 2 times!');
+	await expect(page.locator('.pointless-certificate')).toContainText('The Office of Dot Appreciation cordially certifies that');
+	await expect(page.locator('#dot-result-color')).toHaveText('red');
+	await expect(page.locator('#dot-result-count')).toHaveText('2 times');
 });
 
 test('red dot done button has site styling', async ({ page }) => {

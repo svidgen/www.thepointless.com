@@ -1,5 +1,5 @@
 import { html, hydrate as wireHydrate } from 'wirejs-dom/v2';
-import { MailingListSignup } from '../components/mailing-list-signup';
+import { PointlessCertificate } from '../components/pointless-certificate';
 import { ShareWidget } from '../components/share-widget';
 import { Main } from '../layouts';
 
@@ -7,23 +7,24 @@ export async function generate() {
 	return Main({
 		title: 'Click Power!',
 		content: html`<div>
-			<div class='result-card dot-result-card'>
-				<h2>Your Click Analysis</h2>
-				<div class='clickometer-scoreline'>
-					<img id='clickometer-mouse' src='/static/images/75px_crude_mouse.png' alt='mouse' title='clickometer awesomeness' />
-					<p id='click-result' class='dot-result'></p>
-				</div>
-				<div id='click-description'></div>
-			</div>
+			${PointlessCertificate({
+				kicker: 'The Bureau of Button-Pressing Distinction cordially certifies that',
+				recipient: 'You',
+				recipientLabel: 'have submitted to clickometric analysis and demonstrated',
+				title: html`<span id='click-result'>pending</span>`,
+				media: html`<img id='clickometer-mouse' src='/static/images/75px_crude_mouse.png' alt='mouse' title='clickometer awesomeness' />`,
+				quote: html`<span id='click-quote'>An outcome of measurable clicking significance.</span>`,
+				finePrint: html`<span id='click-description'>This result is suitable for polite conversation, private reflection, and other proceedings of limited consequence.</span>`,
+				unminted: true,
+			})}
 			${ShareWidget({
 				id: 'clickometer-result-share',
-				header: 'You think your friends can beat you in all your glory? Huh!?? DO YA!?',
+				header: 'Share your result.',
 				url: '/clickometer.html',
 				title: 'Click Power!',
 				text: 'I have click power! BEAT THAT.'
 			})}
 			<script src='/clickometer-result.js'></script>
-			${MailingListSignup()}
 			<div id='clickometer-action'><a href='/clickometer.html'>Try again</a></div>
 			<script>
 				function colorFor(power) {
@@ -56,13 +57,14 @@ export async function generate() {
 				const sooperMice = ['/static/images/75px_lightning_mouse.png', '/static/images/75px_lined_mouse.png', '/static/images/75px_super_mouse.png'];
 				const mouse = broken ? '/static/images/75px_cracked_mouse.png' : level === 2 ? sooperMice[displayPower % sooperMice.length] : '/static/images/75px_crude_mouse.png';
 				document.getElementById('clickometer-mouse').src = mouse;
-				document.getElementById('click-result').innerHTML = broken ? 'You <span style="color:' + color + '">broke</span> the clickometer!' : 'You have <span style="color:' + color + '">' + displayPower + '</span> click power!';
+				document.getElementById('click-result').innerHTML = broken ? '<span style="color:' + color + '">a broken clickometer</span>' : '<span style="color:' + color + '">' + displayPower + '</span> click power';
+				document.getElementById('click-quote').textContent = broken ? 'An achievement of considerable mechanical consequence.' : 'An outcome of measurable clicking significance.';
 				document.getElementById('click-description').innerHTML = level === 2 ? sooperSummary(power) : summary(power);
 				document.getElementById('clickometer-action').innerHTML = broken ? '<a href="/clickometer.html?level=2">Try the s00p3r cLiCkOmEtEr</a>' : '<a href="/clickometer.html">Try again</a>';
 				document.title = broken ? 'You BROKE it - clickometer results' : displayPower + ' click power!';
 
 				const share = document.querySelector('[data-share-id="clickometer-result-share"]');
-				const shareText = broken ? 'I broke the clickometer! BEAT THAT.' : 'I have ' + displayPower + ' click power! BEAT THAT.';
+				const shareText = broken ? 'I have been formally recognized for breaking the clickometer.' : 'I have been formally recognized for ' + displayPower + ' click power.';
 				const shareTitle = broken ? 'I broke the clickometer!' : displayPower + ' click power!';
 				const shareUrl = location.origin + '/clickometer.html';
 				if (share) {
@@ -80,7 +82,7 @@ export async function generate() {
 export function hydrate() {
 	wireHydrate('clickometer-result-share', () => ShareWidget({
 		id: 'clickometer-result-share',
-		header: 'You think your friends can beat you in all your glory? Huh!?? DO YA!?',
+		header: 'Share your result.',
 		url: '/clickometer.html',
 		title: 'Click Power!',
 		text: 'I have click power! BEAT THAT.'

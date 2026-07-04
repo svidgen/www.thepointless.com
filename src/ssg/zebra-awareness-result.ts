@@ -1,4 +1,5 @@
 import { html, hydrate as wireHydrate } from 'wirejs-dom/v2';
+import { PointlessCertificate } from '../components/pointless-certificate';
 import { ShareWidget } from '../components/share-widget';
 import { Main } from '../layouts';
 
@@ -12,15 +13,22 @@ export async function generate() {
 				.img_overlay .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; margin: 0; opacity: 0.7; }
 				.padded { padding: 10px 20px; }
 			</style>
-			<div class='img_overlay' style='width: 256px; margin: 20px auto;'>
-				<img src='/static/images/zebratest/zebra.png' class='base' alt='zebra' />
-				<img id='zebra-overlay' class='overlay' alt='' />
-			</div>
-			<h3 id='zebra-result' style='color: purple; text-align: center;'></h3>
-			<div id='zebra-explanation' class='padded'></div>
+			${PointlessCertificate({
+				kicker: 'The Department of Striped Possibilities cordially certifies that',
+				recipient: 'You',
+				recipientLabel: 'have completed the Zebra Awareness assessment and are hereby classified as',
+				title: html`<span id='zebra-result'>Pending review</span>`,
+				media: html`<div class='img_overlay' style='width: 180px;'>
+					<img src='/static/images/zebratest/zebra.png' class='base' alt='zebra' />
+					<img id='zebra-overlay' class='overlay' alt='' />
+				</div>`,
+				quote: 'Please accept this finding with dignity, composure, and appropriate regard for nearby zebras.',
+				finePrint: html`<span id='zebra-explanation'></span>`,
+				unminted: true,
+			})}
 			${ShareWidget({
 				id: 'zebra-result-share',
-				header: 'Help spread Zebra Awareness.',
+				header: 'Share your assessment.',
 				title: 'Zebra Awareness',
 				text: 'Zebras are all around us and we do not even acknowledge them. Raise awareness, and GET TESTED.',
 				url: '/zebra-awareness.html'
@@ -48,12 +56,12 @@ export async function generate() {
 					overlay = red_x_url;
 					explanation = 'This is great news! Free from the burdens and discriminations of zebrahood, you will find it easy to adhere to human activities such as shaking hands and driving cars. You can breath easy. But, spread the awareness: anyone you know could unwittingly be a zebra.';
 				}
-				document.getElementById('zebra-result').innerHTML = result;
+				document.getElementById('zebra-result').innerHTML = result.replace('You <u>are</u> ', '').replace('You <u>might</u> be ', 'possibly ').replace('You are <u>not</u> ', 'not ');
 				document.getElementById('zebra-overlay').src = overlay;
 				document.getElementById('zebra-explanation').innerHTML = explanation;
 				const share = document.querySelector('[data-share-id="zebra-result-share"]');
 				if (share) {
-					share.dataset.text = (score <= 1 ? 'Uh oh. I might be a zebra.' : 'Woot! I am not a zebra. (No offense to zebras!!!)') + ' Raise zebra awareness and get tested.';
+					share.dataset.text = 'I have completed a formal Zebra Awareness assessment.';
 					share.dataset.url = location.origin + '/zebra-awareness.html';
 					if (window.tpdcInitShareWidget) window.tpdcInitShareWidget(share);
 					if (share.refreshSharePreview) share.refreshSharePreview();
@@ -66,7 +74,7 @@ export async function generate() {
 export function hydrate() {
 	wireHydrate('zebra-result-share', () => ShareWidget({
 		id: 'zebra-result-share',
-		header: 'Help spread Zebra Awareness.',
+		header: 'Share your assessment.',
 		title: 'Zebra Awareness',
 		text: 'Zebras are all around us and we do not even acknowledge them. Raise awareness, and GET TESTED.',
 		url: '/zebra-awareness.html'

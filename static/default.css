@@ -17,10 +17,12 @@ body {
 	font-size: 13pt;
 	/* padding: 0;
 	margin: 0; */
+	background: url('/static/images/shiny.jpg');
 	color: #333;
 }
 
 body > .main {
+	background: #fff;
 	border-width: 0 1px;
 	border-color: silver;
 	border-style: solid;
@@ -418,12 +420,24 @@ pre.code-block {
 	margin: 1.5rem;
 }
 
+.certificate-media {
+	display: flex;
+	justify-content: center;
+	margin: 1rem auto;
+}
+
+.certificate-media img {
+	max-width: 100%;
+}
+
 .certificate-kicker,
 .certificate-fine-print,
+.certificate-minting-status,
 .certificate-number {
 	color: var(--color-muted);
 }
 
+.certificate-minting-status,
 .certificate-number {
 	font-size: 0.9rem;
 	margin-top: 1.5rem;

@@ -1,5 +1,6 @@
 import { html } from 'wirejs-dom/v2';
 import type { Context } from 'wirejs-resources';
+import { PointlessCertificate } from '../../../components/pointless-certificate';
 import {
 	PointlessAwardBadge,
 	pointlessAwardEmbedHtml,
@@ -52,16 +53,15 @@ export async function generate(context: Context) {
 		title: 'Pointless Award Certificate',
 		description: `Certificate ${award.certificateNumber}: ${award.awardName}`,
 		content: html`<div>
-			<section class='pointless-certificate'>
-				<div class='certificate-seal' aria-hidden='true'>★</div>
-				<p class='certificate-kicker'>The Pointless Award Committee for Recognition of Recognitions hereby recognizes</p>
-				<h2>${award.recipient}</h2>
-				<p>as a certified recipient of the</p>
-				<h3>${award.awardName}</h3>
-				<blockquote>“${award.quote}”</blockquote>
-				<p class='certificate-fine-print'>This certificate confirms that the aforementioned dot-com has met or exceeded the minimum requirements for receiving this certificate.</p>
-				<p class='certificate-number'>Certificate No. ${award.certificateNumber}</p>
-			</section>
+			${PointlessCertificate({
+				kicker: 'The Pointless Award Committee for Recognition of Recognitions hereby recognizes',
+				recipient: award.recipient,
+				recipientLabel: 'as a certified recipient of the',
+				title: award.awardName,
+				quote: award.quote,
+				finePrint: 'This certificate confirms that the aforementioned dot-com has met or exceeded the minimum requirements for receiving this certificate.',
+				certificateNumber: award.certificateNumber,
+			})}
 
 			<div class='certificate-url-copy'>
 				<code>${canonicalUrl}</code>
