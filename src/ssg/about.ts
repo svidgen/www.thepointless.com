@@ -22,27 +22,25 @@ export async function generate(context?: Context) {
 					<li>That this dot-com contains absurd premises.</li>
 					<li>That it conducts itself with fake seriousness.</li>
 					<li>That it maintains dots that do nothing.</li>
-					<li>That it overexplains obviously stupid things.</li>
-					<li>That it gives off a troubling “this should not exist, but it does” energy.</li>
-					<li>That it encourages low-stakes interaction.</li>
-					<li>That it preserves personal-site weirdness in a time of great template conformity.</li>
+					<li>That it tediously overexplains obvious facts.</li>
+					<li>That its facts are obviously and tediously incorrect.</li>
+					<li>That it emits an alarming amount of “this should not exist but does anyway” energy.</li>
+					<li>That it abuses tooltip text to negate its own observations and <span data-tooltip='One might be tempted to call these "points", but one would be wrong.'>statements</span>.</li>
+					<li>An alarming amount of tomfoolery and <i data-tooltip='🐄'>udder</i> such puns.</li>
+					<li><i>Et cetera</i>, good sirs. <b>Et. <i>Cetera</i>.</b></li>
 				</ul>
 
 				<p>
-					These claims are hurtful. Worse, they are specific.
+					These claims are hurtful. And worse, they are specific.
 				</p>
 
 				<p>
-					It has further been alleged that our visitors are nostalgic internet wanderers, grown-up goblins of the old web,
-					and other technically suspicious persons who enjoy harmless wastes of time.
-					We cannot comment on an ongoing vibe investigation.
+					It has further been alleged that our visitors consist of nostalgic internet wanderers, aged goblins of the old web, time wasters, and probably <i data-tooltip='Persons of the worst variety, to be sure.'>teenagers</i>.
 				</p>
 
 				${PointlessAwardBadge()}
 
-				<p>
-					In conclusion, we are offended by the premise.
-				</p>
+				<p>In conclusion, we are offended I think.</p>
 			</div>
 		`
 	});
