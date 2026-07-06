@@ -1,5 +1,5 @@
 import { html } from 'wirejs-dom/v2';
-import { FeatureLink, type FeatureLinkProps } from '../components/feature-link';
+import { FeatureLinkList, type FeatureLinkProps } from '../components/feature-link';
 import { Main } from '../layouts';
 
 type BookListing = Omit<FeatureLinkProps, 'target' | 'className'>;
@@ -93,9 +93,7 @@ export async function generate() {
 		title: 'Our Books',
 		content: html`<div>
 			<p>Buy one or three to support our mission.</p>
-			<div class='feature-link-list book-list'>
-				${books.map(book => FeatureLink({ ...book, target: '_blank', className: 'book-feature' }))}
-			</div>
+			${FeatureLinkList({ items: books, className: 'book-list', target: '_blank' })}
 		</div>`
 	});
 }

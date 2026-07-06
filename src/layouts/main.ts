@@ -3,19 +3,9 @@ import type { AuthenticationState } from 'wirejs-resources';
 import { PointlessAwardBadge } from '../components/pointless-award';
 
 const TITLE = 'thepointless.com';
-const SUBTITLE = 'In an internet of darkness, there shines forth a light.';
+const SUBTITLE = 'A solitary bastion of sensibility in a web of nonsense.';
 const MENU_ID = 'account-menu';
-const DISCLAIMER = html`
-	<div>
-		<p>
-			<a href='/terms.html'>terms</a>
-			| <a href='/careers.html'>careers</a>
-			| <a href='/contribute.html'>contribute code</a>
-			| <a href='/about.html'>about</a>
-		</p>
-		<p>© ${new Date().getFullYear()} thepointless.com - ${PointlessAwardBadge({ size: 'small' })}</p>
-	</div>
-`;
+const DISCLAIMER = '';
 
 
 export async function Main(slots: {
@@ -112,6 +102,13 @@ export async function Main(slots: {
 					<div id='content'>${slots.content}</div>
 					<footer>
 						${slots.disclaimer ?? DISCLAIMER}
+						<p>
+							<a href='/terms.html'>terms</a>
+							| <a href='/careers.html'>careers</a>
+							| <a href='/contribute.html'>contribute code</a>
+							| <a href='/about.html'>about</a>
+						</p>
+						<p>© ${new Date().getFullYear()} thepointless.com - ${PointlessAwardBadge({ size: 'small' })}</p>
 					</footer>
 				</div>
 			</body>

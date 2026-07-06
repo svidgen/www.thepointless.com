@@ -10,6 +10,13 @@ export type FeatureLinkProps = {
 	className?: string;
 };
 
+export type FeatureLinkListProps = {
+	items: FeatureLinkProps[];
+	className?: string;
+	itemClassName?: string;
+	target?: string;
+};
+
 export function FeatureLink({ href, icon, title, ariaLabel, target, description, className = '' }: FeatureLinkProps) {
 	const rel = target === '_blank' ? 'noopener' : '';
 	return html`<section class='feature-link ${className}'>
@@ -21,4 +28,10 @@ export function FeatureLink({ href, icon, title, ariaLabel, target, description,
 			<div class='feature-link-description'>${description}</div>
 		</div>
 	</section>`;
+}
+
+export function FeatureLinkList({ items, className = '', itemClassName = '', target }: FeatureLinkListProps) {
+	return html`<div class='feature-link-list ${className}'>
+		${items.map(item => FeatureLink({ ...item, target: item.target || target, className: item.className || itemClassName }))}
+	</div>`;
 }

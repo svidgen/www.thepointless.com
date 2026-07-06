@@ -415,3 +415,18 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Updated interactive SSG/SSR modules from exported `hydrate()` entrypoints to exported `onload()` entrypoints, and imported `hydrate` from `wirejs-dom/v2` directly where component rebinding is needed.
 - Where: result pages, Pregger Test, Frentagonist, Shooty Ship generated assets, award certificate SSR route, and `docs/wirejs-structure.md`.
 - Build/check result: `npm run build` succeeds; the known legacy `src/lib/event.cjs` suspicious `! ... instanceof Event` warning remains.
+
+## Decision — certificate embed divider width (2026-07-05)
+- Decision/change: Changed the award certificate embed-options dashed divider from a border on the width-limited content container to a centered pseudo-element that spans the page content area more intentionally while keeping the embed controls readable.
+- Where: `static/default.css` (`.award-embed-options::before`).
+- Check result: CSS-only change; build not run.
+
+## Decision — certificate embed intro width (2026-07-05)
+- Decision/change: Removed the overall width cap from the award embed-options section so its heading and introductory copy align with the page content area, while keeping the snippet textarea constrained to the prior readable/form-friendly width.
+- Where: `static/default.css` (`.award-embed-options`, `.award-embed-options label`).
+- Check result: CSS-only change; build not run.
+
+## Decision — reverted certificate embed intro width change (2026-07-05)
+- Decision/change: Reverted the follow-up change that made the award embed heading/copy full-width; restored the prior centered 44rem content block while keeping the wider pseudo-element dashed divider.
+- Where: `static/default.css` (`.award-embed-options`, `.award-embed-options label`).
+- Check result: CSS-only change; build not run.

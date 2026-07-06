@@ -1,8 +1,8 @@
 import { html } from 'wirejs-dom/v2';
-import { FeatureLink, type FeatureLinkProps } from '../../components/feature-link';
+import { FeatureLinkList, type FeatureLinkProps } from '../../components/feature-link';
 import { Main } from '../../layouts';
 
-type AppListing = Omit<FeatureLinkProps, 'className'>;
+type AppListing = FeatureLinkProps;
 
 const games: AppListing[] = [
 	{
@@ -69,23 +69,15 @@ const clickyThings: AppListing[] = [
 	},
 ];
 
-function AppFeatureLink(listing: AppListing) {
-	return FeatureLink({ ...listing, className: 'app-feature' });
-}
-
 export async function generate() {
 	return Main({
 		title: 'Apps & Games',
 		content: html`<div>
 			<h2>Games</h2>
-			<div class='feature-link-list app-feature-list'>
-				${games.map(AppFeatureLink)}
-			</div>
+			${FeatureLinkList({ items: games, className: 'app-feature-list' })}
 
 			<h3>And Other Clicky Things</h3>
-			<div class='feature-link-list app-feature-list'>
-				${clickyThings.map(AppFeatureLink)}
-			</div>
+			${FeatureLinkList({ items: clickyThings, className: 'app-feature-list' })}
 		</div>`
 	});
 }
