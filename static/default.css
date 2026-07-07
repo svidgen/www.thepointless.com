@@ -64,6 +64,13 @@ a {
 	text-underline-offset: 0.18em;
 }
 
+[data-tooltip]:hover,
+[data-tooltip]:focus,
+[data-tooltip]:focus-visible,
+[data-tooltip]:active {
+	cursor: default;
+}
+
 [data-tooltip]::after {
 	content: attr(data-tooltip);
 	position: absolute;
