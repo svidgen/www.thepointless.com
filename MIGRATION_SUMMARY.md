@@ -430,3 +430,13 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Reverted the follow-up change that made the award embed heading/copy full-width; restored the prior centered 44rem content block while keeping the wider pseudo-element dashed divider.
 - Where: `static/default.css` (`.award-embed-options`, `.award-embed-options label`).
 - Check result: CSS-only change; build not run.
+
+## Decision — circular Pointless Award wording (2026-07-06)
+- Decision/change: Replaced the prior "Excellence in Unnecessary Internet" award wording with the more circular "The Pointless Dot-Com’s Award for Meritorious Attainment of the Awarded Distinction", centralized award naming constants in `src/lib/pointless-awards.ts`, updated badge/embed text, and revised the certificate recipient/fine-print copy to preserve the self-administered-award premise.
+- Where: `src/lib/pointless-awards.ts`, `src/lib/pointless-awards.json`, `src/components/pointless-award.ts`, `src/ssr/awards/certificates/%.ts`, `docs/content-migration.md`.
+- Build result: `npm run build` succeeds; build still emits the accepted legacy `src/lib/event.cjs` suspicious `! ... instanceof` warning.
+
+## Decision — shared inline Pointless Award badge markup (2026-07-06)
+- Decision/change: Refactored the Pointless Award badge so on-site badges, certificate previews, and copied embed HTML all originate from the same inline-styled HTML string, removing dependency on default stylesheet class names for badge rendering.
+- Where: `src/components/pointless-award.ts`, `static/default.css`.
+- Build result: `npm run build` succeeds; generated `dist/about.html` contains the inline badge markup; build still emits the accepted legacy `src/lib/event.cjs` warning.

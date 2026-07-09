@@ -6,7 +6,7 @@ import {
 	pointlessAwardEmbedHtml,
 	pointlessAwardEmbedMarkdown,
 } from '../../../components/pointless-award';
-import { getPointlessAward } from '../../../lib/pointless-awards';
+import { POINTLESS_AWARD_CERTIFICATE_TITLE, getPointlessAward } from '../../../lib/pointless-awards';
 import { Main } from '../../../layouts';
 
 function CertificateNotFound({ certificateNumber }: { certificateNumber: string }) {
@@ -54,13 +54,13 @@ export async function generate(context: Context) {
 		description: `Certificate ${award.certificateNumber}: ${award.awardName}`,
 		content: html`<div>
 			${PointlessCertificate({
-				kicker: 'The Pointless Award Committee for Recognition of Recognitions hereby recognizes',
+				kicker: 'The Pointless Award Committee for Ceremonial Distinctions hereby recognizes',
 				recipient: award.recipient,
 				recipientLink: '/',
 				recipientLabel: 'as a certified recipient of the',
-				title: award.awardName,
+				title: POINTLESS_AWARD_CERTIFICATE_TITLE,
 				quote: award.quote,
-				finePrint: 'This certificate confirms that the aforementioned dot-com has met or exceeded the minimum requirements for receiving this certificate.',
+				finePrint: 'This certificate confirms that the aforementioned recipient has been administered and awarded this distinction by virtue of all merits and claims inherent in the award.',
 				certificateNumber: award.certificateNumber,
 			})}
 

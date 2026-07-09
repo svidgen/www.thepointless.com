@@ -72,10 +72,11 @@ The Pointless Award badge is implemented as:
 src/components/pointless-award.ts
 ```
 
-Award data is currently hard-coded JSON:
+Award data is currently hard-coded JSON, with shared award naming constants in the adjacent TypeScript module:
 
 ```txt
 src/lib/pointless-awards.json
+src/lib/pointless-awards.ts
 ```
 
 Certificate rendering is SSR and wildcard-routed:

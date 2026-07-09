@@ -391,90 +391,6 @@ pre.code-block {
 	overflow-x: scroll;
 }
 
-.pointless-award-badge {
-	max-width: 32rem;
-	margin: 1.5rem auto;
-}
-
-.pointless-award-badge a {
-	display: flex;
-	align-items: center;
-	gap: 0.85rem;
-	padding: 0.85rem 1rem;
-	border: 1px dashed #b99b3d;
-	border-radius: 0.5rem;
-	background: #fffdf3;
-	box-shadow: 0 1px 4px #ddd;
-	color: #533;
-	text-decoration: none;
-}
-
-.pointless-award-badge a:hover,
-.pointless-award-badge a:focus {
-	background: #fff8d8;
-}
-
-.award-star {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	flex: 0 0 auto;
-	width: 3rem;
-	height: 3rem;
-	border-radius: 50%;
-	border: 2px solid #b99b3d;
-	background: #ffe68a;
-	color: #7a5312;
-	font-size: 2rem;
-	line-height: 1;
-	text-shadow: #fff 1px 1px 0;
-}
-
-.pointless-award-badge span span,
-.pointless-award-badge strong {
-	display: block;
-}
-
-.pointless-award-badge.small {
-	display: inline-block;
-	max-width: none;
-	margin: 0 0.15em;
-	vertical-align: middle;
-}
-
-.pointless-award-badge.small a {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.3em;
-	padding: 0.1em 0.35em;
-	border-radius: 0.3em;
-	box-shadow: none;
-	font-size: 1em;
-	line-height: 1.2;
-}
-
-.pointless-award-badge.small .award-star {
-	width: 1.15em;
-	height: 1.15em;
-	border-width: 1px;
-	font-size: 0.9em;
-}
-
-.pointless-award-badge.small strong,
-.pointless-award-badge.small .award-cert-id {
-	display: inline;
-}
-
-.pointless-award-badge.small .award-cert-id {
-	color: var(--color-muted);
-	font-weight: normal;
-}
-
-.award-kicker {
-	font-size: 0.85rem;
-	color: var(--color-muted);
-}
-
 .pointless-certificate {
 	max-width: 44rem;
 	margin: 2rem auto;
@@ -590,10 +506,6 @@ pre.code-block {
 
 .award-embed-preview[hidden] {
 	display: none;
-}
-
-.award-embed-preview .pointless-award-badge:not(.small) {
-	width: 100%;
 }
 
 .award-embed-controls {
