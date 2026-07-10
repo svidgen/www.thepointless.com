@@ -9,8 +9,9 @@
 	  "noImplicitAny": true,
 	  "skipLibCheck": true,
 	  "declaration": true,
-	  "lib": ["DOM", "ES2024", "WebWorker"]
+	  "lib": ["DOM", "ES2024", "WebWorker"],
+	  "types": ["node"]
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "deployment-config.ts"],
 	"exclude": ["node_modules"]
 }

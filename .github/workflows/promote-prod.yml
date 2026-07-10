@@ -1,0 +1,49 @@
+name: Promote Main To Production Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type promote to sync main -> release/prod"
+        required: true
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    name: Promote main to release/prod
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate confirmation
+        if: ${{ inputs.confirm != 'promote' }}
+        run: |
+          echo "To run this workflow, set confirm=promote"
+          exit 1
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fast-forward release/prod to main
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+
+          if git ls-remote --heads origin release/prod | grep -q "release/prod"; then
+            git fetch origin release/prod
+            git checkout -B release/prod origin/release/prod
+            git merge --ff-only origin/main
+          else
+            git checkout -B release/prod origin/main
+          fi
+
+          git push origin release/prod

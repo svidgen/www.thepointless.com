@@ -440,3 +440,18 @@ If you want, I'll generate the file-level audit lists now and append them under 
 - Decision/change: Refactored the Pointless Award badge so on-site badges, certificate previews, and copied embed HTML all originate from the same inline-styled HTML string, removing dependency on default stylesheet class names for badge rendering.
 - Where: `src/components/pointless-award.ts`, `static/default.css`.
 - Build result: `npm run build` succeeds; generated `dist/about.html` contains the inline badge markup; build still emits the accepted legacy `src/lib/event.cjs` warning.
+
+## 2026-07-09 CDK deployment bootstrap
+- Ran `npx create-wirejs-deploy-cdk`, which added GitHub Actions deploy/promotion workflows and `docs/cdk.md`, and appended README CDK setup guidance.
+- Configured local AWS SSO profile `thepointless-admin` for account `775615219078` (`thepointless.com`) using the existing `MidnightBicycle` SSO session and `AdministratorAccess` role.
+- Created the GitHub Actions OIDC provider and deploy role `arn:aws:iam::775615219078:role/GitHubActions-svidgen-www.thepointless.com-Deploy`, trusted for `svidgen/www.thepointless.com` refs `main` and `release/*`; attached `AdministratorAccess` per the generated setup flow.
+- Set GitHub Actions secrets `AWS_ROLE_ARN` and `AWS_REGION=us-east-2` with `gh secret set`.
+- Bootstrapped CDK toolkit stacks in `us-east-2` and `us-east-1` for account `775615219078` successfully.
+- Proposed next action: configure custom domains with `npx wirejs-deploy-cdk domain` / `deployment-config.ts` before first production-domain deploy, then run the GitHub deploy workflow from `main`.
+- Decision/change: Removed generated CDK summary text from `README.md`; detailed deployment setup remains in `docs/cdk.md` for maintainers instead of general readers/contributors.
+- Decision/change: Added `deployment-config.ts` before running domain setup. Proposed lanes are `main -> staging.thepointless.com`, `prod -> www.thepointless.com`, and other `release/{name}` branches -> `{name}.thepointless.com`, with `thepointless.com` permanently redirecting to `www.thepointless.com`.
+- Build result: `npm run build` succeeds; build still emits the accepted legacy `src/lib/event.cjs` warning.
+- Decision/change: Updated `deployment-config.ts` so the `main` lane reads `MAIN_BRANCH_DOMAIN` instead of hard-coding the preview/staging hostname; configured the deploy workflow to pass `${{ vars.MAIN_BRANCH_DOMAIN }}` into the CDK deploy process.
+- Decision/change: Set GitHub repository variable `MAIN_BRANCH_DOMAIN=preview-5786.thepointless.com` using `gh variable set`.
+- Decision/change: Added Node TypeScript support for deployment config by adding `@types/node`, `typescript`, `types: ["node"]`, and including `deployment-config.ts` in `tsconfig.json`.
+- Check result: `MAIN_BRANCH_DOMAIN=preview-5786.thepointless.com npm run build` succeeds with the accepted legacy `src/lib/event.cjs` warning. `npx tsc --noEmit` now runs but reports pre-existing strict typing issues in app/service-worker source files unrelated to this deployment config change.

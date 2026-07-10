@@ -24,7 +24,9 @@
   "homepage": "https://github.com/svidgen/www.thepointless.com#readme",
   "devDependencies": {
     "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1",
     "@types/web-app-manifest": "^1.0.9",
+    "typescript": "^7.0.2",
     "wirejs-scripts": "^3.0.192"
   },
   "dependencies": {
