@@ -1,14 +1,12 @@
 const mainBranchDomain = process.env.MAIN_BRANCH_DOMAIN;
 
-if (!mainBranchDomain) {
-	throw new Error('MAIN_BRANCH_DOMAIN is required for deployment config.');
-}
+const mainDomain = mainBranchDomain ? { main: mainBranchDomain } : {};
 
 const config = {
 	runtimeNodeVersion: 22,
 	domainsByBranch: {
 		// Pushes to main deploy the non-indexable preview/staging lane.
-		main: mainBranchDomain,
+		...mainDomain,
 
 		// release/prod deploys the production lane.
 		prod: 'www.thepointless.com',

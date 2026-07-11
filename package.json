@@ -8,9 +8,10 @@
   ],
   "sideEffects": [],
   "scripts": {
-    "start": "wirejs-scripts start",
-    "build": "wirejs-scripts build",
-    "test": "playwright test"
+    "prebuild": "npm run prebuild --workspaces --if-present",
+		"prestart": "npm run prestart --workspaces --if-present",
+		"start": "wirejs-scripts ws-run-parallel start",
+		"build": "npm run build --workspaces --if-present"
   },
   "repository": {
     "type": "git",
