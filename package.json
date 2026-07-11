@@ -2,9 +2,15 @@
   "name": "thepointless.com",
   "version": "1.0.0",
   "description": "source for thepointless.com",
+  "workspaces": [
+    "src",
+    "api"
+  ],
+  "sideEffects": [],
   "scripts": {
-	  "start": "wirejs-scripts start",
-	  "build": "wirejs-scripts build"
+    "start": "wirejs-scripts start",
+    "build": "wirejs-scripts build",
+    "test": "playwright test"
   },
   "repository": {
     "type": "git",
@@ -17,10 +23,15 @@
   },
   "homepage": "https://github.com/svidgen/www.thepointless.com#readme",
   "devDependencies": {
-    "wirejs-scripts": "^2.0.5"
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1",
+    "@types/web-app-manifest": "^1.0.9",
+    "typescript": "^7.0.2",
+    "wirejs-scripts": "^3.0.192"
   },
   "dependencies": {
     "qrcode": "^1.5.0",
-    "wirejs-dom": "^1.0.7"
+    "wirejs-dom": "^1.0.44",
+    "wirejs-resources": "^0.1.194"
   }
 }

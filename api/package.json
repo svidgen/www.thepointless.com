@@ -1,0 +1,15 @@
+{
+	"name": "internal-api",
+	"private": "true",
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"prestart": "wirejs-scripts prebuild-api",
+		"prebuild": "wirejs-scripts prebuild-api"
+	},
+	"exports": {
+		"types": "./index.ts",
+		"wirejs:client": "./dist/index.client.js",
+		"default": "./dist/index.js"
+	}
+}

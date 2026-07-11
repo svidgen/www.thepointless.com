@@ -1,0 +1,505 @@
+# thepointless.com DNS snapshot before Route53 nameserver switch
+Captured: 2026-07-11T00:42:44Z
+
+## Current authoritative nameservers
+ns-cloud-b1.googledomains.com.
+ns-cloud-b2.googledomains.com.
+ns-cloud-b3.googledomains.com.
+ns-cloud-b4.googledomains.com.
+
+## SOA
+thepointless.com.	21600	IN	SOA	ns-cloud-b1.googledomains.com. cloud-dns-hostmaster.google.com. 18 21600 3600 259200 300
+
+## AXFR attempts (expected to fail; confirms no zone transfer)
+### ns-cloud-b1.googledomains.com.
+
+; <<>> DiG 9.10.6 <<>> @ns-cloud-b1.googledomains.com. AXFR thepointless.com +time=5 +tries=1
+; (1 server found)
+;; global options: +cmd
+; Transfer failed.
+### ns-cloud-b2.googledomains.com.
+
+; <<>> DiG 9.10.6 <<>> @ns-cloud-b2.googledomains.com. AXFR thepointless.com +time=5 +tries=1
+; (1 server found)
+;; global options: +cmd
+; Transfer failed.
+### ns-cloud-b3.googledomains.com.
+
+; <<>> DiG 9.10.6 <<>> @ns-cloud-b3.googledomains.com. AXFR thepointless.com +time=5 +tries=1
+; (1 server found)
+;; global options: +cmd
+; Transfer failed.
+### ns-cloud-b4.googledomains.com.
+
+; <<>> DiG 9.10.6 <<>> @ns-cloud-b4.googledomains.com. AXFR thepointless.com +time=5 +tries=1
+; (1 server found)
+;; global options: +cmd
+; Transfer failed.
+
+## Common public records
+
+### thepointless.com
+thepointless.com.	14400	IN	A	198.185.159.144
+thepointless.com.	21600	IN	MX	30 aspmx5.googlemail.com.
+thepointless.com.	21600	IN	MX	20 alt1.aspmx.l.google.com.
+thepointless.com.	21600	IN	MX	20 alt2.aspmx.l.google.com.
+thepointless.com.	21600	IN	MX	10 aspmx.l.google.com.
+thepointless.com.	21600	IN	MX	30 aspmx2.googlemail.com.
+thepointless.com.	21600	IN	MX	30 aspmx4.googlemail.com.
+thepointless.com.	21600	IN	MX	30 aspmx3.googlemail.com.
+thepointless.com.	3600	IN	TXT	"v=spf1 a mx include:_spf.google.com include:servers.mcsv.net -all"
+thepointless.com.	21600	IN	NS	ns-cloud-b1.googledomains.com.
+thepointless.com.	21600	IN	NS	ns-cloud-b3.googledomains.com.
+thepointless.com.	21600	IN	NS	ns-cloud-b4.googledomains.com.
+thepointless.com.	21600	IN	NS	ns-cloud-b2.googledomains.com.
+
+### www.thepointless.com
+www.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+www.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:b600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:2600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:e200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:9a00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:c00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:5800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:2800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:9000:f:28de:a5c0:93a1
+www.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+www.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+www.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+www.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+www.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+www.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+
+### preview-5786.thepointless.com
+preview-5786.thepointless.com. 3600 IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+preview-5786.thepointless.com. 3600 IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:d400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:4e00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:d000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:b200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:3c00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:8800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:4a00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:3800:f:28de:a5c0:93a1
+preview-5786.thepointless.com. 3600 IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+preview-5786.thepointless.com. 3600 IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+preview-5786.thepointless.com. 3600 IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+preview-5786.thepointless.com. 3600 IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+preview-5786.thepointless.com. 3600 IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+preview-5786.thepointless.com. 3600 IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+
+### staging.thepointless.com
+staging.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+staging.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:4800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:ee00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:4a00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:a400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:4400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:4600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:ca00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:5600:f:28de:a5c0:93a1
+staging.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+staging.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+staging.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+staging.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+staging.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+staging.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+
+### mail.thepointless.com
+mail.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+mail.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:5a00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:b200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:d000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:5400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:ee00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:e600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:1400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:7400:f:28de:a5c0:93a1
+mail.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+mail.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+mail.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+mail.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+mail.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+mail.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+
+### smtp.thepointless.com
+smtp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+smtp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:1000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:de00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:7600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:8400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:9a00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:8a00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:7200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:a00:f:28de:a5c0:93a1
+smtp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+smtp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+smtp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+smtp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+smtp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+smtp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+
+### imap.thepointless.com
+imap.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+imap.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:ae00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:6400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:5800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:1800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:6800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:fa00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:c200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:e800:f:28de:a5c0:93a1
+imap.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+imap.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+imap.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+imap.thepointless.com.	3599	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+imap.thepointless.com.	3599	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+imap.thepointless.com.	3599	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+
+### pop.thepointless.com
+pop.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+pop.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:6000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:2a00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:fe00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:1000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:8400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:d000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:7200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:2c00:f:28de:a5c0:93a1
+pop.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+pop.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+pop.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+pop.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+pop.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+pop.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+
+### ftp.thepointless.com
+ftp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+ftp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:7400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:0:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:8000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:1600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:9600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:5200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:b800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:ac00:f:28de:a5c0:93a1
+ftp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+ftp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+ftp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+ftp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+ftp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+ftp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+
+### blog.thepointless.com
+blog.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+blog.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:3600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:c000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:cc00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:da00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:7000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:5200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:7200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:fe00:f:28de:a5c0:93a1
+blog.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+blog.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+blog.thepointless.com.	3599	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+blog.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+blog.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+blog.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+
+### api.thepointless.com
+api.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+api.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:f200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:5c00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:c400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:3600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:5a00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:a400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:ee00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:ca00:f:28de:a5c0:93a1
+api.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+api.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+api.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+api.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+api.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+api.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+
+### _dmarc.thepointless.com
+_dmarc.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+_dmarc.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:5e00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:c00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:7c00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:1e00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:c800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:9800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:de00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:3200:f:28de:a5c0:93a1
+_dmarc.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+_dmarc.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+_dmarc.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+_dmarc.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+_dmarc.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+_dmarc.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+
+### google._domainkey.thepointless.com
+google._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+google._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:b600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:1600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:6800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:c800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:e800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:e000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:1200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:7000:f:28de:a5c0:93a1
+google._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+google._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+google._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+google._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+google._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+google._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+
+### selector1._domainkey.thepointless.com
+selector1._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+selector1._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:8800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:8e00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:ca00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:6a00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:b400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:6c00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:7800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:f800:f:28de:a5c0:93a1
+selector1._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+selector1._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+selector1._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+selector1._domainkey.thepointless.com. 3599 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+selector1._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+selector1._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+
+### selector2._domainkey.thepointless.com
+selector2._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+selector2._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:9e00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:c00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:3c00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:f400:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:4c00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:b600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:ac00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:2c00:f:28de:a5c0:93a1
+selector2._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+selector2._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+selector2._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+selector2._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+selector2._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+selector2._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+
+### default._domainkey.thepointless.com
+default._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+default._domainkey.thepointless.com. 3599 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:e200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:d200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:ae00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:9c00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:4800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:2000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:7800:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:dc00:f:28de:a5c0:93a1
+default._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+default._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+default._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+default._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+default._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+default._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+
+### _github-pages-challenge-svidgen.thepointless.com
+_github-pages-challenge-svidgen.thepointless.com. 3600 IN CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.126
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.89
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.121
+d37e7q7aj43e6v.cloudfront.net. 60 IN	A	52.84.127.100
+_github-pages-challenge-svidgen.thepointless.com. 3600 IN CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:0:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:2000:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:de00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:5600:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:e200:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:3e00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:be00:f:28de:a5c0:93a1
+d37e7q7aj43e6v.cloudfront.net. 60 IN	AAAA	2600:9000:2203:b400:f:28de:a5c0:93a1
+_github-pages-challenge-svidgen.thepointless.com. 3600 IN CNAME	d37e7q7aj43e6v.cloudfront.net.
+_github-pages-challenge-svidgen.thepointless.com. 3600 IN CNAME	d37e7q7aj43e6v.cloudfront.net.
+_github-pages-challenge-svidgen.thepointless.com. 3600 IN CNAME	d37e7q7aj43e6v.cloudfront.net.
+_github-pages-challenge-svidgen.thepointless.com. 3600 IN CNAME	d37e7q7aj43e6v.cloudfront.net.
+_github-pages-challenge-svidgen.thepointless.com. 3600 IN CNAME	d37e7q7aj43e6v.cloudfront.net.
+_github-pages-challenge-svidgen.thepointless.com. 3600 IN CNAME	d37e7q7aj43e6v.cloudfront.net.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-84.awsdns-10.com.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1640.awsdns-13.co.uk.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-1301.awsdns-34.org.
+d37e7q7aj43e6v.cloudfront.net. 21600 IN	NS	ns-842.awsdns-41.net.
+
+## Route53 hosted zone currently created by setup
+{
+    "ResourceRecordSets": [
+        {
+            "Name": "thepointless.com.",
+            "Type": "NS",
+            "TTL": 172800,
+            "ResourceRecords": [
+                {
+                    "Value": "ns-1277.awsdns-31.org."
+                },
+                {
+                    "Value": "ns-904.awsdns-49.net."
+                },
+                {
+                    "Value": "ns-2007.awsdns-58.co.uk."
+                },
+                {
+                    "Value": "ns-379.awsdns-47.com."
+                }
+            ]
+        },
+        {
+            "Name": "thepointless.com.",
+            "Type": "SOA",
+            "TTL": 900,
+            "ResourceRecords": [
+                {
+                    "Value": "ns-1277.awsdns-31.org. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400"
+                }
+            ]
+        }
+    ]
+}

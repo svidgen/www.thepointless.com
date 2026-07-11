@@ -1,0 +1,104 @@
+name: Deploy
+run-name: Deploy from ${{ github.event_name == 'workflow_run' && 'release/prod' || github.ref_name }}
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Promote Main To Production Branch
+    types:
+      - completed
+
+concurrency:
+  group: deploy-${{ github.event_name == 'workflow_run' && 'release/prod' || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to AWS (CDK) - ${{ github.event_name == 'workflow_run' && 'release/prod' || github.ref_name }}
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'release/prod' || github.ref }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Resolve deployment target
+        id: target
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_run" ]]; then
+            REF_NAME="release/prod"
+          else
+            REF_NAME="${GITHUB_REF_NAME}"
+          fi
+
+          if [[ -z "$REF_NAME" ]]; then
+            echo "Deploy ref resolved to empty value."
+            exit 1
+          fi
+
+          if [[ "$REF_NAME" == "main" ]]; then
+            BRANCH_ID="main"
+          elif [[ "$REF_NAME" == "release/prod" ]]; then
+            BRANCH_ID="prod"
+          elif [[ "$REF_NAME" == release/* ]]; then
+            BRANCH_ID="${REF_NAME#release/}"
+          else
+            echo "Unsupported deploy ref: $REF_NAME"
+            exit 1
+          fi
+
+          if [[ -z "$BRANCH_ID" ]]; then
+            echo "Branch id resolved to empty value."
+            exit 1
+          fi
+
+          SAFE_BRANCH="$(echo "$BRANCH_ID" \
+            | tr '[:upper:]' '[:lower:]' \
+            | sed -E 's/[^a-z0-9-]+/-/g; s/-+/-/g; s/^-+|-+$//g')"
+
+          if [[ -z "$SAFE_BRANCH" ]]; then
+            SAFE_BRANCH="branch"
+          fi
+
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          SAFE_REPO="$(echo "$REPO_NAME" \
+            | tr '[:upper:]' '[:lower:]' \
+            | sed -E 's/[^a-z0-9-]+/-/g; s/-+/-/g; s/^-+|-+$//g')"
+
+          STACK_NAME="${SAFE_REPO}-${SAFE_BRANCH}"
+          STACK_NAME="${STACK_NAME:0:128}"
+
+          echo "branch_id=$BRANCH_ID" >> "$GITHUB_OUTPUT"
+          echo "stack_name=$STACK_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
+
+      - name: Deploy CDK stack (includes hosting + API)
+        run: npx wirejs-deploy-cdk deploy
+        env:
+          BRANCH_ID: ${{ steps.target.outputs.branch_id }}
+          STACK_NAME: ${{ steps.target.outputs.stack_name }}
+          MAIN_BRANCH_DOMAIN: ${{ vars.MAIN_BRANCH_DOMAIN }}

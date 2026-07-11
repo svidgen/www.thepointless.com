@@ -1,0 +1,132 @@
+# thepointless.com authoritative DNS snapshot before Route53 NS switch
+Captured: 2026-07-11T00:43:12Z
+Authoritative server queried: ns-cloud-b1.googledomains.com
+Note: DNS does not allow full enumeration without provider export or AXFR; AXFR is refused. This is a common-name public snapshot.
+
+## Current authoritative nameservers
+thepointless.com.	21600	IN	NS	ns-cloud-b4.googledomains.com.
+thepointless.com.	21600	IN	NS	ns-cloud-b3.googledomains.com.
+thepointless.com.	21600	IN	NS	ns-cloud-b2.googledomains.com.
+thepointless.com.	21600	IN	NS	ns-cloud-b1.googledomains.com.
+
+## SOA
+thepointless.com.	21600	IN	SOA	ns-cloud-b1.googledomains.com. cloud-dns-hostmaster.google.com. 18 21600 3600 259200 300
+
+## Records found
+
+### thepointless.com
+
+thepointless.com.	14400	IN	A	198.185.159.144
+thepointless.com.	21600	IN	MX	10 aspmx.l.google.com.
+thepointless.com.	21600	IN	MX	20 alt1.aspmx.l.google.com.
+thepointless.com.	21600	IN	MX	20 alt2.aspmx.l.google.com.
+thepointless.com.	21600	IN	MX	30 aspmx2.googlemail.com.
+thepointless.com.	21600	IN	MX	30 aspmx3.googlemail.com.
+thepointless.com.	21600	IN	MX	30 aspmx4.googlemail.com.
+thepointless.com.	21600	IN	MX	30 aspmx5.googlemail.com.
+thepointless.com.	21600	IN	NS	ns-cloud-b1.googledomains.com.
+thepointless.com.	21600	IN	NS	ns-cloud-b2.googledomains.com.
+thepointless.com.	21600	IN	NS	ns-cloud-b3.googledomains.com.
+thepointless.com.	21600	IN	NS	ns-cloud-b4.googledomains.com.
+thepointless.com.	3600	IN	TXT	"v=spf1 a mx include:_spf.google.com include:servers.mcsv.net -all"
+
+### www.thepointless.com
+
+www.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+### preview-5786.thepointless.com
+
+preview-5786.thepointless.com. 3600 IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+### staging.thepointless.com
+
+staging.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+### mail.thepointless.com
+
+mail.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+### smtp.thepointless.com
+
+smtp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+### imap.thepointless.com
+
+imap.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+### pop.thepointless.com
+
+pop.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+### ftp.thepointless.com
+
+ftp.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+### blog.thepointless.com
+
+blog.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+### api.thepointless.com
+
+api.thepointless.com.	3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+### _dmarc.thepointless.com
+
+_dmarc.thepointless.com. 3600	IN	CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+### google._domainkey.thepointless.com
+
+google._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+
+### selector1._domainkey.thepointless.com
+
+selector1._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+
+### selector2._domainkey.thepointless.com
+
+selector2._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+
+### default._domainkey.thepointless.com
+
+default._domainkey.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+
+### _github-pages-challenge-svidgen.thepointless.com
+
+_github-pages-challenge-svidgen.thepointless.com. 3600 IN CNAME	d37e7q7aj43e6v.cloudfront.net.
+
+## New Route53 hosted zone records currently present
+[
+    {
+        "Name": "thepointless.com.",
+        "Type": "NS",
+        "TTL": 172800,
+        "ResourceRecords": [
+            {
+                "Value": "ns-1277.awsdns-31.org."
+            },
+            {
+                "Value": "ns-904.awsdns-49.net."
+            },
+            {
+                "Value": "ns-2007.awsdns-58.co.uk."
+            },
+            {
+                "Value": "ns-379.awsdns-47.com."
+            }
+        ]
+    },
+    {
+        "Name": "thepointless.com.",
+        "Type": "SOA",
+        "TTL": 900,
+        "ResourceRecords": [
+            {
+                "Value": "ns-1277.awsdns-31.org. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400"
+            }
+        ]
+    }
+]
+
+## Wildcard check
+*.thepointless.com. 3600 IN CNAME d37e7q7aj43e6v.cloudfront.net.
+Random subdomain queried also resolved via this wildcard CNAME.

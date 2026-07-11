@@ -1,6 +1,6 @@
 const { DomClass } = require('wirejs-dom');
 const sitemap = require('../sitemap');
-const State = require('../lib/state');
+const State = require('../lib/state.cjs');
 
 const template = `<tpdc:teaser>
 	<div>

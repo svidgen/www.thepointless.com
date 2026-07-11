@@ -1,23 +1,9 @@
-${meta({
-	layout: "bare"
-})}<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
+<!-- DEPRECATED: src/routes/feed.rss
 
-<channel>
-  <title>www.thepointless.com</title>
-  <link>https://www.thepointless.com</link>
-  <description>Well. I mean. We're pretty awesome. So, there's that.</description>
-  ${(() => {
-    const news = require('../news');
-    return news.map(({title, link, body, description, pubDate, guid}) => `
-    <item>
-      <title>${title}</title>
-      <link>${link}</link>
-      <description>${description}</description>
-      <pubDate>${pubDate}</pubDate>
-      <guid isPermaLink="false">${guid}</guid>
-    </item>`).join('\n')
-  })()}
-</channel>
+This file was replaced by src/ssg/feed.rss.ts which generates the RSS feed
+at build time. The new generator imports src/news.cjs and produces the same
+feed content (with proper XML escaping and a description fallback).
 
-</rss>
+If you want to remove this legacy template file entirely, delete it from
+the repository. It is left here as a reference for now.
+-->
