@@ -62,41 +62,43 @@ const config = {
 				],
 				ttlSeconds: 3600,
 			},
-			{
-				name: 'mty3v3o5eumo.thepointless.com',
-				type: 'CNAME',
-				values: ['gv-xusr7ksf3swkp5.dv.googlehosted.com.'],
-				ttlSeconds: 300,
-			},
 
-			// Preserve explicit legacy subdomain records otherwise shadowed by the wildcard.
-			{
-				name: 'beta.thepointless.com',
-				type: 'A',
-				values: ['192.237.142.130'],
-				ttlSeconds: 300,
-			},
-			{
-				name: 'dev.thepointless.com',
-				type: 'CNAME',
-				values: ['d37e7q7aj43e6v.cloudfront.net.'],
-				ttlSeconds: 3600,
-			},
-			{
-				name: 'aws.thepointless.com',
-				type: 'CNAME',
-				values: ['d-qy6uayqak4.execute-api.us-east-2.amazonaws.com.'],
-				ttlSeconds: 300,
-			},
+			// not sure what this is, but it doesn't seem to load anything.
+			// {
+			// 	name: 'mty3v3o5eumo.thepointless.com',
+			// 	type: 'CNAME',
+			// 	values: ['gv-xusr7ksf3swkp5.dv.googlehosted.com.'],
+			// 	ttlSeconds: 300,
+			// },
+
+			// // Preserve explicit legacy subdomain records otherwise shadowed by the wildcard.
+			// {
+			// 	name: 'beta.thepointless.com',
+			// 	type: 'A',
+			// 	values: ['192.237.142.130'],
+			// 	ttlSeconds: 300,
+			// },
+			// {
+			// 	name: 'dev.thepointless.com',
+			// 	type: 'CNAME',
+			// 	values: ['d37e7q7aj43e6v.cloudfront.net.'],
+			// 	ttlSeconds: 3600,
+			// },
+			// {
+			// 	name: 'aws.thepointless.com',
+			// 	type: 'CNAME',
+			// 	values: ['d-qy6uayqak4.execute-api.us-east-2.amazonaws.com.'],
+			// 	ttlSeconds: 300,
+			// },
 
 			// Preserve the legacy wildcard behavior until each subdomain is explicitly migrated.
 			// Explicit CDK-managed records should override this wildcard.
-			{
-				name: '*.thepointless.com',
-				type: 'CNAME',
-				values: ['d37e7q7aj43e6v.cloudfront.net.'],
-				ttlSeconds: 3600,
-			},
+			// {
+			// 	name: '*.thepointless.com',
+			// 	type: 'CNAME',
+			// 	values: ['d37e7q7aj43e6v.cloudfront.net.'],
+			// 	ttlSeconds: 3600,
+			// },
 		],
 	},
 } as const;
