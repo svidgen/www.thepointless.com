@@ -80,8 +80,9 @@ const config : DeploymentConfig = {
 			},
 			{
 				name: '_dmarc',
+				zoneDomain: 'thepointless.com',
 				type: 'TXT',
-				values: ['v=DMARC1; p=none;']
+				values: ['"v=DMARC1; p=none;"'],
 			},
 
 			// not sure what this is, but it doesn't seem to load anything.
