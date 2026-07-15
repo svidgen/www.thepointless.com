@@ -1,27 +1,25 @@
-# Content migration notes
+# Content guidance
 
-## Source of truth during migration
+## Legacy reference material
 
-Legacy content is preserved under:
+Older site content is preserved under:
 
 ```txt
 archive/
 src/routes/
 ```
 
-New migrated pages should generally be implemented under:
+Use those files as reference when restoring or updating old pages, but do not add new features to `archive/`. Active pages should generally be implemented under:
 
 ```txt
 src/ssg/
 ```
 
-or, when runtime rendering/dynamic lookup is useful:
+or, when request-time rendering/dynamic lookup is useful:
 
 ```txt
 src/ssr/
 ```
-
-Do not add new features to `archive/`.
 
 ## Style/tone note
 
@@ -35,21 +33,20 @@ src/ssg/about.ts
 
 The site should remain pointless on purpose: silly, fake-serious, low-stakes, personal, and intentionally unnecessary without becoming careless or broken.
 
-## Migration standards
+## Updating or restoring old content
 
-When migrating a page:
+When porting behavior/content from older pages:
 
-1. Compare live production (`https://www.thepointless.com/...`) against local (`http://localhost:3000/...`) when possible.
+1. Compare live production (`https://www.thepointless.com/...`) against local (`http://localhost:3000/...`) when useful.
 2. Preserve the actual content and interaction behavior, but do not attempt pixel-perfect legacy styling.
 3. Avoid browser-default ugly form controls; use shared styling in `static/default.css`.
 4. Use `/static/...` paths for static images/assets.
-5. Avoid linking to pages that have not been migrated unless clearly marked as pending.
+5. Avoid linking to missing/unimplemented pages unless clearly marked as pending.
 6. Run `npm run build` and, where applicable, `npm test`.
-7. Update `MIGRATION_SUMMARY.md` with observations and decisions.
 
-## Current migrated app/clicky pages
+## Restored app/clicky pages
 
-The following legacy Apps & Games pages have SSG migrations:
+The following legacy Apps & Games pages currently have active SSG implementations:
 
 - `src/ssg/reddot.ts`
 - `src/ssg/greendot.ts`

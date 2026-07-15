@@ -22,29 +22,29 @@ npm test
 
 ## WireJS project shape
 
-This site is a WireJS migration. Keep the details in the WireJS docs rather than this file:
+This site is built with WireJS. Keep the framework details in the WireJS docs rather than this file:
 
 - Human/contributor reference: `node_modules/wirejs-scripts/README.md`
-- Agent repo guidance: `AGENTS.md`, especially `docs/wirejs-structure.md` and `docs/content-migration.md`
+- Agent repo guidance: `AGENTS.md`, especially `docs/wirejs-structure.md` and `docs/content-guidance.md`
 
 Short version:
 
 - `src/ssg/` contains statically generated pages/artifacts.
 - `src/ssr/` contains request-time routes.
 - Shared components belong in `src/components/`.
-- Page-specific decomposed code can live next to the page that uses it.
+- Page-specific generated artifacts (for example generated CSS) can live next to the route that emits them; reusable or decomposed behavior belongs in `src/components/` or `src/lib/`.
 - `static/` is only for public assets intentionally served under `/static/*`.
 - Do not edit generated `dist/` or `pre-dist/` directly.
 
-For interactive SSG pages, prefer WireJS's `generate()` + `hydrate()` pattern so markup and browser behavior can share decomposed TypeScript modules without inventing separate static asset bundles.
+For interactive SSG pages, prefer WireJS's `generate()` + `onload()` pattern, using `hydrate()` inside `onload()` when rendered components need browser rebinding. Keep browser behavior in decomposed TypeScript modules rather than inventing separate static asset bundles.
 
 ## Package structure
 
 | Folder | Purpose |
 |---|---|
 | `api/` | API/resource workspace. |
-| `archive/` | Legacy pre-migration reference content. |
-| `docs/` | Lightweight repo-specific migration notes. |
+| `archive/` | Legacy reference content. |
+| `docs/` | Lightweight repo-specific notes. |
 | `src/ssg/` | Static routes and generated artifacts. |
 | `src/ssr/` | Server-rendered/request-time routes. |
 | `src/components/` | Reusable WireJS components. |
