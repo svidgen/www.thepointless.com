@@ -1,9 +1,13 @@
+import { DeploymentConfig } from 'wirejs-resources';
+
 const mainBranchDomain = process.env.MAIN_BRANCH_DOMAIN;
 
 const mainDomain = mainBranchDomain ? { main: mainBranchDomain } : {};
 
-const config = {
+const config : DeploymentConfig = {
 	runtimeNodeVersion: 22,
+
+	// @ts-ignore - `main` key provided conditionally.
 	domainsByBranch: {
 		// Pushes to main deploy the non-indexable preview/staging lane.
 		...mainDomain,
@@ -63,6 +67,23 @@ const config = {
 				ttlSeconds: 3600,
 			},
 
+			// Mailchimp
+			{
+				name: 'k2._domainkey.thepointless.com',
+				type: 'CNAME',
+				values: ['dkim2.mcsv.net']
+			},
+			{
+				name: 'k3._domainkey.thepointless.com',
+				type: 'CNAME',
+				values: ['dkim3.mcsv.net'],
+			},
+			{
+				name: '_dmarc',
+				type: 'TXT',
+				values: ['v=DMARC1; p=none;']
+			},
+
 			// not sure what this is, but it doesn't seem to load anything.
 			// {
 			// 	name: 'mty3v3o5eumo.thepointless.com',
@@ -101,6 +122,6 @@ const config = {
 			// },
 		],
 	},
-} as const;
+};
 
 export default config;
