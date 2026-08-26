@@ -5,17 +5,6 @@ import { Main } from '../layouts';
 import { MailingListSignup } from '../components/mailing-list-signup';
 
 export async function generate(context?: Context) {
-	const m = await import('../news.cjs');
-	const news = (m && (m.default || m)) || [];
-
-	const newsItemsHtml = news.map(n => `
-		<div class='news-item'>
-			<h3><a href="${n.link}">${n.title}</a></h3>
-			<div class='meta'>${n.pubDate}</div>
-			<p>${(n.description || n.body).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
-		</div>
-	`).join('\n');
-
 	return Main({
 		title: 'Welcome to the World Wide Web. 🌎',
 		content: html`<div>

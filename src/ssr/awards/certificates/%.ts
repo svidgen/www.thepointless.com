@@ -7,7 +7,7 @@ import {
 	pointlessAwardEmbedMarkdown,
 } from '../../../components/pointless-award';
 import { POINTLESS_AWARD_CERTIFICATE_TITLE, getPointlessAward } from '../../../lib/pointless-awards';
-import { Main } from '../../../layouts';
+import { Main, onload as baseOnload } from '../../../layouts';
 
 function CertificateNotFound({ certificateNumber }: { certificateNumber: string }) {
 	return html`<div>
@@ -114,6 +114,8 @@ function copyText(value: string, button: HTMLButtonElement) {
 }
 
 export function onload() {
+	baseOnload();
+	
 	const root = document.querySelector('[data-award-snippets]') as HTMLElement | null;
 	if (!root) return;
 

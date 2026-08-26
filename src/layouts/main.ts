@@ -1,12 +1,19 @@
 import { html, node, hydrate } from 'wirejs-dom/v2';
 import type { AuthenticationState } from 'wirejs-resources';
 import { PointlessAwardBadge } from '../components/pointless-award';
+import { AccountMenu } from '../components/account-menu';
+import { auth } from 'internal-api';
 
 const TITLE = 'thepointless.com';
 const SUBTITLE = 'A solitary bastion of sensibility in a web of nonsense.';
 const MENU_ID = 'account-menu';
 const DISCLAIMER = '';
 
+async function Account() {
+	return html`<div id='${MENU_ID}'>
+		${await AccountMenu({ api: auth })}
+	</div>`;
+}
 
 export async function Main(slots: {
 	/**
@@ -94,9 +101,15 @@ export async function Main(slots: {
 								| <a href='/apps/index.html'>Apps &amp; Games</a>
 								| <a href='/books.html'>Books</a>
 								| <a href='/words/index.html'>Words</a>
-								| <a href='/feed.rss' target='_blank' title='RSS feed'><img src='https://wp-assets.rss.com/blog/wp-content/uploads/2019/10/10111557/social_style_3_rss-512-1.png' style='height:0.9em; vertical-align:middle; margin-right:0.25em' alt='RSS'/>RSS</a>
+								| <a href='/feed.rss' target='_blank' title='RSS feed'>
+									<img
+										src='https://wp-assets.rss.com/blog/wp-content/uploads/2019/10/10111557/social_style_3_rss-512-1.png'
+										style='height:0.9em; vertical-align:middle; margin-right:0.25em'
+										alt='RSS'/>
+									RSS</a>
 							</div>
 						</div>
+						${await Account()}
 					</header>
 					${pageTitle}
 					<div id='content'>${slots.content}</div>
@@ -118,3 +131,7 @@ export async function Main(slots: {
 
 // TODO: fix wirejs requiring ... whatever it is here that it requires that breaks the type!
 // hydrate(MENU_ID, Account as any);
+
+export function onload() {
+	hydrate(MENU_ID, Account as any)
+};
