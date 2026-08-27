@@ -28,12 +28,12 @@
     "@types/node": "^26.1.1",
     "@types/web-app-manifest": "^1.0.9",
     "typescript": "^7.0.2",
-    "wirejs-scripts": "^3.0.200"
+    "wirejs-scripts": "^3.0.201"
   },
   "dependencies": {
     "qrcode": "^1.5.0",
-    "wirejs-components": "^0.1.145",
+    "wirejs-components": "^0.1.146",
     "wirejs-dom": "^1.0.44",
-    "wirejs-resources": "^0.1.202"
+    "wirejs-resources": "^0.1.203"
   }
 }
