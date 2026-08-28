@@ -223,6 +223,15 @@ header img.logo {
 	height: 6.5rem;
 }
 
+@media (max-width: 450px) {
+	header img.logo {
+		height: 18vw;
+	}
+	header h1 {
+		font-size: 7.5vw;
+	}
+}
+
 header > div {
 	flex-basis: 0;
 	flex-grow: 5;
@@ -250,6 +259,14 @@ header #account-menu {
 	margin-top: 3.5rem;
 	flex-grow: 0;
 	z-index: 1000;
+}
+
+header #account-menu .menu {
+	max-width: calc(100vw - 75px);
+}
+
+header #account-menu .menu input {
+	max-width: calc(100vw - 75px - 3rem);
 }
 
 footer {
