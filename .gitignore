@@ -15,6 +15,7 @@ dist
 pre-dist
 src/build_id.json
 temp
+/internal/
 
 api/dist
 

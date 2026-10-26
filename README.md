@@ -16,6 +16,8 @@ Your contributions are welcome and encouraged. But, the bar is high, my friends.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) before changing code. New interactive pages should use WireJS source, SSG/SSR, and `onload()`/hydration patterns rather than ad-hoc static browser bundles.
 
+Deep dot-com strategy and unpublished content guidance are kept in [a private internal repository](https://github.com/svidgen/thepointless-internal). Access is only needed for top secret, internal strategy work. The `./internal` folder is reserved in `.gitignore` for secret pointless agents to work with the internal docs repo. Commits that attempt to check content into the `./internal` folder will be shunned.
+
 # Ideas, Comments, and Complaints, etc.
 
 Please [submit an issue](issues).

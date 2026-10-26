@@ -21,17 +21,9 @@ or, when request-time rendering/dynamic lookup is useful:
 src/ssr/
 ```
 
-## Style/tone note
+## Copy reference
 
-The public About page intentionally denies the allegations that reveal the site's actual creative direction. 😉
-
-Before making substantive copy changes, read:
-
-```txt
-src/ssg/about.ts
-```
-
-The site should remain pointless on purpose: silly, fake-serious, low-stakes, personal, and intentionally unnecessary without becoming careless or broken.
+Before making substantive copy changes, read `src/ssg/about.ts` for the site's existing public voice.
 
 ## Updating or restoring old content
 

@@ -4,6 +4,8 @@
 
 This file is the index card for agents. Keep detailed guidance in `docs/` to avoid drift.
 
+Deep dot-com strategy and unpublished content guidance live in [the private internal repository](https://github.com/svidgen/thepointless-internal). It is only needed for deep strategy work; ordinary contributions to this public repo do not require access. The Department of Need-to-Know regrets to inform you that most tasks are not its concern. If private material is consulted, do not copy it into public files without explicit approval. Authorized contributors can keep a separate checkout in the ignored `internal/` directory; read its `README.md` and `AGENTS.md` for deep strategy tasks only. It is not part of this repository.
+
 # General Guide
 
 Do not rely on WireJS knowledge from another project, branch, npm version, or web search unless the user asks. Prefer the installed package READMEs under `node_modules`, especially:
@@ -35,8 +37,8 @@ For normal app changes, start in:
 Read these before making substantive changes:
 
 1. `docs/wirejs-structure.md` — WireJS SSG/SSR routing, static assets, PWA/service-worker conventions, components, and tests.
-2. `docs/content-guidance.md` — legacy-content guidance, active restored page status, award certificate routing, accepted warnings, and tone guidance.
-3. `src/ssg/about.ts` when doing content/copy work; it is important to know what allegations have been made about this site's content. 😉
+2. `docs/content-guidance.md` — legacy-content guidance, active restored page status, award certificate routing, accepted warnings, and copy references.
+3. `src/ssg/about.ts` when doing content/copy work; use the published page as a copy reference.
 
 ## Critical repo rules
 
