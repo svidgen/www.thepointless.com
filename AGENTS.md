@@ -68,7 +68,7 @@ kill $(cat .devserver.pid) && rm .devserver.pid
 
 ## Documentation maintenance
 
-Keep `docs/` accurate.
+Keep `docs/` accurate. Use Mermaid fenced blocks (`mermaid`) for diagrams in documentation; avoid ASCII-art diagrams.
 
 If your change would make `docs/wirejs-structure.md`, `docs/content-guidance.md`, or another doc incorrect or meaningfully incomplete, update the relevant doc in the same change.
 
